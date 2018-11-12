@@ -1,0 +1,15 @@
+<header class="">
+  <p>{{ title }}</p>
+</header>
+
+<aside class="">
+  <ul>
+    <li *ngFor="let link of links">
+      <a [routerLink]="link.path">{{ link.title }}</a>
+    </li>
+  </ul>
+</aside>
+
+<main>
+  <router-outlet></router-outlet>
+</main>
