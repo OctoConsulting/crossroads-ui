@@ -12,12 +12,6 @@ const app = http.createServer(function (req, res) {
   // extract URL path
   let pathname = `${parsedUrl.pathname}`;
 
-  if (pathname === '/') {
-    pathname = __dirname + '/ng-crossroads/dist/ng-crossroads/index.html'
-  } else {
-    pathname = __dirname + '/ng-crossroads/dist/ng-crossroads/' + pathname;
-  }
-
   // based on the URL path, extract the file extention. e.g. .js, .doc, ...
   let ext = path.parse(pathname).ext;
 
@@ -37,9 +31,11 @@ const app = http.createServer(function (req, res) {
     '.doc': 'application/msword'
   };
   
-  if (!ext) {
+  if (pathname === '/' || !ext) {
     pathname = __dirname + '/ng-crossroads/dist/ng-crossroads/index.html';
     ext = '.html';
+  } else {
+    pathname = __dirname + '/ng-crossroads/dist/ng-crossroads/' + pathname;
   }
 
   fs.exists(pathname, function (exist) {
@@ -49,9 +45,6 @@ const app = http.createServer(function (req, res) {
       res.end(`File ${pathname} not found!`);
       return;
     }
-
-    // if is a directory search for index file matching the extention
-    if (fs.statSync(pathname).isDirectory()) pathname += '/index' + ext;
 
     // read file from file system
     fs.readFile(pathname, function(err, data){
