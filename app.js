@@ -31,6 +31,7 @@ const app = http.createServer(function (req, res) {
     '.doc': 'application/msword'
   };
   
+  // Serve index if route is an Angular route
   if (pathname === '/' || !ext) {
     pathname = __dirname + '/ng-crossroads/dist/ng-crossroads/index.html';
     ext = '.html';
