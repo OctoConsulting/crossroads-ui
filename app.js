@@ -19,7 +19,7 @@ const app = http.createServer(function (req, res) {
   }
 
   // based on the URL path, extract the file extention. e.g. .js, .doc, ...
-  const ext = path.parse(pathname).ext;
+  let ext = path.parse(pathname).ext;
 
   // maps file extention to MIME typere
   const map = {
@@ -36,6 +36,11 @@ const app = http.createServer(function (req, res) {
     '.pdf': 'application/pdf',
     '.doc': 'application/msword'
   };
+  
+  if (!ext) {
+    pathname = __dirname + '/ng-crossroads/dist/ng-crossroads/index.html';
+    ext = '.html';
+  }
 
   fs.exists(pathname, function (exist) {
     if(!exist) {
