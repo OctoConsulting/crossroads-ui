@@ -51,7 +51,6 @@ const app = http.createServer(function (req, res) {
     // read file from file system
     fs.readFile(pathname, function(err, data){
       console.log("Reading file...");
-      console.log(pathname);
       if(err){
         res.statusCode = 500;
         res.send(``)
