@@ -1,0 +1,191 @@
+.roles-directory {
+
+  .org-selected-bkg {
+    background: #fdb81e !important;
+  }
+  .user-role {
+    margin-top: 1em;
+    background-color: white; 
+    border: 1px solid lightgray
+  }
+
+  .action-bar {
+    border-bottom: 1px solid lightgray;
+  }
+
+  .user-image-div {
+    background-color: transparent;
+  }
+
+  .user-image {
+    width: 50px !important; 
+    opacity: .5;
+  }
+
+  .side-cbx {
+    padding-left:40%; 
+    padding-right: 0px; 
+    font-size: 85%;
+  }
+
+  .sam-actions {
+    button {
+      margin: 0;
+    }
+    .usa-button-primary {
+      margin: 0;
+      height: 4.3rem;
+    }
+  }
+  .org-picker-section {
+    .usa-accordion-content {
+      padding: 0;
+    }
+  }
+
+  .usa-accordion-content {
+    overflow: visible;
+  }
+
+  .input-and-addon {
+    float: right;
+    input[type='text'] {
+      display: inline-block;
+      max-width: initial;
+      width: 21em;
+    }
+  }
+
+  .selected-org {
+    background-color: yellow;
+  }
+
+  label[for="users-toggles"] {
+    margin-top: 0;
+  }
+
+  .right-column {
+    margin-top: 1.5em;
+  }
+
+  .edit-multiple-button {
+    margin-right: 0;
+  }
+
+  .usa-accordion-content {
+    padding: 1.5rem;
+  }
+
+  .user-row {
+    border-top: 1px solid black;
+    padding-top: 1.0em;
+    margin-top: 1.5rem;
+  }
+
+  .fa.fa-user {
+    border: 2px solid black;
+    width: 1em;
+    border-radius: .1em;
+  }
+
+  .pagination-row {
+    margin-top: 3rem;
+  }
+
+  .page-title {
+    margin-bottom: .2em;
+  }
+
+  sam-autocomplete label{
+    font-weight: 600;
+    font-size: 2rem;
+  }
+
+  #include-hierarchy{
+    width: auto;
+  }
+
+  #include-hierarchy + label::before {
+    height:  1.3rem;
+    line-height:  1.3rem;
+    margin-right:  0.3em;
+    width:  1.3rem;   
+  }
+
+  .domain-icon {
+    color: $blue;
+    font-size: 140%;
+    vertical-align: middle;
+    cursor: pointer;
+    padding-right: 5px;
+  }
+
+  .v-middle {
+    vertical-align: middle;
+  }
+
+  .user-search-auto, .entity-search-auto, .organization-container {
+    .fa-times-circle, .usa-form-hint {
+      display: none
+    }
+  }
+
+  .menu-links-div{
+    position:absolute; 
+    right: 0px; 
+    top: -40px
+  }
+  
+  .filter-selections-div {
+    max-height: 180px; 
+    overflow-y: auto; 
+    padding-left: 4px; 
+    position: relative; 
+    overflow-x: hidden;
+  }
+
+  .spinner-size {
+    font-size: 0.7em;
+  }
+
+  .inline-block {
+    display: inline-block;
+  }
+
+  .role-options{
+    max-height: 20em;
+    overflow-y: auto;
+    padding-left: 4px;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .domain-options {
+    max-height: 320px;
+    overflow-y: auto;
+    padding-left: 4px;
+    position: relative;
+  }
+
+  .result-actions {
+    display: flex;
+    float: right;
+  }
+
+  .user-details {
+    padding: 1em;
+  }
+
+  .user-icon-wrapper {
+    background-color: transparent;
+  }
+
+  .user-icon {
+    width: 50px;
+    opacity: .5;
+  }
+
+  .spinner-container {
+    margin-top: 3em;
+  }
+}

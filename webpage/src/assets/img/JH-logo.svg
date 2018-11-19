@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="82px" height="82px" viewBox="0 0 82 82" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>JH-logo</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Navigation--Adminstrator" transform="translate(-98.000000, -33.000000)">
+            <g id="JH-logo" transform="translate(98.000000, 33.000000)">
+                <rect id="Rectangle" fill="#212121" x="0" y="0" width="82" height="82" rx="41"></rect>
+                <path d="M38,20 L38,48 C37.0647786,58 32.7314453,63 25,63 C21,63 18.6666667,63 18,63 L18,48 L25,48 L25,20 L38,20 Z" id="Path-3" fill="#D8D8D8"></path>
+                <path d="M51,49 L42,49 L42,34 L51,34 L51,20 L64,20 L64,63 L51,63 L51,49 Z" id="Combined-Shape" fill="#D8D8D8"></path>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,23 @@
+.usa-workspace-fsd-user {
+  .column {
+    max-width: none !important;
+  }
+
+  legend {
+    font-size: 1.4em;
+    font-weight: 600 !important;
+  }
+
+  .fsd-kba-toggle {
+    margin-top: 1.4rem;
+    margin-bottom: 1.4rem;
+
+    label {
+      font-weight: normal;
+    }
+  }
+
+  .usa-button-controls {
+    text-align: left;
+  }
+}

@@ -1,0 +1,81 @@
+.usa-kba {
+  .usa-grid {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  legend + span {
+    display: inline-block;
+    max-width: 80%;
+  }
+
+  .question,
+  .answer {
+    display: inline-block;
+  }
+
+  .usa-input-error {
+    position: inherit;
+    padding-top: 0rem;
+    padding-bottom: 0rem;
+
+    select,
+    input[type="text"],
+    input[type="password"] {
+      border: $input-border-width solid $color-gray;
+    }
+  }
+
+  .usa-kba-error {
+    select,
+    input[type="text"],
+    input[type="password"] {
+      border: 2px solid $color-secondary-dark;
+    }
+  }
+
+  .usa-input-error-message {
+    min-height: 32px;
+  }
+
+  .usa-additional_text {
+    line-height: 3rem;
+  }
+
+  select,
+  input[type="text"],
+  input[type="password"] {
+    position: relative;
+    max-width: 100%;
+    top: -3px;
+  }
+
+  label {
+    height: 3rem;
+    line-height: 3rem;
+  }
+
+  .question {
+    .usa-input-error {
+      select {
+        // To equalize decrease in padding from border size increase which affects line-height
+        padding-top: 8px;
+        padding-bottom: 8px;
+      }
+    }
+  }
+
+  .question {
+    margin-top: 0rem;
+
+    label {
+      margin-top: 1rem;
+    }
+  }
+
+  .answer {
+    .usa-input-error {
+      border-left-width: 0px;
+    }
+  }
+}

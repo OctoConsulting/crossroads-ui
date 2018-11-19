@@ -1,0 +1,77 @@
+.organization-profile{
+  margin-left: 8px;
+
+  .sam-ui.grid > .column {
+    padding-left: 0;
+  }
+
+  a:hover, .fa-pencil:hover{
+    cursor: pointer;
+  }
+
+  .org-notification{
+    min-height: 36px;
+  }
+
+  .current-hierarchy-link{
+    color: $color-black;
+    text-decoration: none;
+  }
+
+  .procurement-radio-btn {
+    width: 1px;
+  }
+
+  .procurement-radio-label {
+    width: 200px;
+    display:inline-block;
+  }
+
+  .aac-detail-span {
+    top: 1.25rem;
+    margin-bottom: 50px;
+    position: relative;
+  }
+
+  .aac-code-input, .aac-detail-code {
+    position: absolute;
+    text-transform:uppercase;
+    top: 0;
+    left: 0;
+  }
+
+  .aac-detail-code{
+    z-index: 1;
+    top: 1.30rem;
+    left: 1.5rem;
+    width: 20%;
+  }
+
+  .aac-code-input {
+    padding-left: 3.5rem;
+  }
+
+  .office-type-edit-section {
+    // margin-top: 18px
+  }
+
+  .profile-edit-btn {
+    color: #0071bc;
+    font-weight: normal;
+    font-style: italic;
+  }
+  .has-inactive-office {
+    line-height: 1.2em;
+    font-style: italic;
+    font-size: 1.5rem;
+  }
+  .wid-title{
+    width: 23.50% !important;
+  }
+  .wid-val{
+    width: 24% !important;
+  }
+  .status-mag{
+    margin-left: -.8em;
+  }
+}

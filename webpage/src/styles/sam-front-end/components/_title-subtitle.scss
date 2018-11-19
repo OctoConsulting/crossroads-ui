@@ -1,0 +1,30 @@
+.title-subtitle {
+  h2 {
+    margin-top: 0
+  }
+
+  .light-title {
+    text-transform: uppercase;
+    line-height: 2rem;
+    font-size: 2rem;
+    font-weight: 600;
+    color: $color-gray-medium;
+  }
+}
+
+title-and-section {
+  .header {
+    .label {
+      float: right;
+    }
+  }
+  
+  .sam-ui.header{
+    font-size: 4rem;
+  }
+
+  .sup.header{
+    font-weight: 300;
+    font-size: 2.5rem;
+  }
+}

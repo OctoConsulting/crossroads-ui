@@ -1,0 +1,80 @@
+<div class="row" style="width:100%">
+
+  <div class="col-md-6 col-md-offset-2 request-travel">
+    <h3>Request Travel </h3>
+    <form [formGroup]="requestForm" (ngSubmit)="onFormSubmit()">
+      <div class="form-group">
+        <label for="destination">Destination</label><a (click)="locationLookup()" >Location Lookup</a>
+        <input type="text" class="form-control" formControlName="destination" id="destination">
+        <div *ngIf="submitted && requestForm.controls.destination.errors" class="error">
+          <div *ngIf="requestForm.controls.destination.errors.required">Destination is required</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-xs-6 col-sm-6 col-md-6 col s6">
+            <label for="startDate">Start date:</label>
+            <input type="date" class="form-control" formControlName="startDate" id="startDate">
+            <div *ngIf="submitted && requestForm.controls.startDate.errors" class="error">
+              <div *ngIf="requestForm.controls.startDate.errors.required">Start Date is required</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-xs-6 col-sm-6 col-md-6 col s6">
+            <label for="endDate">End date:</label>
+            <input type="date" class="form-control" formControlName="endDate" id="endDate">
+            <div *ngIf="submitted && requestForm.controls.endDate.errors" class="error">
+              <div *ngIf="requestForm.controls.endDate.errors.required">End Date is required</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="airFare">Air Fare</label>
+        <input type="number" class="form-control" formControlName="airFare" id="airFare">
+        <!-- <div *ngIf="submitted && requestForm.controls.airFare.errors" class="error">
+          <div *ngIf="requestForm.controls.airFare.errors.required">Air Fare is required</div>
+        </div> -->
+      </div>
+      <div class="form-group">
+        <label for="mileage">Mileage</label>
+        <input type="number" class="form-control" formControlName="mileage" id="mileage">
+        <!-- <div *ngIf="submitted && requestForm.controls.mileage.errors" class="error">
+          <div *ngIf="requestForm.controls.mileage.errors.required">Mileage is required</div>
+        </div> -->
+      </div>
+      <div class="form-group">
+        <label for="Hotel">Hotel</label>
+        <input type="number" class="form-control" formControlName="hotel" id="hotel">
+        <!-- <div *ngIf="submitted && requestForm.controls.hotel.errors" class="error">
+          <div *ngIf="requestForm.controls.hotel.errors.required">Hotel Price is required</div>
+        </div> -->
+      </div>
+      <div class="form-group">
+        <label for="rentalCar">Rental Car</label>
+        <input type="number" class="form-control" formControlName="rentalCar" id="rentalCar">
+        <!-- <div *ngIf="submitted && requestForm.controls.rentalCar.errors" class="error">
+          <div *ngIf="requestForm.controls.rentalCar.errors.required">Rental Car Price is required</div>
+        </div> -->
+      </div>
+      <div class="form-group">
+        <label for="perDiem">Per Diem</label>
+        <input type="number" class="form-control" formControlName="perDiem" id="perDiem">
+        <!-- <div *ngIf="submitted && requestForm.controls.perDiem.errors" class="error">
+          <div *ngIf="requestForm.controls.perDiem.errors.required">Per Diem Price is required</div>
+        </div> -->
+      </div>
+
+      <div class="form-bottom">
+          <button type="button" (click)="onCancel()" class="sam-ui button primary m_T-4x">Cancel</button>
+          <button type="submit" class="sam-ui button primary m_T-4x">Submit</button>
+        </div>
+      <div *ngIf="errorOccured" class="error">
+        <div>Error Occured.</div>
+      </div> 
+    </form>
+  </div>
+</div>

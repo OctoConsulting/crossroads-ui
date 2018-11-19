@@ -1,0 +1,16 @@
+.usa-register-initial {
+  width: 460px;
+  margin: 0 auto;
+
+  fieldset {
+    margin-top: 2rem;
+
+    label {
+      margin-top: 1em;
+    }
+  }
+
+  button[type="submit"] {
+    margin-bottom: 1.2rem;
+  }
+}

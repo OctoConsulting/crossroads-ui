@@ -1,27 +1,81 @@
+# version: 0.1
+# environment_variables:
+#     plaintext:
+#         S3_BUCKET: "angular.edc-sevis.com"
+#         BUILD_ENV: "prod"
+# phases:
+#     install:
+#         commands:
+#             - echo Installing source NPM dependencies...
+#             - npm install
+#             - npm install -g @angular/cli
+#     build:
+#         commands:
+#             - echo Build started on `date`
+#             - ng build --env=${BUILD_ENV}
+#     post_build:
+#          commands:
+#             - aws s3 cp dist s3://${S3_BUCKET} --recursive
+#             - echo Build completed on `date`
+# artifacts:
+#     files:
+#         - '**/*'
+#     base-directory: 'dist*'
+#     discard-paths: yes
+
+
 version: 0.2
+
+#env:
+  #variables:
+     # key: "value"
+     # key: "value"
+  #parameter-store:
+     # key: "value"
+     #key: "value"
 
 phases:
   install:
     commands:
-      # Install dependencies needed for running tests
-      - npm install
-
-      # Upgrade AWS CLI to the latest version
-      - pip install --upgrade awscli
+        # Get Chrome Information
+      - curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+      - echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
+      - apt-get -y update
+      - apt-get -y install google-chrome-stable
+      - npm install -g @angular/cli
+      # - command
+      # - command
   pre_build:
     commands:
-      # Discover and run unit tests in the 'tests' directory
-      - npm test
+      - cd webpage
+  build:
+    commands:
+      - npm install
+      #- npm build --prod
+      - ng test
+      - ng build --prod
+      #- npm run start
   post_build:
     commands:
-      # Remove existing node_modules to clear dev dependencies
-      - rm -r node_modules
-
-      # Install runtime dependencies
-      - npm install --production
-
-      - aws cloudformation package --template template.yml --s3-bucket $S3_BUCKET --output-template-file template-export.yml
+      #- npm run start
+      # - command
+      # - command
+      
 artifacts:
-  type: zip
-  files:
-    - template-export.yml
+#   type: zip
+   files: 
+    #- 'webpage/dist/**/*'
+    - '**/*'
+   #base-directory: '**/*'
+   #discard-paths: yes
+    
+#artifacts:
+  #files:
+    # - location
+    # - location
+  #discard-paths: yes
+  #base-directory: location
+#cache:
+  #paths:
+    # - paths
+

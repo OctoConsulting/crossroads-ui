@@ -1,0 +1,18 @@
+select,
+textarea,
+[type="text"],
+[type="number"] {
+  &:disabled {
+    background: $color-gray-lighter;
+    cursor: not-allowed;
+  }
+}
+.textarea-normalwidth {
+  width: 100%;
+  max-width: 46rem;
+}
+.textarea-fullwidth {
+  width: 100%;
+  max-width: 70rem;
+}
+

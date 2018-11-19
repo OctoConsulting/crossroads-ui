@@ -1,0 +1,339 @@
+.usa-profile-details {
+  h3 {
+    .usa-edit {
+      font-size: 1.5rem;
+      line-height: 1.75em;
+      float: right;
+    }
+  }
+
+  sam-label-wrapper {
+    > div {
+      margin-top: 1em;
+    }
+
+    label {
+      font-weight: bold;
+    }
+  }
+
+  .sam-editor-wrapper {
+    > sam-label-wrapper {
+      > div {
+        > label:nth-child(1) {
+          margin-bottom: 1em;
+        }
+      }
+    }
+  }
+
+  sam-radio-button {
+    display: block;
+    margin-top: 1rem;
+  }
+
+  section {
+    position: relative;
+    margin-bottom: 4rem;
+
+    // Editable Inputs
+    .usa-form-editable {
+      display: none;
+      margin-left: 1em;
+
+      sam-label-wrapper:nth-child(1) {
+        > div {
+          margin-top: 0em;
+        }
+      }
+    }
+
+    // Save Toggle`
+    .usa-save {
+      margin-top: 1.5em;
+      margin-left: 1em;
+      display: none;
+    }
+
+    > button {
+      width: 184px;
+    }
+  }
+
+  // Read State
+  .usa-form-group {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+
+    label {
+      display: inline-block;
+      min-width: 250px;
+      margin-top: 0em;
+      font-weight: 700;
+      float: left;
+    }
+
+    .usa-form-control {
+      display: inline-block;
+    }
+  }
+
+  #otp-preference + label {
+    font-weight: normal;
+  }
+
+  sam-entity-picker,
+  sam-intl-telephone-group {
+    .usa-form-hint {
+      margin-bottom: 0.8em;
+    }
+  }
+
+  sam-entity-picker {
+    .sam-autocomplete {
+      margin-bottom: 1.5em;
+    }
+
+    sam-label-wrapper {
+      > div {
+        margin-top: 0;
+      }
+    }
+  }
+
+  sam-intl-telephone-group {
+    legend {
+      font-weight: bold;
+    }
+
+    sam-label-wrapper {
+      > div {
+        margin-top: 0em;
+
+        label {
+          font-size: 0.9em;
+        }
+      }
+    }
+  }
+
+  div.kba {
+    label {
+      font-weight: normal !important;
+    }
+  }
+
+  section.kba {
+    .column {
+      &:nth-child(1) {
+        width: auto;
+      }
+
+      &:nth-child(2) {
+        max-width: 100px;
+        overflow: hidden;
+
+        .kba {
+          overflow: hidden;
+        }
+      }
+    }
+  }
+
+  // Write State
+  .usa-editable {
+    // Edit Toggle
+    .usa-edit {
+      display: none;
+    }
+
+    // Save Toggle
+    .usa-save {
+      display: block;
+    }
+
+    .usa-form-group {
+      display: none;
+    }
+
+    // Editable Inputs
+    .usa-form-editable {
+      display: block;
+    }
+  }
+
+  .usa-kba {
+    .question {
+      width: 69%;
+    }
+
+    .answer {
+      width: 30%;
+    }
+  }
+
+  .usa-button-secondary {
+    margin-top: 20px;
+  }
+
+  .modal-content {
+    .usa-alert {
+      position: static;
+    }
+  }
+
+  sam-autocomplete + .usa-unstyled-list {
+    margin-top: 1em;
+  }
+
+  .usa-unstyled-list {
+    margin-top: 0.5rem;
+  }
+
+  sam-agency-picker-v2 {
+    .usa-form-hint {
+      strong {
+        font-weight: 700;
+      }
+    }
+
+    sam-autocomplete-refactor + div {
+      margin-top: 1rem;
+    }
+  }
+
+  #business {
+    .organization {
+      position: relative;
+      margin-bottom: 1em;
+
+      sam-agency-picker-v2 {
+        > sam-label-wrapper {
+          > div {
+            max-width: 460px;
+          }
+        }
+      }
+    }
+  }
+
+  .usa-agency-tip {
+    font-size: 1.6rem;
+    left: 480px;
+    position: absolute;
+    top: -2.5rem;
+    width: auto;
+
+    ul {
+      display: block;
+      margin: 0rem;
+      margin-left: 2rem * 1.75;
+      padding-left: 0rem;
+
+      li {
+        display: block;
+        position: relative;
+        padding: 0px;
+        font-size: 1.7rem;
+        line-height: 2.3rem;
+
+        &:before {
+          line-height: 0px;
+          content: '- ';
+        }
+
+        &:after {
+          margin-bottom: 0px;
+        }
+
+        &.hint,
+        &.header {
+          display: block;
+          margin: 1.5rem 0rem;
+          padding: 0px;
+          background-color: transparent;
+
+          &:before {
+            content: '';
+          }
+        }
+
+        &.header {
+          font-size: 2rem;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+  sam-name-entry {
+    sam-select {
+      display: none;
+    }
+  }
+
+  section {
+    > sam-alert {
+      bottom: -34px;
+      left: 200px;
+    }
+  }
+
+  #api,
+  #deactivate {
+    h3 {
+      font-size: 1.4em;
+      font-weight: 600;
+    }
+
+    .usa-input-error.usa-input-error-message {
+      margin-top: 1rem;
+      margin-bottom: -0.5rem;
+    }
+
+    .grid-api {
+      margin-top: 1em;
+      margin-bottom: -1em;
+
+      .column {
+        padding-top: 0px;
+        padding-bottom: 0px;
+
+        > span,
+        label {
+          display: inline-block;
+          line-height: 44px;
+        }
+
+        input[type="password"] {
+          margin-top: 0px;
+        }
+
+        > .div {
+          margin-bottom: 0.5em;
+        }
+
+        button {
+          margin-top: 1.5rem;
+          margin-right: 0px;
+        }
+
+        .text-right {
+          button {
+            margin-top: 0.5rem;
+          }
+        }
+      }
+    }
+
+    .usa-button-controls {
+      text-align: left;
+
+      sam-alert {
+        top: 50%;
+        left: 200px;
+        transform: translateY(-50%);
+      }
+    }
+  }
+}

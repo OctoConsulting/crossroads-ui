@@ -1,0 +1,16 @@
+.help-support {
+  .button.primary {
+    line-height: .7em;
+    margin-right: 0;
+  }
+
+  input, textarea, label, .input-container, sam-label-wrapper > div, .file-container {
+    max-width: inherit !important;
+  }
+
+  .grey-wrapper {
+    margin-top: 1em;
+    padding: 1em;
+    border: 1px solid gainsboro;
+  }
+}

@@ -1,0 +1,27 @@
+<div class="usa-width-one-whole">
+  <div class='usa-width-one-half' style="float: left;"></div>
+  <div class="usa-width-one-half" style="margin-top:  200px; vertical-align: center; height: 100%; float: right">
+    <h2 class="m_B-0">Good Morning,</h2>
+    <h2 class="m_T-0">Please login to get Started. </h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group m_T-5x">
+        <label for="email">User ID/Email address:</label>
+        <input type="email" class="form-control" formControlName="email" id="email">
+        <div *ngIf="submitted && loginForm.controls.email.errors" class="error">
+          <div *ngIf="loginForm.controls.email.errors.required">User ID/Email is required</div>
+        </div>
+      </div>
+      <div class="form-group m_T-4x">
+        <label for="pwd">Password:</label>
+        <input type="password" class="form-control" formControlName="password" id="pwd">
+        <div *ngIf="submitted && loginForm.controls.password.errors" class="error">
+          <div *ngIf="loginForm.controls.password.errors.required">Password is required</div>
+        </div>
+      </div>
+      <button type="submit" class="sam-ui button primary m_T-4x" >Login</button>
+      <div *ngIf="invalidLogin" class="error">
+        <div>Invalid credentials.</div>
+      </div>
+    </form>
+  </div>
+</div>

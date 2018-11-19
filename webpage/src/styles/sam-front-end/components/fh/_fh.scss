@@ -1,0 +1,141 @@
+.federal-hierarchy{
+  .my-dept-div {
+    padding-bottom: .5em;
+  }
+  
+  .align-center {
+    text-align: center;
+  }
+
+  .fa-search{
+    position: absolute;
+    right: 5px;
+    top: 10px;
+    font-size: 150%;
+  }
+
+  .federal-hierarchy-org-item{
+    border-bottom: 1px solid $color-gray-lighter;
+    padding: 10px 0 10px 0;
+  }
+
+  .org-description{
+    color: $color-black;
+    font-weight: 600;
+  }
+
+  .org-type-select{
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    opacity: 0;
+  }
+
+  .federal-hierarchy-org-cbx{
+    width: 40px;
+  }
+
+  .cbx-label{
+    position: absolute;
+    right: 10000px;
+  }
+
+  .my-org-cbx-block{
+    width: 200px;
+  }
+
+  .federal-hierarchy-org-admin-section{
+    margin-top: 20px;
+    border: 2px solid $color-gray-medium;
+
+    .title-section{
+      padding: 10px 20px 10px 20px;
+      border-bottom: 2px solid $color-gray-medium;
+    }
+
+    .org-logo-image{
+      max-width: 100%;
+    }
+
+    .org-logo-container{
+      padding: 40px 20px 20px 20px;
+    }
+  }
+
+  .federal-hierarchy-org-admin-title{
+    text-decoration: underline;
+    font-size: 150%;
+  }
+
+  .federal-hierarchy-org-item-title{
+    text-decoration: underline;
+  }
+
+  .featured-banner{
+    background-color: lightgrey;
+    padding: 0.3em;
+  }
+  .type-top-pd{
+    padding-top: 0.75em;
+  }
+  .status-top-pd{
+    padding-top: 0.5em;
+  }
+  .featured-right-pd{
+    padding-right: 3em;
+    border-right-style: solid;
+    border-right-width: 0.05em;
+  }
+
+  .status-right-pd{
+    padding-right: 5em !important;
+  }
+
+  .start-right-pd{
+    padding-right: 7em !important;
+  }
+
+  .featured-left-pd{
+    padding-left: 0.5em;
+  }
+
+  .myorg-right-pd{
+    padding-right: 0.5em;
+  }
+
+  .pd-t-2{
+    padding-top: 2em;
+  }
+
+  .pd-b-2{
+    padding-bottom: 2em;
+  }
+
+  .ft-bold{
+    font-size: 1.25em;
+    font-weight: 650;
+  }
+
+  .bx-shadow{
+        box-shadow: 0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07);
+  }
+
+  .border-gray-1 {
+    border: 1px solid $color-gray-medium;
+  }
+  .pd-b-1{
+    padding-bottom: 0.7em;
+  }
+
+  .pd-1{
+    padding: 1.2em;
+  }
+
+  .hr-pd{
+    padding-top: 1em;
+    padding-bottom: 1em;
+  }
+
+}

@@ -1,0 +1,63 @@
+.opportunities-operations {
+  .classification-location {
+    font-weight: 600;
+  }
+
+  opp-form-contact-info {
+    #poc-primary,
+    #poc-secondary {
+      sam-text > sam-label-wrapper > div {
+        position: relative;
+        max-width: 46rem;
+      }
+    }
+  }
+
+  .notice-id-input {
+    display: inline;
+  }
+
+  .ivl-contact{
+    word-break: break-all;
+  }
+
+  .section-header {
+    font-size: 3rem;
+  }
+
+  .usa-button-small {
+    @extend .usa-button;
+    font-size: 15px;
+    padding: 8px 12px;
+  }
+
+  .download-container {
+    position: relative;
+    .card-header {
+      padding-right: 140px;
+    }
+  }
+
+  .download-container-header {
+    position: relative;
+    .download-button {
+      top: 0px;
+      right: -8px;
+    }
+  }
+
+  .download-button {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+  }
+}
+.not-active {
+  pointer-events: none;
+  cursor: default;
+}
+.opp-link-action-buttons {
+  padding-left: 43rem;
+}
+
+

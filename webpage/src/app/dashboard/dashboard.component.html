@@ -1,0 +1,128 @@
+<div class="background">
+  <div class="usa-width-one-whole mat-h2 mat-title mat-typography">
+    <div class="usa-width-two-thirds page-header">
+      <h2>Welcome, XXXX</h2>
+      <button class="sam-ui button primary" (click)="newTravelRequest()" >New Travel Request</button>
+    </div>
+  </div>
+  <div class="usa-width-one-whole">
+    <div class="usa-width-two-thirds">
+      <div class="usa-width-one-whole">
+        <mat-card class="higlight" style="box-shadow: none; background-color: #e8e8e8;"><h4>Upcoming Travel</h4></mat-card>
+        <mat-table [dataSource]="dataSource" class="mat-elevation-z8 striped" style="margin-bottom: 20px; ">
+          <!-- Position Column -->
+          <mat-header-cell *matHeaderCellDef class="higlight"> Upcoming Travel
+            </mat-header-cell>
+          <ng-container matColumnDef="start_date">
+            <mat-header-cell *matHeaderCellDef class="higlight"> Start Date
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element" (click)="expanded = true"> {{element.start_date}} </mat-cell>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="end_date">
+            <mat-header-cell *matHeaderCellDef> End Date </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.end_date}} </mat-cell>
+          </ng-container>
+
+          <!-- Weight Column -->
+          <ng-container matColumnDef="destination">
+            <mat-header-cell *matHeaderCellDef > Destination </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.destination}} </mat-cell>
+          </ng-container>
+
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="status">
+            <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.status}} </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+      </div>
+      <div class="accept-pending-bkgd">
+        <div class="usa-width-one-whole">
+          <mat-card class="higlight" style="box-shadow: none; background-color: #e8e8e8"><h4>Accepted Travel</h4></mat-card>
+          <mat-table [dataSource]="dataSourceApproved" class="mat-elevation-z8 striped" style="margin-bottom: 20px; ">
+            <!-- Position Column -->
+
+            <ng-container matColumnDef="start_date">
+              <mat-header-cell *matHeaderCellDef class="higlight"> Start Date
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.start_date}} </mat-cell>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="end_date">
+              <mat-header-cell *matHeaderCellDef> End Date </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.end_date}} </mat-cell>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="destination">
+              <mat-header-cell *matHeaderCellDef> Destination </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.destination}} </mat-cell>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="status">
+              <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.status}} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+        </div>
+        <div class="usa-width-one-whole">
+          <mat-card class="higlight" style="box-shadow: none; background-color: #e8e8e8;"><h4>Pending Travel</h4></mat-card>
+          <mat-table [dataSource]="dataSourcePending" class="mat-elevation-z8 striped">
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="start_date">
+              <mat-header-cell *matHeaderCellDef class="higlight"> Start Date
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.start_date}} </mat-cell>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="end_date">
+              <mat-header-cell *matHeaderCellDef > End Date </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.end_date}} </mat-cell>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="destination">
+              <mat-header-cell *matHeaderCellDef > Destination </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.destination}} </mat-cell>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="status">
+              <mat-header-cell *matHeaderCellDef > Status </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.status}} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+        </div>
+      </div>
+    </div>
+    <div class="usa-width-one-third">
+      <mat-card class="example-card mat-elevation-z8" align="center">
+        <mat-card-title>
+          <h4>Pending Requests</h4>
+        </mat-card-title>
+        <mat-card-content>
+          <h1>{{pendingRequestCount}}</h1>
+        </mat-card-content>
+        <mat-card-actions>
+            <button type="submit" class="sam-ui button primary" >View All</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+  </div>
+</div>

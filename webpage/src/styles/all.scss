@@ -1,0 +1,26 @@
+
+/* SAM front-end
+   ========================================================================== */
+
+@import "sam-front-end/all";
+
+/* Reset
+   ========================================================================== */
+
+/**
+ * Removes overwrites that happen in sam-front-end layer
+ */
+
+@import "reset/input";
+@import "reset/select";
+@import "reset/radio";
+@import "reset/checkbox";
+@import "reset/fieldset";
+@import "reset/label";
+@import "reset/button";
+@import "reset/title";
+
+/* SAM Styles
+   ========================================================================== */
+
+@import "sam-styles/themes/sam-gov";

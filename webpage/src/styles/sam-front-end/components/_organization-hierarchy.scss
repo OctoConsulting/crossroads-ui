@@ -1,0 +1,15 @@
+.org-hierarchy-page{
+  .org-item{
+    border-bottom: 1px solid $color-gray-lighter;
+    padding: 10px 0 10px 0;
+  }
+
+  .split-line{
+    border-bottom: 1px solid $color-gray-lighter;
+  }
+
+  .org-description{
+    color: $color-black;
+    font-weight: 600;
+  }
+}

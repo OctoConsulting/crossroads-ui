@@ -1,0 +1,105 @@
+.background-white {
+  background-color: white;
+}
+
+.border-bottom-black {
+  border-bottom: 1px solid black;
+}
+
+.text-lighter {
+  color: $color-gray-medium;
+}
+.left_p {
+  padding-left: 1.8rem;
+}
+.access-page {
+  .history-role-box {
+    min-height: 300px !important;
+  }
+  .result-box {
+    min-height: 150px !important;
+  }
+  .table-border {
+    border: 1px solid black;
+  }
+  .table-header {
+    border-bottom: 1px solid black;
+  }
+  .role-buttons {
+    font-size: 1.74rem !important;
+  }
+  .usa-alert {
+    min-height: 4.2em;
+  }
+  th {
+    text-align: left;
+    padding: .5rem;
+  }
+  td {
+    padding: .5rem;
+    vertical-align: top;
+  }
+
+  tr.clickable:hover {
+    background-color: #ececec;
+    cursor: pointer;
+  }
+
+  .access-action-icon, .first-action-icon{
+    text-align: center;
+    display: inline-block;
+    margin-left: .5em;
+    margin-right: 0;
+    height: 30px;
+    min-width: 30px;
+    color: $blue;
+  }
+
+  .first-action-icon{
+    margin-left: 0;
+  }
+
+  .results-text {
+    line-height: 4.4rem;
+  }
+
+  .sort-container select {
+    margin: 0;
+  }
+
+  .no-wrap {
+     white-space: nowrap;
+   }
+
+  .usa-alert-warning {
+    display: block;
+  }
+
+  // override button margins
+  button.usa-button-transparent {
+    margin: 0;
+  }
+
+  .modal-subtitle {
+    margin-top: .8em;
+  }
+
+  .sam-fieldset-wrapper {
+    min-width: 250px;
+  }
+
+  .usa-accordion-button {
+    padding: 1em;
+  }
+
+  .usa-accordion-content {
+    padding: 1em;
+    overflow: hidden;
+  }
+
+  .user-access{
+    &.usa-grid-full{
+      max-width: initial;
+    }
+  }
+}

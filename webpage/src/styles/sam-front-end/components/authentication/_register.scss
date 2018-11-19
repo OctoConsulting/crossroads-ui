@@ -1,0 +1,36 @@
+@import './register/register-initial';
+@import './register/register-confirm';
+@import './register/register-main';
+
+.usa-register {
+  margin-bottom: 94px;
+
+  h2 {
+    margin-top: 0rem;
+    margin-bottom: 0.5rem;
+  }
+
+  h3 {
+    margin-top: 0rem;
+    margin-bottom: 0rem;
+  }
+
+  legend {
+    font-size: 2.25rem;
+  }
+
+  .usa-legend {
+    margin-top: 0rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  section {
+    width: 380px;
+    margin: 0 auto;
+  }
+
+  .ng-untouched {
+    box-shadow: none;
+  }
+}
