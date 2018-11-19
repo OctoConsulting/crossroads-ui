@@ -1,60 +1,70 @@
 var port = process.env.PORT || 3000,
     http = require('http'),
-    fs = require('fs');
+    fs = require('fs'),
+    url = require('url'),
+    path = require('path');
 
-var app = http.createServer(function (req, res) {
-  if (req.url.indexOf('/img') != -1) {
-    var filePath = req.url.split('/img')[1];
-    fs.readFile(__dirname + '/public/img' + filePath, function (err, data) {
-      if (err) {
-        res.writeHead(404, {'Content-Type': 'text/plain'});
-        res.write('Error 404: Resource not found.');
-        console.log(err);
-      } else {
-        res.writeHead(200, {'Content-Type': 'image/svg+xml'});
-        res.write(data);
-      }
-      res.end();
-    });
-  } else if (req.url.indexOf('/js') != -1) {
-    var filePath = req.url.split('/js')[1];
-    fs.readFile(__dirname + '/public/js' + filePath, function (err, data) {
-      if (err) {
-        res.writeHead(404, {'Content-Type': 'text/plain'});
-        res.write('Error 404: Resource not found.');
-        console.log(err);
-      } else {
-        res.writeHead(200, {'Content-Type': 'text/javascript'});
-        res.write(data);
-      }
-      res.end();
-    });
-  } else if(req.url.indexOf('/css') != -1) {
-    var filePath = req.url.split('/css')[1];
-    fs.readFile(__dirname + '/public/css' + filePath, function (err, data) {
-      if (err) {
-        res.writeHead(404, {'Content-Type': 'text/plain'});
-        res.write('Error 404: Resource not found.');
-        console.log(err);
-      } else {
-        res.writeHead(200, {'Content-Type': 'text/css'});
-        res.write(data);
-      }
-      res.end();
-    });
+const app = http.createServer(function (req, res) {
+
+  // parse URL
+  const parsedUrl = url.parse(req.url);
+
+  // extract URL path
+  let pathname = `${parsedUrl.pathname}`;
+
+  // based on the URL path, extract the file extention. e.g. .js, .doc, ...
+  let ext = path.parse(pathname).ext;
+
+  // maps file extention to MIME typere
+  const map = {
+    '.ico': 'image/x-icon',
+    '.html': 'text/html',
+    '.js': 'text/javascript',
+    '.json': 'application/json',
+    '.css': 'text/css',
+    '.png': 'image/png',
+    '.jpg': 'image/jpeg',
+    '.wav': 'audio/wav',
+    '.mp3': 'audio/mpeg',
+    '.svg': 'image/svg+xml',
+    '.pdf': 'application/pdf',
+    '.doc': 'application/msword'
+  };
+  
+  // Serve index if route is an Angular route
+  if (pathname === '/' || !ext) {
+    pathname = __dirname + '/ng-crossroads/dist/ng-crossroads/index.html';
+    ext = '.html';
   } else {
-    fs.readFile(__dirname + '/public/index.html', function (err, data) {
-      if (err) {
-        res.writeHead(404, {'Content-Type': 'text/plain'});
-        res.write('Error 404: Resource not found.');
-        console.log(err);
-      } else {
-        res.writeHead(200, {'Content-Type': 'text/html'});
-        res.write(data);
-      }
-      res.end();
-    });
+    pathname = __dirname + '/ng-crossroads/dist/ng-crossroads/' + pathname;
   }
-}).listen(port, '0.0.0.0');
+
+  fs.exists(pathname, function (exist) {
+    if(!exist) {
+      // if the file is not found, return 404
+      res.statusCode = 404;
+      res.end(`File ${pathname} not found!`);
+      return;
+    }
+
+    // read file from file system
+    fs.readFile(pathname, function(err, data){
+      console.log("Reading file...");
+      if(err){
+        res.statusCode = 500;
+        res.send(``)
+        res.end(`Error getting the file: ${err}.`);
+      } else {
+        // if the file is found, set Content-type and send data
+        res.setHeader('Content-type', map[ext] || 'text/plain' );
+        res.end(data);
+      }
+    });
+  });
+
+
+}).listen(parseInt(port));
+  
+console.log(`Server listening on port ${port}`);
 
 module.exports = app;

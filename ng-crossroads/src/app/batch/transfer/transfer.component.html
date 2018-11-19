@@ -1,0 +1,14 @@
+<h1>Transfer Batch</h1>
+
+<form [formGroup]="form" (ngSubmit)="submit(model)">
+  <formly-form [form]="form" [fields]="fields" [model]="model">
+    <div class="app flex">
+      <span>
+        <a [routerLink]="['/batch']" class="btn btn-cancel">Cancel</a>
+      </span>
+      <span>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </span>
+    </div>
+  </formly-form>
+</form>
