@@ -6,10 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  public title = 'ng-crossroads';
+  public title = 'FBI CrossRoads';
   public links: any[] = [
     { title: 'Home', path: [''] },
-    { title: 'Batch', path: ['/batch'] },
-    { title: 'Transfer', path: ['/transfer'] }
+    { title: 'Batch', path: ['/batch'] }
   ];
 }

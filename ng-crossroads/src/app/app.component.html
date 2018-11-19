@@ -1,15 +1,31 @@
-<header class="">
-  <p>{{ title }}</p>
-</header>
+<div class="container-fluid">
 
-<aside class="">
-  <ul>
-    <li *ngFor="let link of links">
-      <a [routerLink]="link.path">{{ link.title }}</a>
-    </li>
-  </ul>
-</aside>
+  <header class="row app header">
+    <p class="col-12 app logo">{{ title }}</p>
+  </header>
 
-<main>
-  <router-outlet></router-outlet>
-</main>
+  <div class="row app content">
+
+    <aside class="col-2 app aside">
+      <ul class="app list">
+        <li *ngFor="let link of links" class="app list item">
+          <a [routerLink]="link.path">{{ link.title }}</a>
+        </li>
+      </ul>
+    </aside>
+  
+    <main class="col-10 app main">
+      <router-outlet></router-outlet>
+    </main>
+
+  </div>
+
+  <footer class="row app footer"></footer>
+  
+</div>
+
+
+
+
+
+

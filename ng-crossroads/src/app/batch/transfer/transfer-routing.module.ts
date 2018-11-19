@@ -5,7 +5,7 @@ import { TransferComponent } from './transfer.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: ':id',
     component: TransferComponent
   }
 ];
