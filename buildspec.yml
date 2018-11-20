@@ -3,16 +3,16 @@ version: 0.2
 phases:
   install:
     commands:
-      # Install dependencies needed for running tests
-      - npm install
-      - npm install -g @angular/cli
-
       # Upgrade AWS CLI to the latest version
       - pip install --upgrade awscli
+      
+      # Install dependencies needed for running tests
+      - cd ng-crossroads
+      - npm install
+      - npm install -g @angular/cli
   pre_build:
     commands:
       # Discover and run unit tests in the 'tests' directory
-      - cd ng-crossroads
   build:
     commands:
       - ng build
