@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatTableModule } from '@angular/material/table';
 
 import { BatchComponent } from './batch.component';
 import { BatchRoutingModule } from './batch-routing.module';
@@ -12,7 +13,8 @@ import { BatchDisplayComponent } from './batch-display/batch-display.component';
   ],
   imports: [
     CommonModule,
-    BatchRoutingModule
+    BatchRoutingModule,
+    MatTableModule
   ]
 })
 export class BatchModule { }

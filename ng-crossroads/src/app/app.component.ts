@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -11,4 +13,11 @@ export class AppComponent {
     { title: 'Home', path: [''] },
     { title: 'Batch', path: ['/batches'] }
   ];
+
+  constructor (iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+    iconRegistry.addSvgIcon(
+      'bars',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/svgs/solid/bars.svg')
+    );
+  }
 }
