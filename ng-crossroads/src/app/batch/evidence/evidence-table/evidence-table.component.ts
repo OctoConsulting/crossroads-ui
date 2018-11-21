@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-batch-display',
-  templateUrl: './batch-display.component.html',
-  styleUrls: ['./batch-display.component.scss']
+  selector: 'app-evidence-table',
+  templateUrl: './evidence-table.component.html',
+  styleUrls: ['./evidence-table.component.scss']
 })
-export class BatchDisplayComponent {
+export class EvidenceTableComponent {
 
   public table = {
     headers: [
@@ -20,28 +20,24 @@ export class BatchDisplayComponent {
         batchName: 'Batch Name 01',
         evidenceCounts: 100,
         expires: Date.now(),
-        uri: [ 1 ]
       },
       {
         id: 2,
         batchName: 'Batch Name 01',
         evidenceCounts: 100,
-        expires: Date.now(),
-        uri: [ 2 ]
+        expires: Date.now()
       },
       {
         id: 3,
         batchName: 'Batch Name 01',
         evidenceCounts: 100,
-        expires: Date.now(),
-        uri: [ 3 ]
+        expires: Date.now()
       },
       {
         id: 4,
         batchName: 'Batch Name 01',
         evidenceCounts: 100,
-        expires: Date.now(),
-        uri: [ 4 ]
+        expires: Date.now()
       }
     ]
   };

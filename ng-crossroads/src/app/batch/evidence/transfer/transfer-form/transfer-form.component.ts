@@ -4,10 +4,11 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { transferFormFields } from './transferForm/transferForm';
 
 @Component({
-  templateUrl: 'transfer.component.html'
+  selector: 'app-transfer-form',
+  templateUrl: './transfer-form.component.html',
+  styleUrls: ['./transfer-form.component.scss']
 })
-export class TransferComponent {
-
+export class TransferFormComponent {
   public form = new FormGroup({});
   public fields: FormlyFieldConfig[] = transferFormFields;
   public model: any = {};

@@ -8,7 +8,7 @@ import { BatchDisplayComponent } from './batch-display/batch-display.component';
 @NgModule({
   declarations: [
     BatchComponent,
-    BatchDisplayComponent
+    BatchDisplayComponent,
   ],
   imports: [
     CommonModule,

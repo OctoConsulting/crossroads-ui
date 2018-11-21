@@ -10,7 +10,7 @@ const routes: Routes = [
     component: BatchComponent,
     children: [
       { path: '', component: BatchDisplayComponent },
-      { path: 'transfer', loadChildren: './transfer/transfer.module#TransferModule' }
+      { path: ':id', loadChildren: './evidence/evidence.module#EvidenceModule' },
     ]
   }
 ];

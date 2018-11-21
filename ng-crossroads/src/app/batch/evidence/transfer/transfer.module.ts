@@ -7,6 +7,8 @@ import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 
 import { TransferComponent } from './transfer.component';
 import { TransferRoutingModule } from './transfer-routing.module';
+import { TransferFormComponent } from './transfer-form/transfer-form.component';
+import { TransferWitnessConfirmationComponent } from './transfer-witness-confirmation/transfer-witness-confirmation.component';
 
 @NgModule({
   imports: [
@@ -18,6 +20,8 @@ import { TransferRoutingModule } from './transfer-routing.module';
   ],
   declarations: [
     TransferComponent,
+    TransferFormComponent,
+    TransferWitnessConfirmationComponent,
   ]
 })
 export class TransferModule {}

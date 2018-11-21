@@ -9,6 +9,6 @@ export class AppComponent {
   public title = 'FBI CrossRoads';
   public links: any[] = [
     { title: 'Home', path: [''] },
-    { title: 'Batch', path: ['/batch'] }
+    { title: 'Batch', path: ['/batches'] }
   ];
 }

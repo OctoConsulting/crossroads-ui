@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
-  { path: 'batch', loadChildren: './batch/batch.module#BatchModule' },
+  { path: 'batches', loadChildren: './batch/batch.module#BatchModule' },
   { path: '', component: HomeComponent }
 ];
 

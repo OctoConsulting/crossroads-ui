@@ -1,5 +1,4 @@
-<h1>Batches</h1>
-<h2>Batch</h2>
+<h2>Evidence</h2>
 <table class="table">
   <thead>
     <tr>
@@ -10,12 +9,11 @@
   </thead>
   <tbody>
     <tr *ngFor="let row of table?.rows">
-      <td>
-        <a [routerLink]="row.uri">{{ row.id }}</a>
-      </td>
       <td>{{ row.batchName }}</td>
       <td>{{ row.evidenceCounts }}</td>
       <td>{{ row.expires }}</td>
     </tr>
   </tbody>
 </table>
+
+<a [routerLink]="['transfer']">Transfer Batch</a>
