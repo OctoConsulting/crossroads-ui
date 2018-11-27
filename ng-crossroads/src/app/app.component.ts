@@ -3,10 +3,11 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Store, select } from '@ngrx/store';
-import { ToggleSidenav, CloseSidenav } from './store/app.actions';
-import { AppModelType } from './store/model';
+import { ToggleSidenav, CloseSidenav } from './store/actions/app.actions';
+import { AppModelType } from './models/app-model';
 import { Observable } from 'rxjs';
 import { mapDistinct } from './utilities/mapDistinct';
+import { AuthState } from './store/reducers/auth.reducer';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,7 @@ import { mapDistinct } from './utilities/mapDistinct';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements AfterViewInit {
-
+  public auth: Observable<AuthState>;
   public model: Observable<AppModelType>;
   public color: Observable<string>;
   public title: Observable<string>;
@@ -27,13 +28,17 @@ export class AppComponent implements AfterViewInit {
   @ViewChild(MatSidenav) public sidenav: MatSidenav;
 
   constructor (
-    public store: Store<AppModelType>,
+    public store: Store<{AppModelType, AuthState}>,
     iconRegistry: MatIconRegistry,
     sanitizer: DomSanitizer) {
     /**
      * Sync model with store
      */
     this.model = store.pipe(select('app'));
+    this.auth = store.pipe(select('auth'));
+    this.auth.subscribe(
+      state => console.log(state)
+    );
     /**
      * Map model to template properties
      */

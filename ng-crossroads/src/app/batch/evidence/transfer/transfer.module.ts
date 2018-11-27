@@ -4,7 +4,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 
-
 import { TransferComponent } from './transfer.component';
 import { TransferRoutingModule } from './transfer-routing.module';
 import { TransferFormComponent } from './transfer-form/transfer-form.component';
@@ -14,7 +13,7 @@ import { TransferWitnessConfirmationComponent } from './transfer-witness-confirm
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    FormlyModule.forRoot(),
+    FormlyModule.forChild(),
     FormlyMaterialModule,
     TransferRoutingModule,
   ],

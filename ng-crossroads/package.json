@@ -23,6 +23,7 @@
     "@angular/platform-browser-dynamic": "~7.0.0",
     "@angular/router": "~7.0.0",
     "@ng-bootstrap/ng-bootstrap": "^4.0.0",
+    "@ngrx/effects": "^6.1.2",
     "@ngrx/store": "^6.1.2",
     "@ngx-formly/core": "^4.8.2",
     "@ngx-formly/material": "^4.8.2",

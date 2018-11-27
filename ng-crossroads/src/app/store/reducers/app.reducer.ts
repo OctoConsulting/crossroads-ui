@@ -1,5 +1,5 @@
-import { AppActionTypes, AppActionsUnion } from './app.actions';
-import { appModel, AppModelType } from './model';
+import { AppActionTypes, AppActionsUnion } from '../actions/app.actions';
+import { appModel, AppModelType } from '../../models/app-model';
 
 export function appReducer(state: AppModelType = appModel, action: AppActionsUnion) {
   switch (action.type) {
