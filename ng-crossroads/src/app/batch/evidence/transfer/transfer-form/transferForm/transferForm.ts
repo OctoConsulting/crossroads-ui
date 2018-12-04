@@ -1,5 +1,14 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
+export interface TransferForm {
+  type?: any;
+  reason?: any;
+  employee?: any;
+  empPassword?: any;
+  lab?: any;
+  unit?: any;
+}
+
 export const transferFormFields: FormlyFieldConfig[] = [
   {
     key: 'type',
@@ -32,11 +41,10 @@ export const transferFormFields: FormlyFieldConfig[] = [
     type: 'input',
     templateOptions: {
       label: 'By Employee',
-      disabled: true
     }
   },
   {
-    key: 'emp-password',
+    key: 'empPassword',
     type: 'input',
     templateOptions: {
       label: 'Employee Password'

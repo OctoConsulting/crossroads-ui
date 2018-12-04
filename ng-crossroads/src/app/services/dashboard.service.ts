@@ -10,7 +10,6 @@ export class DashboardService {
   
   baseUrl = environment.baseUrl;
   getDashboardData(empid: string,days: string ,pageNum : string, limit : string ,orderBy:string,sortBy: string,searchString?: any){
-    console.log(sessionStorage.getItem('SESSION'));
       let apiUrl = this.API_URL+"/v1/batch";
       
       return  this.httpClient.get(apiUrl,

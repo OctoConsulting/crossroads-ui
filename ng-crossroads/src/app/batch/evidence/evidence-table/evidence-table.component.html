@@ -1,19 +1,62 @@
 <h2>Evidence</h2>
-<table class="table">
-  <thead>
-    <tr>
-      <th *ngFor="let header of table?.headers"scope="col">
-        {{ header.name }}
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let row of table?.rows">
-      <td>{{ row.batchName }}</td>
-      <td>{{ row.evidenceCounts }}</td>
-      <td>{{ row.expires }}</td>
-    </tr>
-  </tbody>
-</table>
+<div *ngIf="evidence">  
+    <div class="example-container mat-elevation-z8">
+  
+      <div class="example-table-container">
+        <mat-table [dataSource]="evidence" class="example-table">
+  
+            'batchId', 'evidence', 'evidence1B', 'description','status','evidenceSubmissionId'
+              <!-- matSort matSortActive="created" matSortDisableClear matSortDirection="asc"> -->
+          <!-- Number Column -->
+          <ng-container matColumnDef="batchId">
+            <mat-header-cell *matHeaderCellDef>Batch ID</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.batchId}}</mat-cell>
+          </ng-container>
+  
+          <!-- Title Column -->
+          <ng-container matColumnDef="evidence">
+            <mat-header-cell mat-header-cell *matHeaderCellDef>Evidence</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.evidence}}</mat-cell>
+          </ng-container>
+  
+          <!-- State Column -->
+          <ng-container matColumnDef="evidence1B">
+            <mat-header-cell mat-header-cell *matHeaderCellDef>Evidence 1B</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.evidence1B}}</mat-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="description">
+            <mat-header-cell mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.description}}</mat-cell>
+          </ng-container>
+  
+          <!-- Created Column -->
+          <ng-container matColumnDef="status">
+            <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
+                Status
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.status}}</mat-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="evidenceSubmissionId">
+              <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
+                  Evidence Submission ID
+              </mat-header-cell>
+              <mat-cell *matCellDef="let row">{{row.evidenceSubmissionId}}</mat-cell>
+            </ng-container>
+  
+          
+          <mat-header-row *matHeaderRowDef="evidenceColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: evidenceColumns;"></mat-row>
+        </mat-table>
+      </div>
+  
+      <!-- <mat-paginator [length]="resultsLength" [pageSize]="30"></mat-paginator> -->
+    </div>
+  </div>
+  
 
-<a [routerLink]="['transfer']">Transfer Batch</a>
+<nav>
+  <a class="btn btn-secondary" [routerLink]="['/batches']">Back</a>
+  <a class="btn btn-primary" [routerLink]="['transfer']">Transfer Batch</a>
+</nav>

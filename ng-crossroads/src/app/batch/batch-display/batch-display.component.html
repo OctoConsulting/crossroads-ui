@@ -1,33 +1,8 @@
 <h1>Batches</h1>
 <h2>Batch</h2>
-<!-- <table class="table">
-  <thead>
-    <tr>
-      <th *ngFor="let header of table?.headers"scope="col">
-        {{ header.name }}
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let row of table?.rows">
-      <td>
-        <a [routerLink]="row.uri">{{ row.id }}</a>
-      </td>
-      <td>{{ row.batchName }}</td>
-      <td>{{ row.evidenceCounts }}</td>
-      <td>{{ row.expires }}</td>
-    </tr>
-  </tbody>
-</table> -->
+
 
 <div class="example-container mat-elevation-z8">
-  <!-- <div class="example-loading-shade"
-       *ngIf="isLoadingResults || isRateLimitReached">
-    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
-    <div class="example-rate-limit-reached" *ngIf="isRateLimitReached">
-      GitHub's API rate limit has been reached. It will be reset in one minute.
-    </div>
-  </div> -->
 
   <div class="example-table-container">
     <mat-table [dataSource]="dataSource" class="example-table">
@@ -35,7 +10,9 @@
       <!-- Number Column -->
       <ng-container matColumnDef="batchId">
         <mat-header-cell *matHeaderCellDef>Batch ID</mat-header-cell>
-        <mat-cell *matCellDef="let row">{{row.batchId}}</mat-cell>
+        <mat-cell *matCellDef="let row">
+          <a [routerLink]="[row.batchId]">{{row.batchId}}</a>
+        </mat-cell>
       </ng-container>
 
       <!-- Title Column -->
@@ -75,13 +52,6 @@
   <div class="example-container"><h4>Evidence</h4>  </div>
 
   <div class="example-container mat-elevation-z8">
-    <!-- <div class="example-loading-shade"
-        *ngIf="isLoadingResults || isRateLimitReached">
-      <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
-      <div class="example-rate-limit-reached" *ngIf="isRateLimitReached">
-        GitHub's API rate limit has been reached. It will be reset in one minute.
-      </div>
-    </div> -->
 
     <div class="example-table-container">
       <mat-table [dataSource]="dataSourceEvidence" class="example-table">

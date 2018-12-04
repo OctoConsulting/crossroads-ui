@@ -8,6 +8,7 @@ import { AppModelType } from './models/app-model';
 import { Observable } from 'rxjs';
 import { mapDistinct } from './utilities/mapDistinct';
 import { AuthState } from './store/reducers/auth.reducer';
+import { GetStatus } from './store/actions/auth.actions';
 
 @Component({
   selector: 'app-root',
@@ -32,13 +33,14 @@ export class AppComponent implements AfterViewInit {
     iconRegistry: MatIconRegistry,
     sanitizer: DomSanitizer) {
     /**
+     * Check if user has valid token
+     */
+    this.store.dispatch(new GetStatus());
+    /**
      * Sync model with store
      */
     this.model = store.pipe(select('app'));
     this.auth = store.pipe(select('auth'));
-    this.auth.subscribe(
-      state => console.log(state)
-    );
     /**
      * Map model to template properties
      */

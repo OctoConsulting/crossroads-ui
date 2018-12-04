@@ -25,19 +25,32 @@ export function authReducer(state = initialState, action: All): AuthState {
         isAuthenticated: true,
         user: {
           token: action.payload.token,
-          email: action.payload.email
+          email: action.payload.email,
+          id: action.payload.id
         },
         errorMessage: null
       };
     }
     case AuthActionTypes.LOGIN_FAILURE: {
       return {
-        ...state,
+        ...initialState,
         errorMessage: 'Incorrect email and/or password.'
       };
     }
     case AuthActionTypes.LOGOUT: {
       return initialState;
+    }
+    case AuthActionTypes.GET_STATUS: {
+      const token = localStorage.getItem('token');
+      const userId = localStorage.getItem('userId');
+      return {
+        errorMessage: null,
+        isAuthenticated: !!token,
+        user: {
+          token: token,
+          id: userId
+        }
+      };
     }
     default: {
       return state;

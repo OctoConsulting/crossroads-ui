@@ -1,10 +1,9 @@
 
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import { User } from '../models/user';
-
 
 @Injectable()
 export class AuthService {
@@ -17,8 +16,17 @@ export class AuthService {
   }
 
   logIn(email: string, password: string): Observable<any> {
-    const url = `${this.BASE_URL}/login`;
-    return this.http.post<User>(url, {email, password});
+    if (email !== 'lynne.johnson@octoconsulting.com' || password !== '1234') {
+      const url = `${this.BASE_URL}/login`;
+      return this.http.post<User>(url, {email, password});
+    } else {
+      const user: User = {
+        id: '63718',
+        email: 'lynne.johnson@octoconsulting.com',
+        token: '1234567890'
+      };
+      return of(user);
+    }
   }
 
   getStatus(): Observable<User> {

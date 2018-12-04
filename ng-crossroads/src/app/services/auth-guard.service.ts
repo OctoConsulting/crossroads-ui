@@ -11,10 +11,13 @@ export class AuthGuardService implements CanActivate {
     public router: Router
   ) {}
   canActivate(): boolean {
-    if (!this.auth.getToken()) {
+    const token = JSON.parse(this.auth.getToken());
+
+    if (!token) {
       this.router.navigateByUrl('/log-in');
       return false;
     }
+
     return true;
   }
 }

@@ -8,6 +8,7 @@ import { TransferComponent } from './transfer.component';
 import { TransferRoutingModule } from './transfer-routing.module';
 import { TransferFormComponent } from './transfer-form/transfer-form.component';
 import { TransferWitnessConfirmationComponent } from './transfer-witness-confirmation/transfer-witness-confirmation.component';
+import { TransferService } from 'src/app/services/transfer.service';
 
 @NgModule({
   imports: [
@@ -21,6 +22,9 @@ import { TransferWitnessConfirmationComponent } from './transfer-witness-confirm
     TransferComponent,
     TransferFormComponent,
     TransferWitnessConfirmationComponent,
+  ],
+  providers: [
+    TransferService
   ]
 })
 export class TransferModule {}

@@ -33,7 +33,7 @@ export class AuthEffects {
         return this.authService.logIn(payload.email, payload.password)
           .pipe(
             map((user) => {
-              return new LogInSuccess({token: user.token, email: payload.email});
+              return new LogInSuccess({token: user.token, email: user.email, id: user.id});
             }),
             catchError((error) => {
               return of(new LogInFailure({ error: error }));
@@ -47,13 +47,18 @@ export class AuthEffects {
     ofType(AuthActionTypes.LOGIN_SUCCESS),
     tap((user) => {
       localStorage.setItem('token', user.payload.token);
-      this.router.navigateByUrl('/');
+      localStorage.setItem('userId', user.payload.id);
+      this.router.navigateByUrl('/batches');
     })
   );
 
   @Effect({ dispatch: false })
   LogInFailure: Observable<any> = this.actions.pipe(
-    ofType(AuthActionTypes.LOGIN_FAILURE)
+    ofType(AuthActionTypes.LOGIN_FAILURE),
+    tap((user) => {
+      localStorage.removeItem('token');
+      localStorage.removeItem('userId');
+    })
   );
 
   @Effect({ dispatch: false })
@@ -61,15 +66,16 @@ export class AuthEffects {
     ofType(AuthActionTypes.LOGOUT),
     tap((user) => {
       localStorage.removeItem('token');
+      localStorage.removeItem('userId');
     })
   );
 
   @Effect({ dispatch: false })
   GetStatus: Observable<any> = this.actions
-    .ofType(AuthActionTypes.GET_STATUS)
-    .pipe(
-      switchMap(payload => {
-        return this.authService.getStatus();
-      })
-    );
+    .ofType(AuthActionTypes.GET_STATUS);
+    // .pipe(
+    //   switchMap(payload => {
+    //     return this.authService.getStatus();
+    //   })
+    // );
 }

@@ -1,45 +1,63 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { EvidenceElement } from '../../batch-display/batch-display.component';
+import { DashboardService } from 'src/app/services/dashboard.service';
+import { Route, Router, ActivatedRoute } from '@angular/router';
+import { map, catchError, switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-evidence-table',
   templateUrl: './evidence-table.component.html',
   styleUrls: ['./evidence-table.component.scss']
 })
-export class EvidenceTableComponent {
+export class EvidenceTableComponent implements OnInit {
 
-  public table = {
-    headers: [
-      { name: 'Batch ID' },
-      { name: 'Batch Name' },
-      { name: 'Evidence Counts' },
-      { name: 'Expires' }
-    ],
-    rows: [
-      {
-        id: 1,
-        batchName: 'Batch Name 01',
-        evidenceCounts: 100,
-        expires: Date.now(),
-      },
-      {
-        id: 2,
-        batchName: 'Batch Name 01',
-        evidenceCounts: 100,
-        expires: Date.now()
-      },
-      {
-        id: 3,
-        batchName: 'Batch Name 01',
-        evidenceCounts: 100,
-        expires: Date.now()
-      },
-      {
-        id: 4,
-        batchName: 'Batch Name 01',
-        evidenceCounts: 100,
-        expires: Date.now()
+  public evidence: Observable<EvidenceElement[]>;
+  public evidenceColumns: string[] = ['batchId', 'evidence', 'evidence1B', 'description', 'status', 'evidenceSubmissionId'];
+  public batchId: number;
+
+  constructor(public dashboardService: DashboardService,
+    public router: Router,
+    public route: ActivatedRoute) { }
+
+  public ngOnInit() {
+    this.getBatch();
+  }
+
+  public getBatch(): void {
+    this.evidence = this.route.params
+      .pipe(
+        map(param => param.id),
+        switchMap(id => this.getEvidence(id))
+      );
+  }
+
+  public getEvidence(row): Observable<any> {
+    return this.dashboardService
+      .getEvidenceData(row)
+      .pipe(
+        map(this.getEvidenceResponseData),
+        catchError(err => [])
+      );
+  }
+
+  public getEvidenceResponseData(responseData: any): EvidenceElement[] {
+    const resultsEmbedded = responseData['_embedded'];
+    if (resultsEmbedded) {
+      const results = resultsEmbedded['evidenceList'];
+      const resultArr: EvidenceElement[] = [];
+      for (const result of results) {
+        resultArr.push({
+          batchId: result['batchId'],
+          evidence: result['evidence'],
+          evidence1B: result['evidence1B'],
+          description: result['description'],
+          status: result['status'],
+          evidenceSubmissionId: result['evidenceSubmissionId']
+        });
       }
-    ]
-  };
+      return resultArr;
+    }
+  }
 
 }

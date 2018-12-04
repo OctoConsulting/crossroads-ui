@@ -2,10 +2,10 @@
   <formly-form [form]="form" [fields]="fields" [model]="model">
     <div class="app flex">
       <span>
-        <a [routerLink]="['/batches']">Cancel</a>
+        <a class="btn btn-secondary" [routerLink]="['/batches']">Cancel</a>
       </span>
       <span>
-        <a [routerLink]="['confirm', '1']">Continue Transfer</a>
+        <a class="btn btn-primary" [routerLink]="['confirm', '1']">Continue Transfer</a>
       </span>
     </div>
   </formly-form>
