@@ -19,9 +19,11 @@ import { FormlyMaterialModule } from '@ngx-formly/material';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './store/effects/auth.effects';
 import { AuthService } from './services/auth.service';
+import { DashboardService } from './services/dashboard.service';
 import { AuthGuardService as AuthGuard } from './services/auth-guard.service';
 import { TokenInterceptor, ErrorInterceptor } from './services/token.interceptor';
 import { authReducer } from './store/reducers/auth.reducer';
+
 
 @NgModule({
   declarations: [
@@ -43,7 +45,7 @@ import { authReducer } from './store/reducers/auth.reducer';
     MatSidenavModule,
     MatIconModule,
     HttpClientModule,
-    MatListModule
+    MatListModule,
   ],
   providers: [
     AuthService,
@@ -57,7 +59,8 @@ import { authReducer } from './store/reducers/auth.reducer';
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
       multi: true
-    }
+    },
+    DashboardService
   ],
   bootstrap: [AppComponent]
 })
