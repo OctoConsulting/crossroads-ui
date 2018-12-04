@@ -3,7 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  baseUrl:  'http://crossapi.us-west-1.elasticbeanstalk.com/crossroads'
 };
 
 /*
