@@ -1,9 +1,14 @@
-<p *ngIf="errorMessage | async"> {{ errorMessage | async }}
-</p>
-<form [formGroup]="form" (ngSubmit)="submit(user)">
-  <formly-form [form]="form" [fields]="fields" [model]="user">
-    <div class="app flex">
-      <button type="submit">Log In</button>
-    </div>
-  </formly-form>
-</form>
+<div class="card login form">
+  <div class="card-body">
+    <h1 >Sign In</h1>
+    <p class="alert alert-danger" role="alert" *ngIf="errorMessage | async"> {{ errorMessage | async }}</p>
+    <form [formGroup]="form" (ngSubmit)="submit(user)">
+      <formly-form [form]="form" [fields]="fields" [model]="user">
+        <div class="app flex">
+          <button class="btn btn-primary" type="submit">Sign In</button>
+        </div>
+      </formly-form>
+    </form>
+  </div>
+</div>
+

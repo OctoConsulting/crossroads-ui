@@ -11,11 +11,11 @@ import { appReducer } from './store/reducers/app.reducer';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlyMaterialModule } from '@ngx-formly/material';
+import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './store/effects/auth.effects';
 import { AuthService } from './services/auth.service';
@@ -26,7 +26,6 @@ import { authReducer } from './store/reducers/auth.reducer';
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
     LoginComponent
   ],
   imports: [
@@ -36,6 +35,7 @@ import { authReducer } from './store/reducers/auth.reducer';
     ReactiveFormsModule,
     FormlyModule.forRoot(),
     FormlyMaterialModule,
+    FormlyBootstrapModule,
     StoreModule.forRoot({ app: appReducer, auth: authReducer }),
     EffectsModule.forRoot([AuthEffects]),
     AppRoutingModule,

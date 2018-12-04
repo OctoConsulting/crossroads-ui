@@ -9,7 +9,6 @@ export interface AppModelType {
 
 export const appModel: AppModelType = {
   navLinks: [
-    { title: 'Home', path: [''] },
     { title: 'Login', path: ['/login'] },
     { title: 'Batch', path: ['/batches'] }
   ],

@@ -5,8 +5,8 @@
   {{ title | async }}
 </mat-toolbar>
 
-<mat-sidenav-container class="row" [hasBackdrop]="hasBackdrop | async">
-  <mat-sidenav #sidenav class="col s8 m5 l4" [mode]="sidenavMode | async" style="height: 1000px">
+<mat-sidenav-container [hasBackdrop]="hasBackdrop | async">
+  <mat-sidenav #sidenav class="app aside" [mode]="sidenavMode | async" style="height: 1000px">
     <mat-list>
       <a mat-list-item
         *ngFor="let link of links | async"
@@ -14,7 +14,9 @@
         (click)="closeSidenav()">{{ link?.title }}</a>
     </mat-list>
   </mat-sidenav>
-  <mat-sidenav-content class="col s12 m12 l10" style="height: 1000px">
-    <router-outlet></router-outlet>
+  <mat-sidenav-content class="app content" style="height: 1000px">
+    <div class="page content">
+      <router-outlet></router-outlet>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

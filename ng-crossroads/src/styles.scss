@@ -1,7 +1,31 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
-@import "~materialize-css/sass/materialize";
+@import "~bootstrap/scss/bootstrap.scss";
 
 .app.flex {
   display: flex;
+}
+
+.app.aside {
+  width: 100%;
+}
+
+.app.content {
+  width: 100%;
+}
+
+.page.content {
+  max-width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 500px) {
+  .app.aside {
+    width: 350px;
+  }
+
+  .app.content {
+    width: 100%;
+  }
 }

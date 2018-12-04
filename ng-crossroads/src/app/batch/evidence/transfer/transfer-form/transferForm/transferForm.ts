@@ -29,9 +29,24 @@ export const transferFormFields: FormlyFieldConfig[] = [
   },
   {
     key: 'employee',
-    type: 'select',
+    type: 'input',
     templateOptions: {
       label: 'By Employee',
+      disabled: true
+    }
+  },
+  {
+    key: 'emp-password',
+    type: 'input',
+    templateOptions: {
+      label: 'Employee Password'
+    }
+  },
+  {
+    key: 'lab',
+    type: 'select',
+    templateOptions: {
+      label: 'At Lab',
       options: [
         { value: 'test', label: 'test' },
         { value: 'test', label: 'test' },
@@ -41,10 +56,16 @@ export const transferFormFields: FormlyFieldConfig[] = [
     }
   },
   {
-    key: 'emp-password',
-    type: 'input',
+    key: 'unit',
+    type: 'select',
     templateOptions: {
-      label: 'Employee Password'
+      label: 'At Unit',
+      options: [
+        { value: 'test', label: 'test' },
+        { value: 'test', label: 'test' },
+        { value: 'test', label: 'test' },
+        { value: 'test', label: 'test' }
+      ]
     }
   }
 ];
