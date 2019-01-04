@@ -23,7 +23,7 @@ export class AuthService {
       const user: User = {
         id: '63718',
         email: 'lynne.johnson@octoconsulting.com',
-        token: '1234567890'
+        token: 'bGpvaG5zb24=:03fdc3cb-f20a-42e5-93eb-1da3670cbf54'
       };
       return of(user);
     }

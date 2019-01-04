@@ -1,4 +1,4 @@
-<form [formGroup]="form" (ngSubmit)="submit(model)">
+<!-- <form [formGroup]="form" (ngSubmit)="submit(model)">
   <formly-form [form]="form" [fields]="fields" [model]="model">
     <div class="app flex">
       <span>
@@ -9,4 +9,93 @@
       </span>
     </div>
   </formly-form>
-</form>
+</form> -->
+
+<div class="transfer-form">
+  <form [formGroup]="form">
+    <hr/>
+    <div class="half-block-wrapper">
+        <div class="half-block">
+          <p>Transfer Type</p>
+          <mat-form-field>
+            <mat-select formControlName="transferType">
+              <mat-option>Default Option</mat-option>
+            </mat-select>
+          </mat-form-field>
+      
+          <p>By Employee</p>
+          <mat-form-field>
+            <mat-select formControlName="byEmployee">
+              <mat-option>Default Option</mat-option>
+            </mat-select>
+          </mat-form-field>
+      
+          <p>At lab</p>
+          <mat-form-field>
+            <mat-select formControlName="atLab">
+              <mat-option>Default Option</mat-option>
+            </mat-select>
+          </mat-form-field>
+      
+          <p>At Unit</p>
+          <mat-form-field>
+            <mat-select formControlName="atUnit">
+              <mat-option>Default Option</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="half-block">
+          <p>Transfer Reason</p>
+          <mat-form-field>
+            <mat-select formControlName="transferReason">
+              <mat-option>Default Option</mat-option>
+            </mat-select>
+          </mat-form-field>
+    
+          <p>Employee Password</p>
+          <mat-form-field>
+            <input matInput formControlName="employeePassword">   
+          </mat-form-field>
+
+          <p>Comments</p>
+          <mat-form-field>
+            <textarea matInput formControlName="employeePassword">
+            </textarea>   
+          </mat-form-field>
+        </div>
+    </div>
+    <hr/>
+    <div class="half-block-wrapper">
+      <div class="half-block">
+        <p>Storage Area</p>
+        <mat-form-field>
+          <mat-select formControlName="storageArea">
+            <mat-option>Default Option</mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+        <p>Storage Location</p>
+        <mat-form-field>
+          <mat-select formControlName="storageLocation">
+            <mat-option>Default Option</mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+        <p>Witness 1</p>
+        <mat-form-field>
+          <mat-select formControlName="witnessOne">
+            <mat-option>Default Option</mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+        <p>Witness 2</p>
+        <mat-form-field>
+          <mat-select formControlName="witnessTwo">
+            <mat-option>Default Option</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</div>

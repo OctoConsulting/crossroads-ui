@@ -1,0 +1,13 @@
+.transfer-form {
+    .half-block-wrapper {
+        display: inline-flex;
+        width: 100%;
+    }
+    .half-block {
+        width: 40%;
+        display: flex;
+        flex-direction: column;
+        margin: 0 10px;
+    }
+
+}
