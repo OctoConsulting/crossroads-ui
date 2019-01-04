@@ -13,89 +13,113 @@
 
 <div class="transfer-form">
   <form [formGroup]="form">
-    <hr/>
-    <div class="half-block-wrapper">
-        <div class="half-block">
-          <p>Transfer Type</p>
-          <mat-form-field>
-            <mat-select formControlName="transferType">
-              <mat-option>Default Option</mat-option>
-            </mat-select>
-          </mat-form-field>
-      
-          <p>By Employee</p>
-          <mat-form-field>
-            <mat-select formControlName="byEmployee">
-              <mat-option>Default Option</mat-option>
-            </mat-select>
-          </mat-form-field>
-      
-          <p>At lab</p>
-          <mat-form-field>
-            <mat-select formControlName="atLab">
-              <mat-option>Default Option</mat-option>
-            </mat-select>
-          </mat-form-field>
-      
-          <p>At Unit</p>
-          <mat-form-field>
-            <mat-select formControlName="atUnit">
-              <mat-option>Default Option</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <div class="half-block">
-          <p>Transfer Reason</p>
-          <mat-form-field>
-            <mat-select formControlName="transferReason">
-              <mat-option>Default Option</mat-option>
-            </mat-select>
-          </mat-form-field>
-    
-          <p>Employee Password</p>
-          <mat-form-field>
-            <input matInput formControlName="employeePassword">   
-          </mat-form-field>
-
-          <p>Comments</p>
-          <mat-form-field>
-            <textarea matInput formControlName="employeePassword">
-            </textarea>   
-          </mat-form-field>
-        </div>
-    </div>
-    <hr/>
+    <hr />
     <div class="half-block-wrapper">
       <div class="half-block">
-        <p>Storage Area</p>
+        <h6>Transfer Type</h6>
+        <mat-form-field>
+          <mat-select formControlName="transferType">
+            <mat-option>Default Option</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <h6>By Employee</h6>
+        <mat-form-field>
+          <mat-select formControlName="byEmployee">
+            <mat-option>Default Option</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <h6>At lab</h6>
+        <mat-form-field>
+          <mat-select formControlName="atLab">
+            <mat-option>Default Option</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <h6>At Unit</h6>
+        <mat-form-field>
+          <mat-select formControlName="atUnit">
+            <mat-option>Default Option</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="half-block">
+        <h6>Transfer Reason</h6>
+        <mat-form-field>
+          <mat-select formControlName="transferReason">
+            <mat-option>Default Option</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <h6>Employee Password</h6>
+        <mat-form-field>
+          <input matInput formControlName="employeePassword" />
+        </mat-form-field>
+
+        <h6>Comments</h6>
+        <mat-form-field>
+          <textarea matInput formControlName="employeePassword"> </textarea>
+        </mat-form-field>
+      </div>
+    </div>
+    <hr />
+    <div class="half-block-wrapper">
+      <div class="half-block">
+        <h6>Storage Area</h6>
         <mat-form-field>
           <mat-select formControlName="storageArea">
             <mat-option>Default Option</mat-option>
           </mat-select>
         </mat-form-field>
-        
-        <p>Storage Location</p>
+
+        <h6>Storage Location</h6>
         <mat-form-field>
           <mat-select formControlName="storageLocation">
             <mat-option>Default Option</mat-option>
           </mat-select>
         </mat-form-field>
-        
-        <p>Witness 1</p>
+      </div>
+    </div>
+    <div class="half-block-wrapper">
+      <div class="half-block">
+        <h6>Witness 1</h6>
         <mat-form-field>
           <mat-select formControlName="witnessOne">
             <mat-option>Default Option</mat-option>
           </mat-select>
         </mat-form-field>
-        
-        <p>Witness 2</p>
+
+        <h6>Witness 2</h6>
         <mat-form-field>
           <mat-select formControlName="witnessTwo">
             <mat-option>Default Option</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
+      <div class="half-block">
+        <h6>Witness 1 Password</h6>
+        <mat-form-field>
+          <input matInput formControlName="witnessOnePassword" />
+        </mat-form-field>
+
+        <h6>Witness 2 Password</h6>
+        <mat-form-field>
+          <input matInput formControlName="witnessTwoPassword" />
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="app flex">
+      <span>
+        <a class="btn btn-secondary" [routerLink]="['/batches']">Cancel</a>
+      </span>
+      <span>
+        <a class="btn btn-primary" [routerLink]="['confirm', '1']"
+          >Continue Transfer</a
+        >
+      </span>
     </div>
   </form>
 </div>
