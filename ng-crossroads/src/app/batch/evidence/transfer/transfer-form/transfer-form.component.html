@@ -18,49 +18,78 @@
       <div class="half-block">
         <h6>Transfer Type</h6>
         <mat-form-field>
-          <mat-select formControlName="transferType">
-            <mat-option>Default Option</mat-option>
+          <mat-select
+            formControlName="transferType"
+            (ngModelChange)="onSelect()">
+            <mat-option>---Select---</mat-option>
+            <mat-option
+              *ngFor="let type of types"
+              [value]="type">
+              {{type}}
+            </mat-option>
           </mat-select>
+          <mat-error
+              *ngIf="isThereError('transferType','required')">Required
+          </mat-error>
         </mat-form-field>
 
         <h6>By Employee</h6>
         <mat-form-field>
-          <mat-select formControlName="byEmployee">
-            <mat-option>Default Option</mat-option>
-          </mat-select>
+          <input matInput formControlName="byEmployee" readonly placeholder="Lynne Johnson"/>
         </mat-form-field>
 
-        <h6>At lab</h6>
+        <h6>At Lab</h6>
         <mat-form-field>
           <mat-select formControlName="atLab">
-            <mat-option>Default Option</mat-option>
+            <mat-option>---Select---</mat-option>
+            <mat-option
+              *ngFor="let type of types"
+              [value]="type">{{type}}</mat-option>
           </mat-select>
+          <mat-error
+            *ngIf="isThereError('atLab','required')">Required
+          </mat-error>
         </mat-form-field>
 
         <h6>At Unit</h6>
         <mat-form-field>
-          <mat-select formControlName="atUnit">
-            <mat-option>Default Option</mat-option>
+          <mat-select formControlName="atUnit" 
+          placeholder="---Please Select A Lab First---"
+          [disabled]="!form.get('atLab').value">
+            <mat-option>--Select--</mat-option>
           </mat-select>
+          <mat-error
+            *ngIf="isThereError('atUnit','required')">Required
+          </mat-error>
         </mat-form-field>
       </div>
 
       <div class="half-block">
-        <h6>Transfer Reason</h6>
+        <h6>Transfer Reason (Optional)</h6>
         <mat-form-field>
           <mat-select formControlName="transferReason">
             <mat-option>Default Option</mat-option>
           </mat-select>
+          <mat-error>Needs Attention</mat-error>
         </mat-form-field>
 
         <h6>Employee Password</h6>
         <mat-form-field>
-          <input matInput formControlName="employeePassword" />
+          <input matInput 
+                type="password"
+                formControlName="employeePassword" 
+                (ngModelChange)="onInputChange()"/>
+          <mat-error
+                *ngIf="isThereError('employeePassword','required')">Required
+          </mat-error>
+          <mat-error *ngIf="!isThereError('employeePassword', 'required') && isThereError('employeePassword','customError')">
+            {{getErrorMessage('employeePassword')}}
+          </mat-error>
         </mat-form-field>
 
-        <h6>Comments</h6>
+        <h6>Comments (Optional)</h6>
         <mat-form-field>
-          <textarea matInput formControlName="employeePassword"> </textarea>
+          <textarea matInput formControlName="comments"> </textarea>
         </mat-form-field>
       </div>
     </div>
@@ -72,6 +101,9 @@
           <mat-select formControlName="storageArea">
             <mat-option>Default Option</mat-option>
           </mat-select>
+          <mat-error
+            *ngIf="isThereError('storageArea','required')">Required
+          </mat-error>
         </mat-form-field>
 
         <h6>Storage Location</h6>
@@ -79,6 +111,9 @@
           <mat-select formControlName="storageLocation">
             <mat-option>Default Option</mat-option>
           </mat-select>
+          <mat-error
+            *ngIf="isThereError('storageLocation','required')">Required
+          </mat-error>
         </mat-form-field>
       </div>
     </div>
@@ -87,26 +122,46 @@
         <h6>Witness 1</h6>
         <mat-form-field>
           <mat-select formControlName="witnessOne">
-            <mat-option>Default Option</mat-option>
+            <mat-option>---Select---</mat-option>
+            <mat-option *ngFor="let witness of witnesses" [value]="witness">{{witness}}</mat-option>
           </mat-select>
+          <mat-error
+            *ngIf="isThereError('witnessOne','required')">Required
+          </mat-error>
         </mat-form-field>
 
         <h6>Witness 2</h6>
         <mat-form-field>
           <mat-select formControlName="witnessTwo">
             <mat-option>Default Option</mat-option>
+            <mat-option *ngFor="let witness of witnesses" [value]="witness">{{witness}}</mat-option>
           </mat-select>
+          <mat-error
+            *ngIf="isThereError('witnessTwo','required')">Required
+          </mat-error>
         </mat-form-field>
       </div>
       <div class="half-block">
-        <h6>Witness 1 Password</h6>
-        <mat-form-field>
-          <input matInput formControlName="witnessOnePassword" />
+        <h6 *ngIf="form.get('witnessOne').value">Witness 1 Password</h6>
+        <mat-form-field *ngIf="form.get('witnessOne').value">
+          <input
+            matInput
+            type="password"
+            formControlName="witnessOnePassword" />
+          <mat-error
+            *ngIf="isThereError('witnessOnePassword','required')">Required
+          </mat-error>
         </mat-form-field>
 
-        <h6>Witness 2 Password</h6>
-        <mat-form-field>
-          <input matInput formControlName="witnessTwoPassword" />
+        <h6 *ngIf="form.get('witnessTwo').value">Witness 2 Password</h6>
+        <mat-form-field *ngIf="form.get('witnessTwo').value">
+          <input
+            matInput
+            type="password"
+            formControlName="witnessTwoPassword" />
+          <mat-error
+            *ngIf="isThereError('witnessTwoPassword','required')">Required
+          </mat-error>
         </mat-form-field>
       </div>
     </div>

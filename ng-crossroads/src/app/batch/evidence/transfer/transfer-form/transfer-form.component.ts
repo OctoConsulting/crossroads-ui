@@ -18,6 +18,16 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
   public form: FormGroup;
   // public form = new FormGroup({employee: new FormControl({value: '', disabled: true})});
   // public fields: FormlyFieldConfig[] = transferFormFields;
+  public types = [
+    'option 1',
+    'option 2',
+    'option 3'
+  ];
+  public witnesses = [
+    'Witness name 1',
+    'Witness name 2',
+    'Witness name 3'
+  ];
   public model: TransferForm;
   private store$: Subscription;
   private reasons$: Subscription;
@@ -65,7 +75,7 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
       atUnit: [null, Validators.required],
       transferReason: [null, Validators.required],
       employeePassword: [null, Validators.required],
-      comments: [null, Validators.required],
+      comments: [null],
       storageArea: [null, Validators.required],
       storageLocation: [null, Validators.required],
       witnessOne: [null, Validators.required],
@@ -73,6 +83,36 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
       witnessTwo: [null, Validators.required],
       witnessTwoPassword: [null, Validators.required]
     });
+  }
+
+  public onSelect() {
+    console.log(this.form.get('transferType'));
+  }
+
+  public onInputChange() {
+    console.log(this.form.get('employeePassword'));
+    const errors = this.form.get('employeePassword').errors;
+    if (this.form.get('employeePassword').value !== 'te') {
+      this.form.get('employeePassword').setErrors({...errors, ...{'customError': 'Not the right string'}});
+    }
+  }
+
+  public isThereError(formName: string, errorName: string): boolean {
+    let return_val = false;
+    const ctrl = this.form.get(formName);
+    if (ctrl.hasError(errorName)) {
+      return_val = true;
+    }
+    return return_val;
+  }
+
+  public getErrorMessage(formName: string): string {
+    let return_val = 'Needs attention!';
+    const ctrl = this.form.get(formName);
+    if (ctrl.hasError('customError')) {
+      return_val = ctrl.errors['customError'];
+    }
+    return return_val;
   }
 
   // private _getTransferReasons (): void {

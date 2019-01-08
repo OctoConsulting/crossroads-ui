@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  baseUrl:  'http://crossapi.us-west-1.elasticbeanstalk.com/crossroads'
+  baseUrl:  'http://crossservice.us-west-1.elasticbeanstalk.com/crossroads'
 };
 
 /*
