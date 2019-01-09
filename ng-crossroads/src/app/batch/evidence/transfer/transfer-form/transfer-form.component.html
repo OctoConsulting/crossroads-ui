@@ -19,8 +19,7 @@
         <h6>Transfer Type</h6>
         <mat-form-field>
           <mat-select
-            formControlName="transferType"
-            (ngModelChange)="onSelect()">
+            formControlName="transferType">
             <mat-option>---Select---</mat-option>
             <mat-option
               *ngFor="let type of types"
@@ -77,8 +76,7 @@
         <mat-form-field>
           <input matInput 
                 type="password"
-                formControlName="employeePassword" 
-                (ngModelChange)="onInputChange()"/>
+                formControlName="employeePassword" />
           <mat-error
                 *ngIf="isThereError('employeePassword','required')">Required
           </mat-error>

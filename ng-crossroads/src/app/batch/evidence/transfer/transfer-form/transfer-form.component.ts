@@ -6,7 +6,7 @@ import { Store, select } from '@ngrx/store';
 import { AuthState } from 'src/app/store/reducers/auth.reducer';
 import { TransferService } from 'src/app/services/transfer.service';
 import { switchMap } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+import { Subscription, forkJoin, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-transfer-form',
@@ -40,8 +40,19 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
 
   public ngOnInit () {
     this.initForm();
-    // this._getTransferReasons();
-    // this._getTransferTypes();
+    forkJoin([this.getEmployeeInfo(), this.getTransferTypes(), this.getLabInfo()]).subscribe(
+      responses => {
+        // TODO
+        this.form.get('transferType').setValue(responses[0]);
+        this.form.get('byEmployee').setValue(responses[1]);
+        this.form.get('atLab').setValue(responses[2]);
+      },
+      error => {
+        // TODO
+      }
+    );
+
+    this.initOnChanges();
   }
 
   public ngAfterViewInit () {
@@ -67,6 +78,18 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
     console.log(model);
   }
 
+  private getEmployeeInfo(): Observable<any> {
+    return of([]);
+  }
+
+  private getTransferTypes(): Observable<any> {
+    return of([]);
+  }
+
+  private getLabInfo(): Observable<any> {
+    return of([]);
+  }
+
   private initForm(): void {
     this.form = this.fb.group({
       transferType: [null, Validators.required],
@@ -82,6 +105,32 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
       witnessOnePassword: [null, Validators.required],
       witnessTwo: [null, Validators.required],
       witnessTwoPassword: [null, Validators.required]
+    });
+  }
+
+  private initOnChanges(): void {
+    this.form.get('transferType').valueChanges.subscribe( newValue => {
+      console.log(newValue);
+    });
+
+    this.form.get('atLab').valueChanges.subscribe( newValue => {
+      // TODO
+    });
+
+    this.form.get('atUnit').valueChanges.subscribe( newValue => {
+      // TODO
+    });
+
+    this.form.get('storageArea').valueChanges.subscribe( newValue => {
+      // TO DO
+    });
+
+    this.form.get('witnessOne').valueChanges.subscribe( newValue => {
+      this.onInputChange();
+    });
+
+    this.form.get('witnessTwo').valueChanges.subscribe( newValue => {
+      // TO DO
     });
   }
 
