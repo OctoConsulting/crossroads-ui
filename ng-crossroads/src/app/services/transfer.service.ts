@@ -168,4 +168,20 @@ export class TransferService {
       }
     ));
   }
+
+  public sendTransferInfo(body: any): Observable<any> {
+    const apiUrl = this.LOCAL_API_URL + '/transfer';
+
+    return this.httpClient
+    .post(apiUrl, body)
+    .pipe(
+      map((response: any) => {
+        try {
+          return response._embedded;
+        } catch (e) {
+          throwError(e);
+        }
+      }
+    ));
+  }
 }

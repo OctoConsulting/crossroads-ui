@@ -12,7 +12,7 @@
 </form> -->
 
 <div class="transfer-form">
-  <form [formGroup]="form">
+  <form [formGroup]="form" (ngSubmit)="submit()">
     <hr />
     <div class="half-block-wrapper">
       <div class="half-block">
@@ -130,8 +130,8 @@
         <h6>Witness 1</h6>
         <mat-form-field>
           <mat-select formControlName="witnessOne">
-            <mat-option>---Select---</mat-option>
-            <mat-option *ngFor="let witness of witnesses" [value]="witness">{{witness}}</mat-option>
+            <mat-option>---None---</mat-option>
+            <mat-option *ngFor="let witness of witnessListOne" [value]="witness">{{witness.displayName}}</mat-option>
           </mat-select>
           <mat-error
             *ngIf="isThereError('witnessOne','required')">Required
@@ -141,8 +141,8 @@
         <h6 *ngIf="requiredWitnessCount > 1">Witness 2</h6>
         <mat-form-field *ngIf="requiredWitnessCount > 1">
           <mat-select formControlName="witnessTwo">
-            <mat-option>Default Option</mat-option>
-            <mat-option *ngFor="let witness of witnesses" [value]="witness">{{witness}}</mat-option>
+            <mat-option>--None--</mat-option>
+            <mat-option *ngFor="let witness of witnessListTwo" [value]="witness">{{witness.displayName}}</mat-option>
           </mat-select>
           <mat-error
             *ngIf="isThereError('witnessTwo','required')">Required
@@ -179,9 +179,8 @@
         <a class="btn btn-secondary" [routerLink]="['/batches']">Cancel</a>
       </span>
       <span>
-        <a class="btn btn-primary" [routerLink]="['confirm', '1']"
-          >Continue Transfer</a
-        >
+        <button class="btn btn-primary" type="submit"
+          >Continue Transfer</button>
       </span>
     </div>
   </form>

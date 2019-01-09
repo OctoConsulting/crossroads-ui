@@ -26,7 +26,8 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
   public storageAreas = [];
   public storageLocations = [];
   public requiredWitnessCount = 0;
-  public witnesses = [];
+  public witnessListOne = [];
+  public witnessListTwo = [];
   public locationRequired = false;
   public model: TransferForm;
   private store$: Subscription;
@@ -46,15 +47,27 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
   public ngAfterViewInit () {
     forkJoin([this.getEmployeeInfo(), this.getTransferTypes(), this.getLabInfo(), this.getTransferReasons()]).subscribe(
       responses => {
-        // TODO
-        console.log(responses);
-        this.form.get('byEmployee').setValue(responses[0]);
+        this.form.get('byEmployee').setValue(responses[0][0]);
         this.types = responses[1];
         this.requiredWitnessCount = this.types[0].requiredWitnessCount;
-        // this.requiredWitnessCount = 2;
+        this.requiredWitnessCount = 2;
+        if (this.requiredWitnessCount > 0) {
+          this.form.get('witnessOne').setValidators([Validators.required]);
+          this.form.get('witnessOnePassword').setValidators([Validators.required]);
+          this.getWitnesses('').subscribe(
+            response => {
+              this.witnessListOne = response;
+            }
+          );
+        }
+        if (this.requiredWitnessCount > 1) {
+          this.form.get('witnessTwo').setValidators([Validators.required]);
+          this.form.get('witnessTwoPassword').setValidators([Validators.required]);
+        }
         this.form.get('transferType').setValue(this.types[0]);
         this.labs = responses[2];
-        this.form.get('atLab').setValue(this.labs[0]);
+        const selectedLab = this.labs.find( lab => lab.isDefault);
+        this.form.get('atLab').setValue(selectedLab);
         this.transferReasons = responses[3];
       },
       error => {
@@ -69,20 +82,61 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
     this.types$.unsubscribe();
   }
 
-  public submit (model) {
-    console.log(model);
+  public submit(): void {
+    if (this.form.valid) {
+      const postBody = this.constructAPICall();
+      this.transferService.sendTransferInfo(postBody).subscribe(
+        response => {
+          //YAY TO DO
+        },
+        error => {
+          //Error handling
+        }
+      );
+    }
+  }
+
+  private constructAPICall(): any {
+    const form = this.form;
+    console.log(form);
+    const body = {
+      transferTypeCode: form.get('transferType').value.transferTypeCode,
+      locationId: form.get('atLab').value.locationId,
+      orgId: form.get('atUnit').value.organizationId,
+      transferReasonId: form.get('transferReason').value.transferReasonId,
+      requiredWitnessCount: this.requiredWitnessCount,
+      storageAreaId: form.get('storageArea').value.storageAreaId,
+      storageLocation: form.get('storageLocation').value.storageLocationId,
+      byEmployee: {
+        employeeID: form.get('byEmployee').value.employeeID,
+        userName: form.get('byEmployee').value.userName
+      },
+      witness1: {
+        employeeID: form.get('witnessOne').value.employeeID,
+        userName: form.get('witnessOne').value.userName
+      },
+      witness2: {
+        employeeID: form.get('witnessTwo').value.employeeID,
+        userName: form.get('witnessTwo').value.employeeID
+      }
+    };
+    return body;
   }
 
   public getEmployeeName(): string {
     const form = this.form.get('byEmployee');
-    if (form.value && form.value[0]) {
-      return form.value[0].displayName;
+    if (form.value) {
+      return form.value.displayName;
     }
     return '';
   }
 
   private getEmployeeInfo(): Observable<any> {
     return this.transferService.getEmployeeInfo('');
+  }
+
+  private getWitnesses(exceptIds: string = ''): Observable<any> {
+    return this.transferService.getEmployeeInfo(exceptIds, 'Witness', 'Active');
   }
 
   private getTransferTypes(): Observable<any> {
@@ -108,10 +162,10 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
       comments: [null],
       storageArea: [null, Validators.required],
       storageLocation: [null],
-      witnessOne: [null, Validators.required],
-      witnessOnePassword: [null, Validators.required],
-      witnessTwo: [null, Validators.required],
-      witnessTwoPassword: [null, Validators.required]
+      witnessOne: [null],
+      witnessOnePassword: [null],
+      witnessTwo: [null],
+      witnessTwoPassword: [null]
     });
   }
 
@@ -125,8 +179,8 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
         this.transferService.getUnitInfo(newValue.locationId, 'Active').subscribe(
           response => {
             this.units = response;
-            const isSelectedUnit = this.units.find( item => item.default);
-            this.form.get('atUnit').setValue(isSelectedUnit);
+            const selectedUnit = this.units.find( item => item.default);
+            this.form.get('atUnit').setValue(selectedUnit);
           }
         );
       } else {
@@ -173,24 +227,14 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
     });
 
     this.form.get('witnessOne').valueChanges.subscribe( newValue => {
-      this.onInputChange();
+      if (newValue && newValue.employeeID) {
+        this.getWitnesses(newValue.employeeID).subscribe(
+          response => {
+            this.witnessListTwo = response;
+          }
+        );
+      }
     });
-
-    this.form.get('witnessTwo').valueChanges.subscribe( newValue => {
-      // TO DO
-    });
-  }
-
-  public onSelect() {
-    console.log(this.form.get('transferType'));
-  }
-
-  public onInputChange() {
-    console.log(this.form.get('employeePassword'));
-    const errors = this.form.get('employeePassword').errors;
-    if (this.form.get('employeePassword').value !== 'te') {
-      this.form.get('employeePassword').setErrors({...errors, ...{'customError': 'Not the right string'}});
-    }
   }
 
   public isThereError(formName: string, errorName: string): boolean {
@@ -210,36 +254,4 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
     }
     return return_val;
   }
-
-  // private _getTransferReasons (): void {
-  //   this.reasons$ = this.transferService.getTransferReasonsAsOptions().subscribe(
-  //     reasons => {
-  //       this.fields = this.fields
-  //         .map<FormlyFieldConfig>(field => {
-  //           if (field.key === 'reason') {
-  //             field.templateOptions.options = reasons;
-  //             return field;
-  //           } else {
-  //             return field;
-  //           }
-  //       });
-  //     }
-  //   );
-  // }
-
-  // private _getTransferTypes (): void {
-  //   this.types$ = this.transferService.getTransferTypesAsOptions().subscribe(
-  //     type => {
-  //       this.fields = this.fields
-  //         .map<FormlyFieldConfig>(field => {
-  //           if (field.key === 'type') {
-  //             field.templateOptions.options = type;
-  //             return field;
-  //           } else {
-  //             return field;
-  //           }
-  //       });
-  //     }
-  //   );
-  // }
 }
