@@ -18,16 +18,16 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
   public form: FormGroup;
   // public form = new FormGroup({employee: new FormControl({value: '', disabled: true})});
   // public fields: FormlyFieldConfig[] = transferFormFields;
-  public types = [
-    'option 1',
-    'option 2',
-    'option 3'
-  ];
-  public witnesses = [
-    'Witness name 1',
-    'Witness name 2',
-    'Witness name 3'
-  ];
+  public employee = {};
+  public transferReasons = [];
+  public types = [];
+  public labs = [];
+  public units = [];
+  public storageAreas = [];
+  public storageLocations = [];
+  public requiredWitnessCount = 0;
+  public witnesses = [];
+  public locationRequired = false;
   public model: TransferForm;
   private store$: Subscription;
   private reasons$: Subscription;
@@ -40,32 +40,27 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
 
   public ngOnInit () {
     this.initForm();
-    forkJoin([this.getEmployeeInfo(), this.getTransferTypes(), this.getLabInfo()]).subscribe(
+    this.initOnChanges();
+  }
+
+  public ngAfterViewInit () {
+    forkJoin([this.getEmployeeInfo(), this.getTransferTypes(), this.getLabInfo(), this.getTransferReasons()]).subscribe(
       responses => {
         // TODO
-        this.form.get('transferType').setValue(responses[0]);
-        this.form.get('byEmployee').setValue(responses[1]);
-        this.form.get('atLab').setValue(responses[2]);
+        console.log(responses);
+        this.form.get('byEmployee').setValue(responses[0]);
+        this.types = responses[1];
+        this.requiredWitnessCount = this.types[0].requiredWitnessCount;
+        // this.requiredWitnessCount = 2;
+        this.form.get('transferType').setValue(this.types[0]);
+        this.labs = responses[2];
+        this.form.get('atLab').setValue(this.labs[0]);
+        this.transferReasons = responses[3];
       },
       error => {
         // TODO
       }
     );
-
-    this.initOnChanges();
-  }
-
-  public ngAfterViewInit () {
-    // this.form.valueChanges.subscribe(val => console.log(val));
-
-    // this.store$ = this.store.pipe(
-    //   select('auth'),
-    //   switchMap(auth => this.transferService.getEmployeeById(auth.user.id)))
-    //   .subscribe(
-    //     employee => {
-    //       this.form.get('employee').setValue(employee.displayName);
-    //     }
-    //   );
   }
 
   public ngOnDestroy () {
@@ -78,16 +73,28 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
     console.log(model);
   }
 
+  public getEmployeeName(): string {
+    const form = this.form.get('byEmployee');
+    if (form.value && form.value[0]) {
+      return form.value[0].displayName;
+    }
+    return '';
+  }
+
   private getEmployeeInfo(): Observable<any> {
-    return of([]);
+    return this.transferService.getEmployeeInfo('');
   }
 
   private getTransferTypes(): Observable<any> {
-    return of([]);
+    return this.transferService.getTransferTypes('PS', 'active');
+  }
+
+  private getTransferReasons(): Observable<any> {
+    return this.transferService.getTransferReasons([], 'Active');
   }
 
   private getLabInfo(): Observable<any> {
-    return of([]);
+    return this.transferService.getLabInfo('Active');
   }
 
   private initForm(): void {
@@ -96,11 +103,11 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
       byEmployee: [null, Validators.required],
       atLab: [null, Validators.required],
       atUnit: [null, Validators.required],
-      transferReason: [null, Validators.required],
+      transferReason: [null],
       employeePassword: [null, Validators.required],
       comments: [null],
       storageArea: [null, Validators.required],
-      storageLocation: [null, Validators.required],
+      storageLocation: [null],
       witnessOne: [null, Validators.required],
       witnessOnePassword: [null, Validators.required],
       witnessTwo: [null, Validators.required],
@@ -114,15 +121,55 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
     });
 
     this.form.get('atLab').valueChanges.subscribe( newValue => {
-      // TODO
+      if (newValue && newValue.locationId) {
+        this.transferService.getUnitInfo(newValue.locationId, 'Active').subscribe(
+          response => {
+            this.units = response;
+            const isSelectedUnit = this.units.find( item => item.default);
+            this.form.get('atUnit').setValue(isSelectedUnit);
+          }
+        );
+      } else {
+        this.units = [];
+        this.form.get('atUnit').reset();
+        this.form.get('atUnit').setErrors({'customError': 'Please select a lab'});
+      }
     });
 
     this.form.get('atUnit').valueChanges.subscribe( newValue => {
-      // TODO
+      if (newValue && newValue.organizationId) {
+        const labId = this.form.get('atLab').value.locationId;
+        this.transferService.getStorageAreas(labId, newValue.organizationId)
+            .subscribe(
+              response => {
+                this.storageAreas = response;
+                if (this.storageAreas) {
+                  this.form.get('storageArea').setValue(this.storageAreas[0]);
+                }
+              }
+            );
+      } else {
+        this.storageAreas = [];
+        this.form.get('storageArea').reset();
+      }
     });
 
     this.form.get('storageArea').valueChanges.subscribe( newValue => {
-      // TO DO
+      if (newValue && newValue.storageAreaId) {
+        this.transferService.getStorageLocations(newValue.storageAreaId, 'Active')
+            .subscribe(
+              response => {
+                this.storageLocations = response;
+                if (this.storageLocations) {
+                  this.form.get('storageLocation').setValue(this.storageLocations[0]);
+                  this.form.get('storageLocation').setValidators([this.form.get('storageArea').value.requiresLocation ? Validators.required : Validators.nullValidator]);
+                  console.log(this.form.get('storageArea'));
+                }
+              });
+      } else {
+        this.storageLocations = [];
+        this.form.get('storageLocation').reset();
+      }
     });
 
     this.form.get('witnessOne').valueChanges.subscribe( newValue => {

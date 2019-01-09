@@ -19,12 +19,12 @@
         <h6>Transfer Type</h6>
         <mat-form-field>
           <mat-select
-            formControlName="transferType">
+            formControlName="transferType" [disabled]="true">
             <mat-option>---Select---</mat-option>
             <mat-option
               *ngFor="let type of types"
               [value]="type">
-              {{type}}
+              {{type.transferType}}
             </mat-option>
           </mat-select>
           <mat-error
@@ -34,7 +34,7 @@
 
         <h6>By Employee</h6>
         <mat-form-field>
-          <input matInput formControlName="byEmployee" readonly placeholder="Lynne Johnson"/>
+          <input matInput placeholder="{{getEmployeeName()}}" readonly/>
         </mat-form-field>
 
         <h6>At Lab</h6>
@@ -42,8 +42,8 @@
           <mat-select formControlName="atLab">
             <mat-option>---Select---</mat-option>
             <mat-option
-              *ngFor="let type of types"
-              [value]="type">{{type}}</mat-option>
+              *ngFor="let lab of labs"
+              [value]="lab">{{lab.locationName}}</mat-option>
           </mat-select>
           <mat-error
             *ngIf="isThereError('atLab','required')">Required
@@ -53,12 +53,16 @@
         <h6>At Unit</h6>
         <mat-form-field>
           <mat-select formControlName="atUnit" 
-          placeholder="---Please Select A Lab First---"
           [disabled]="!form.get('atLab').value">
             <mat-option>--Select--</mat-option>
+            <mat-option *ngFor="let unit of units"
+              [value]="unit">{{unit.organizationName}}</mat-option>
           </mat-select>
           <mat-error
             *ngIf="isThereError('atUnit','required')">Required
+          </mat-error>
+          <mat-error *ngIf="!isThereError('atUnit', 'required') && isThereError('atUnit','customError')">
+            {{getErrorMessage('atUnit')}}
           </mat-error>
         </mat-form-field>
       </div>
@@ -67,7 +71,8 @@
         <h6>Transfer Reason (Optional)</h6>
         <mat-form-field>
           <mat-select formControlName="transferReason">
-            <mat-option>Default Option</mat-option>
+            <mat-option>--None--</mat-option>
+            <mat-option *ngFor="let reason of transferReasons" [value]="reason">{{reason.transferReason}}</mat-option>
           </mat-select>
           <mat-error>Needs Attention</mat-error>
         </mat-form-field>
@@ -96,8 +101,10 @@
       <div class="half-block">
         <h6>Storage Area</h6>
         <mat-form-field>
-          <mat-select formControlName="storageArea">
-            <mat-option>Default Option</mat-option>
+          <mat-select
+            formControlName="storageArea"
+            [disabled]="!form.get('atLab').valid || !form.get('atUnit').valid">
+            <mat-option *ngFor="let area of storageAreas" [value]="area">{{area.storageAreadescription}}</mat-option>
           </mat-select>
           <mat-error
             *ngIf="isThereError('storageArea','required')">Required
@@ -106,16 +113,19 @@
 
         <h6>Storage Location</h6>
         <mat-form-field>
-          <mat-select formControlName="storageLocation">
-            <mat-option>Default Option</mat-option>
+          <mat-select
+            formControlName="storageLocation"
+            [disabled]="!form.get('storageArea').valid">
+            <mat-option>--None--</mat-option>
+            <mat-option *ngFor="let location of storageLocations" [value]="location">{{location.storageLocationDescription}}</mat-option>
           </mat-select>
           <mat-error
-            *ngIf="isThereError('storageLocation','required')">Required
+            *ngIf="isThereError('storageLocation','required')">A location is required for the storage area selected.
           </mat-error>
         </mat-form-field>
       </div>
     </div>
-    <div class="half-block-wrapper">
+    <div class="half-block-wrapper" *ngIf="requiredWitnessCount > 0">
       <div class="half-block">
         <h6>Witness 1</h6>
         <mat-form-field>
@@ -128,8 +138,8 @@
           </mat-error>
         </mat-form-field>
 
-        <h6>Witness 2</h6>
-        <mat-form-field>
+        <h6 *ngIf="requiredWitnessCount > 1">Witness 2</h6>
+        <mat-form-field *ngIf="requiredWitnessCount > 1">
           <mat-select formControlName="witnessTwo">
             <mat-option>Default Option</mat-option>
             <mat-option *ngFor="let witness of witnesses" [value]="witness">{{witness}}</mat-option>
@@ -151,8 +161,8 @@
           </mat-error>
         </mat-form-field>
 
-        <h6 *ngIf="form.get('witnessTwo').value">Witness 2 Password</h6>
-        <mat-form-field *ngIf="form.get('witnessTwo').value">
+        <h6 *ngIf="requiredWitnessCount > 1 && form.get('witnessTwo').value">Witness 2 Password</h6>
+        <mat-form-field *ngIf="requiredWitnessCount > 1 && form.get('witnessTwo').value">
           <input
             matInput
             type="password"
