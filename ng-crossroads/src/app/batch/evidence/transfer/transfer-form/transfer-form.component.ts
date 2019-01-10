@@ -257,7 +257,10 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
     });
 
     this.form.get('witnessOne').valueChanges.subscribe( newValue => {
-      console.log(newValue);
+      const witnessTwo = this.form.get('witnessTwo');
+      if (witnessTwo.value && witnessTwo.value.displayName === newValue.displayName) {
+        witnessTwo.reset();
+      }
       if (newValue && newValue.employeeID) {
         this.initWitnessFormDropdown(newValue.employeeID, 'witnessTwo', 'witnessTwoFilterOptions');
       }
