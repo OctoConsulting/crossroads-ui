@@ -1,5 +1,6 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig, FormlyField } from '@ngx-formly/core';
 import { transferFormFields, TransferForm } from './transferForm/transferForm';
 import { Store, select } from '@ngrx/store';
@@ -18,6 +19,7 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
   public form: FormGroup;
   // public form = new FormGroup({employee: new FormControl({value: '', disabled: true})});
   // public fields: FormlyFieldConfig[] = transferFormFields;
+  public batchId = '';
   public employee = {};
   public transferReasons = [];
   public types = [];
@@ -41,9 +43,12 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
   constructor (
     private store: Store<AuthState>,
     private transferService: TransferService,
-    private fb: FormBuilder) {}
+    private fb: FormBuilder,
+    private router: Router) {}
 
   public ngOnInit () {
+    const URLSegments = this.router.url.split('/');
+    this.batchId = URLSegments[URLSegments.length - 2];
     this.initForm();
     this.initOnChanges();
   }
