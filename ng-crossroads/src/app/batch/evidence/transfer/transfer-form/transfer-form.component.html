@@ -129,10 +129,20 @@
       <div class="half-block">
         <h6>Witness 1</h6>
         <mat-form-field>
-          <mat-select formControlName="witnessOne">
+          <input  matInput
+                  type="text"
+                  placeholder="Start typing"
+                  formControlName="witnessOne"
+                  [matAutocomplete]="autoWitnessOne"/>
+          <mat-autocomplete #autoWitnessOne="matAutocomplete" [displayWith]="displayName">
+            <mat-option *ngFor="let witness of witnessListFilterOptions.witnessOneFilterOptions | async" [value]="witness">
+              {{witness.displayName}}
+            </mat-option>
+          </mat-autocomplete>
+          <!-- <mat-select formControlName="witnessOne">
             <mat-option>---None---</mat-option>
             <mat-option *ngFor="let witness of witnessListOne" [value]="witness">{{witness.displayName}}</mat-option>
-          </mat-select>
+          </mat-select> -->
           <mat-error
             *ngIf="isThereError('witnessOne','required')">Required
           </mat-error>
@@ -140,10 +150,20 @@
 
         <h6 *ngIf="requiredWitnessCount > 1">Witness 2</h6>
         <mat-form-field *ngIf="requiredWitnessCount > 1">
-          <mat-select formControlName="witnessTwo">
+          <input  matInput
+            type="text"
+            placeholder="Start typing"
+            formControlName="witnessTwo"
+            [matAutocomplete]="autoWitnessTwo"/>
+          <mat-autocomplete #autoWitnessTwo="matAutocomplete" [displayWith]="displayName">
+            <mat-option *ngFor="let witness of witnessListFilterOptions.witnessTwoFilterOptions | async" [value]="witness">
+              {{witness.displayName}}
+            </mat-option>
+          </mat-autocomplete>
+          <!-- <mat-select formControlName="witnessTwo">
             <mat-option>--None--</mat-option>
             <mat-option *ngFor="let witness of witnessListTwo" [value]="witness">{{witness.displayName}}</mat-option>
-          </mat-select>
+          </mat-select> -->
           <mat-error
             *ngIf="isThereError('witnessTwo','required')">Required
           </mat-error>
@@ -176,10 +196,10 @@
 
     <div class="app flex">
       <span>
-        <a class="btn btn-secondary" [routerLink]="['/batches']">Cancel</a>
+        <button class="bottom-button" mat-raised-button color='warn' [routerLink]="['/batches']">Cancel</button>
       </span>
       <span>
-        <button class="btn btn-primary" type="submit"
+        <button class="bottom-button" mat-raised-button color="primary" type="submit"
           >Continue Transfer</button>
       </span>
     </div>

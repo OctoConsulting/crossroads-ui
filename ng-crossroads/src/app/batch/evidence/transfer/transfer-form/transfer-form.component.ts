@@ -5,8 +5,8 @@ import { transferFormFields, TransferForm } from './transferForm/transferForm';
 import { Store, select } from '@ngrx/store';
 import { AuthState } from 'src/app/store/reducers/auth.reducer';
 import { TransferService } from 'src/app/services/transfer.service';
-import { switchMap } from 'rxjs/operators';
-import { Subscription, forkJoin, Observable, of } from 'rxjs';
+import { switchMap, startWith, map } from 'rxjs/operators';
+import { Subscription, forkJoin, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-transfer-form',
@@ -30,6 +30,10 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
   public witnessListTwo = [];
   public locationRequired = false;
   public model: TransferForm;
+  public witnessListFilterOptions = {
+    witnessOneFilterOptions: null,
+    witnessTwoFilterOptions: null
+  };
   private store$: Subscription;
   private reasons$: Subscription;
   private types$: Subscription;
@@ -52,13 +56,8 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
         this.requiredWitnessCount = this.types[0].requiredWitnessCount;
         this.requiredWitnessCount = 2;
         if (this.requiredWitnessCount > 0) {
-          this.form.get('witnessOne').setValidators([Validators.required]);
+          this.initWitnessFormDropdown('', 'witnessOne', 'witnessOneFilterOptions');
           this.form.get('witnessOnePassword').setValidators([Validators.required]);
-          this.getWitnesses('').subscribe(
-            response => {
-              this.witnessListOne = response;
-            }
-          );
         }
         if (this.requiredWitnessCount > 1) {
           this.form.get('witnessTwo').setValidators([Validators.required]);
@@ -94,6 +93,37 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
         }
       );
     }
+  }
+
+  public displayName(witness?): string | undefined {
+    return witness ? witness.displayName : undefined;
+  }
+
+  private initWitnessFormDropdown(exceptIds: string, formName: string, filterOptionList: string): void {
+    this.form.get(formName).setValidators([Validators.required]);
+    this.getWitnesses(exceptIds).subscribe(
+      response => {
+        if (formName === 'witnessOne') {
+          this.witnessListOne = response;
+        } else {
+          this.witnessListTwo = response;
+        }
+        this.witnessListFilterOptions[filterOptionList] = this.form.get(formName).valueChanges
+        .pipe(
+          startWith<string | any>(''),
+          map(value => typeof value === 'string' ? value : value.displayName),
+          map(name => name ? this.witnessNameFilter(filterOptionList, name) : formName === 'witnessOne' ? this.witnessListOne.slice() : this.witnessListTwo.slice())
+        );
+      }
+    );
+  }
+
+  private witnessNameFilter(filterOptionList: string, name: string): any[] {
+    const filterValue = name.toLowerCase();
+    if (filterOptionList === 'witnessOneFilterOptions') {
+      return this.witnessListOne.filter( witness => witness.displayName.toLowerCase().includes(filterValue));
+    }
+    return this.witnessListTwo.filter( witness => witness.displayName.toLowerCase().includes(filterValue));
   }
 
   private constructAPICall(): any {
@@ -171,7 +201,7 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
 
   private initOnChanges(): void {
     this.form.get('transferType').valueChanges.subscribe( newValue => {
-      console.log(newValue);
+      // TO BE USED WHEN TRANSFER TYPE OTHER THAN PS ARE ALLOWED
     });
 
     this.form.get('atLab').valueChanges.subscribe( newValue => {
@@ -227,12 +257,9 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
     });
 
     this.form.get('witnessOne').valueChanges.subscribe( newValue => {
+      console.log(newValue);
       if (newValue && newValue.employeeID) {
-        this.getWitnesses(newValue.employeeID).subscribe(
-          response => {
-            this.witnessListTwo = response;
-          }
-        );
+        this.initWitnessFormDropdown(newValue.employeeID, 'witnessTwo', 'witnessTwoFilterOptions');
       }
     });
   }
