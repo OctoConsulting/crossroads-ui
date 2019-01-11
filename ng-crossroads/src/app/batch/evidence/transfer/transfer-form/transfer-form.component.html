@@ -30,6 +30,9 @@
           <mat-error
               *ngIf="isThereError('transferType','required')">Required
           </mat-error>
+          <mat-error *ngIf="!isThereError('transferType', 'required') && isThereError('transferType','customError')">
+            {{getErrorMessage('transferType')}}
+          </mat-error>
         </mat-form-field>
 
         <h6>By Employee</h6>
@@ -47,6 +50,9 @@
           </mat-select>
           <mat-error
             *ngIf="isThereError('atLab','required')">Required
+          </mat-error>
+          <mat-error *ngIf="!isThereError('atLab', 'required') && isThereError('atLab','customError')">
+            {{getErrorMessage('atLab')}}
           </mat-error>
         </mat-form-field>
 
@@ -109,6 +115,9 @@
           <mat-error
             *ngIf="isThereError('storageArea','required')">Required
           </mat-error>
+          <mat-error *ngIf="!isThereError('storageArea', 'required') && isThereError('storageArea','customError')">
+            {{getErrorMessage('storageArea')}}
+          </mat-error>
         </mat-form-field>
 
         <h6>Storage Location</h6>
@@ -121,6 +130,9 @@
           </mat-select>
           <mat-error
             *ngIf="isThereError('storageLocation','required')">A location is required for the storage area selected.
+          </mat-error>
+          <mat-error *ngIf="!isThereError('storageLocation', 'required') && isThereError('storageLocation','customError')">
+            {{getErrorMessage('storageLocation')}}
           </mat-error>
         </mat-form-field>
       </div>

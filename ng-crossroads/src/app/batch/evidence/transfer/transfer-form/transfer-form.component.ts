@@ -8,6 +8,7 @@ import { AuthState } from 'src/app/store/reducers/auth.reducer';
 import { TransferService } from 'src/app/services/transfer.service';
 import { switchMap, startWith, map } from 'rxjs/operators';
 import { Subscription, forkJoin, Observable } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-transfer-form',
@@ -21,6 +22,7 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
   // public fields: FormlyFieldConfig[] = transferFormFields;
   public batchId = '';
   public employee = {};
+  public employeeValidated = true;
   public transferReasons = [];
   public types = [];
   public labs = [];
@@ -89,12 +91,15 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
   public submit(): void {
     if (this.form.valid) {
       const postBody = this.constructAPICall();
-      this.transferService.sendTransferInfo(postBody).subscribe(
+      this.transferService.sendTransferInfo(postBody, this.batchId).subscribe(
         response => {
           //YAY TO DO
+          console.log(response);
         },
         error => {
           //Error handling
+          console.log(error);
+          this.setErrorMessages(error);
         }
       );
     }
@@ -135,25 +140,30 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
     const form = this.form;
     console.log(form);
     const body = {
-      transferTypeCode: form.get('transferType').value.transferTypeCode,
-      locationId: form.get('atLab').value.locationId,
-      orgId: form.get('atUnit').value.organizationId,
-      transferReasonId: form.get('transferReason').value.transferReasonId,
+      batchID: this.batchId,
+      comments: form.get('comments').value,
+      employeeID: form.get('byEmployee').value.employeeID,
+      employeePwd: form.get('employeePassword').value,
+      employeeUserName: form.get('byEmployee').value.userName,
+      employeeValidated: this.employeeValidated,
+      evidenceTransferTypeCode: form.get('transferType').value.transferTypeCode,
+      isReasonRequired: true,
+      locationID: form.get('atLab').value.locationId,
+      organizationID: form.get('atUnit').value.organizationId,
       requiredWitnessCount: this.requiredWitnessCount,
-      storageAreaId: form.get('storageArea').value.storageAreaId,
-      storageLocation: form.get('storageLocation').value.storageLocationId,
-      byEmployee: {
-        employeeID: form.get('byEmployee').value.employeeID,
-        userName: form.get('byEmployee').value.userName
-      },
-      witness1: {
-        employeeID: form.get('witnessOne').value.employeeID,
-        userName: form.get('witnessOne').value.userName
-      },
-      witness2: {
-        employeeID: form.get('witnessTwo').value.employeeID,
-        userName: form.get('witnessTwo').value.employeeID
-      }
+      requiresLocation: this.locationRequired,
+      storageAreaID: form.get('storageArea').value.storageAreaId,
+      storageLocationID: form.get('storageLocation').value.storageLocationId,
+      transferReason: form.get('transferReason').value.transferReasonId,
+      transferType: form.get('transferType').value.transferType,
+      witness1ID: form.get('witnessOne').value.employeeID,
+      witness1Pwd: form.get('witnessOnePassword').value,
+      witness1UserName: form.get('witnessOne').value.userName,
+      witness1Validated: true,
+      witness2ID: form.get('witnessTwo').value.employeeID,
+      witness2Pwd: form.get('witnessTwoPassword').value,
+      witness2UserName: form.get('witnessTwo').value.employeeID,
+      witness2Validated: true
     };
     return body;
   }
@@ -252,7 +262,6 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
                 if (this.storageLocations) {
                   this.form.get('storageLocation').setValue(this.storageLocations[0]);
                   this.form.get('storageLocation').setValidators([this.form.get('storageArea').value.requiresLocation ? Validators.required : Validators.nullValidator]);
-                  console.log(this.form.get('storageArea'));
                 }
               });
       } else {
@@ -288,5 +297,26 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
       return_val = ctrl.errors['customError'];
     }
     return return_val;
+  }
+
+  private setErrorMessages(error: HttpErrorResponse): void {
+    if (error instanceof HttpErrorResponse) {
+      error.error.forEach( errorItem => {
+        switch (errorItem.fieldName) {
+          case 'transferType':
+            this.form.get('transferType').setErrors({
+              customError: errorItem.errorMessages
+            });
+            break;
+          case 'transferInAndOutArea':
+            this.form.get('storageArea').setErrors({
+              customError: errorItem.errorMessages
+            });
+            break;
+          default:
+          break;
+        }
+      });
+    }
   }
 }

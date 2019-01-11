@@ -169,11 +169,13 @@ export class TransferService {
     ));
   }
 
-  public sendTransferInfo(body: any): Observable<any> {
-    const apiUrl = this.LOCAL_API_URL + '/transfer';
-
+  public sendTransferInfo(body: any, batchID: string): Observable<any> {
+    const apiUrl = this.LOCAL_API_URL + '/v1/evidencetransfer/validate';
+    const queryParams = {
+      batchID: batchID
+    };
     return this.httpClient
-    .post(apiUrl, body)
+    .post(apiUrl, body, {params: queryParams})
     .pipe(
       map((response: any) => {
         try {
