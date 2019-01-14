@@ -75,6 +75,7 @@ export class AuthEffects {
     tap((user) => {
       localStorage.removeItem('token');
       localStorage.removeItem('userId');
+      this.router.navigateByUrl('/');
     })
   );
 

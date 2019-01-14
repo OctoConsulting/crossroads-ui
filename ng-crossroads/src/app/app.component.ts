@@ -8,7 +8,7 @@ import { AppModelType } from './models/app-model';
 import { Observable } from 'rxjs';
 import { mapDistinct } from './utilities/mapDistinct';
 import { AuthState } from './store/reducers/auth.reducer';
-import { GetStatus } from './store/actions/auth.actions';
+import { GetStatus, LogOut } from './store/actions/auth.actions';
 
 @Component({
   selector: 'app-root',
@@ -64,6 +64,10 @@ export class AppComponent implements AfterViewInit {
 
   public closeSidenav () {
     this.store.dispatch(new CloseSidenav());
+  }
+
+  public logout () {
+    this.store.dispatch(new LogOut());
   }
 
   private _mapProperties () {
