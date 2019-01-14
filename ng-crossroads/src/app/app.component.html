@@ -12,6 +12,7 @@
         *ngFor="let link of links | async"
         [routerLink]="link?.path"
         (click)="closeSidenav()">{{ link?.title }}</a>
+      <button mat-list-item (click)="logout()">Log out</button>
     </mat-list>
   </mat-sidenav>
   <mat-sidenav-content class="app content" style="height: 1000px">

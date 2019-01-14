@@ -7,13 +7,25 @@ var port = process.env.PORT || 3000,
 const app = http.createServer(function (req, res) {
 
   // parse URL
-  const parsedUrl = url.parse(req.url);
+  let parsedUrl; 
+  try {
+    parsedUrl = url.parse(req.url);
+  } catch (error) {
+    console.error("Issue parsing url...");
+    console.error(error);
+  }
 
   // extract URL path
   let pathname = `${parsedUrl.pathname}`;
 
   // based on the URL path, extract the file extention. e.g. .js, .doc, ...
-  let ext = path.parse(pathname).ext;
+  let ext;
+  try {
+    ext = path.parse(pathname).ext;
+  } catch (error) {
+    console.error("Error parsing pathname...");
+    console.error(error);
+  }
 
   // maps file extention to MIME typere
   const map = {
@@ -49,7 +61,6 @@ const app = http.createServer(function (req, res) {
 
     // read file from file system
     fs.readFile(pathname, function(err, data){
-      console.log("Reading file...");
       if(err){
         res.statusCode = 500;
         res.send(``)
