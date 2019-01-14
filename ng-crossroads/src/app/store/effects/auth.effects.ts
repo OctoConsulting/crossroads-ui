@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Observable, of } from 'rxjs';
+import { Observable, of, observable, throwError } from 'rxjs';
 import { map, switchMap, catchError, tap } from 'rxjs/operators';
 
 import { AuthService } from '../../services/auth.service';
@@ -11,7 +11,6 @@ import {
   LogIn,
   LogInSuccess,
   LogInFailure,
-  LogOut,
 } from '../actions/auth.actions';
 
 
@@ -32,8 +31,17 @@ export class AuthEffects {
       switchMap(payload => {
         return this.authService.logIn(payload.email, payload.password)
           .pipe(
+            // Temporary Fix Until Content-type is fixed on API
+            catchError((response) => {
+              return of(response);
+            }),
             map((user) => {
-              return new LogInSuccess({token: user.token, email: user.email, id: user.id});
+              const text = user.error.text;
+              if (text) {
+                return new LogInSuccess({token: text, email: payload.email, id: ''});
+              } else {
+                return new LogInFailure({ error: user.error });
+              }
             }),
             catchError((error) => {
               return of(new LogInFailure({ error: error }));
@@ -47,7 +55,7 @@ export class AuthEffects {
     ofType(AuthActionTypes.LOGIN_SUCCESS),
     tap((user) => {
       localStorage.setItem('token', user.payload.token);
-      localStorage.setItem('userId', user.payload.id);
+      localStorage.setItem('userId', user.payload.id || '');
       this.router.navigateByUrl('/batches');
     })
   );
