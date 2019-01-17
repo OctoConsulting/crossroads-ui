@@ -11,7 +11,7 @@ export class AuthGuardService implements CanActivate {
     public router: Router
   ) {}
   canActivate(): boolean {
-    const token = JSON.parse(this.auth.getToken());
+    const token = this.auth.getToken();
 
     if (!token) {
       this.router.navigateByUrl('/log-in');
