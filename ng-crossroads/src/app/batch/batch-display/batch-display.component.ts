@@ -75,8 +75,9 @@ export class BatchDisplayComponent implements OnInit {
   }
 
   getEvidenceResponseData(responseData: any) {
-    if (responseData) {
-      const results = responseData["evidenceList"];
+    const resultsEmbedded = responseData["_embedded"];
+    if (resultsEmbedded) {
+      const results = resultsEmbedded["evidenceList"];
       const resultArr: EvidenceElement[] = [];
       for (const result of results) {
         resultArr.push({

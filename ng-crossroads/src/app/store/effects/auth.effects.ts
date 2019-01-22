@@ -33,6 +33,7 @@ export class AuthEffects {
           .pipe(
             // Temporary Fix Until Content-type is fixed on API
             catchError((response) => {
+              console.log(response);
               return of(response);
             }),
             map((user) => {
