@@ -6,7 +6,7 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class DashboardService {
   constructor(private httpClient: HttpClient) { };
-  API_URL = 'http://crossapi.us-west-1.elasticbeanstalk.com/crossroads';
+  API_URL = environment.baseUrl;
 
   baseUrl = environment.baseUrl;
   getDashboardData(empid: string, days: string, pageNum: string, limit: string, orderBy: string, sortBy: string, searchString?: any) {

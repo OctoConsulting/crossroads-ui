@@ -46,6 +46,7 @@ export class BatchDisplayComponent implements OnInit {
   showDashboard(searchString?: string) {
     // console.log("cookie getall ::: " + JSON.stringify(this.cookieService.getAll()));
     this.dashboardService.getDashboardData('63718', '2000', '1', '10', 'Name', 'ASC').subscribe((response) => {
+      console.log(response);
       this.dataSource = this.getBatchData(response);
       return response;
     });
@@ -53,11 +54,10 @@ export class BatchDisplayComponent implements OnInit {
   }
 
   getBatchData(responseData: any) {
-    let resultsEmbedded = responseData["_embedded"];
-    if (resultsEmbedded) {
-      let results = resultsEmbedded["batchList"];
-      let resultArr: BatchElement[] = [];
-      for (let result of results) {
+    if (responseData) {
+      const results = responseData["batchList"];
+      const resultArr: BatchElement[] = [];
+      for (const result of results) {
         resultArr.push({
           batchId: result["batchId"], batchName: result["batchName"], employeeId: result["employeeId"],
           evidenceCount: result["evidenceCount"], expires: result["expires"]
@@ -75,11 +75,10 @@ export class BatchDisplayComponent implements OnInit {
   }
 
   getEvidenceResponseData(responseData: any) {
-    let resultsEmbedded = responseData["_embedded"];
-    if (resultsEmbedded) {
-      let results = resultsEmbedded["evidenceList"];
-      let resultArr: EvidenceElement[] = [];
-      for (let result of results) {
+    if (responseData) {
+      const results = responseData["evidenceList"];
+      const resultArr: EvidenceElement[] = [];
+      for (const result of results) {
         resultArr.push({
           batchId: result["batchId"], evidence: result["evidence"], evidence1B: result["evidence1B"],
           description: result["description"], status: result["status"],
