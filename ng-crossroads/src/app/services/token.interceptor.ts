@@ -27,7 +27,7 @@ export class TokenInterceptor implements HttpInterceptor {
     if (token) {
       request = request.clone({
         setHeaders: {
-          'Cookie': `${token}`,
+          'x-auth-token': `${token}`,
         }
       });
     }

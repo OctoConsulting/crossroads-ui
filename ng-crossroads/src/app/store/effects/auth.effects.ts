@@ -37,6 +37,7 @@ export class AuthEffects {
             }),
             map((user) => {
               const text = user.error.text;
+              console.log(text);
               if (text) {
                 return new LogInSuccess({token: text, email: payload.email, id: ''});
               } else {
