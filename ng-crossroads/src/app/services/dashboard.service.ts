@@ -28,13 +28,14 @@ export class DashboardService {
     }));
   }
 
-  getEvidenceData(batchId: string) {
+  getEvidenceData(batchId: string, hierarchy: boolean = false) {
     const apiUrl = this.API_URL + '/v1/evidence';
 
     return this.httpClient.get(apiUrl,
       {
         params: {
-          batchId: batchId
+          batchId: batchId,
+          hierarchy: hierarchy.toString()
         }
       }
     ).pipe(map(data => {
