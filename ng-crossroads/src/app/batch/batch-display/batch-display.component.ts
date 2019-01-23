@@ -51,6 +51,7 @@ export class BatchDisplayComponent implements OnInit {
   totalBatchCount = 0;
   selectedRowIndex: number = -1;
   batchRowName : any;
+  currentPage : 0;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -82,6 +83,7 @@ export class BatchDisplayComponent implements OnInit {
   }
 
   showPageEvent(event:any){
+    this.currentPage = event.pageIndex;
     this!.showDashboard(this.sort.active, this.sort.direction, event.pageIndex);
   }
 
@@ -186,6 +188,10 @@ export class BatchDisplayComponent implements OnInit {
         };
         return styles;
     
+  }
+
+  sortData(sort:any){
+    this!.showDashboard(sort.active, sort.direction, 0);
   }
 
 }
