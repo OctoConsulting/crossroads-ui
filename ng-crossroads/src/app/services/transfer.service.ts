@@ -6,13 +6,128 @@ import { Observable, throwError } from 'rxjs';
 
 @Injectable()
 export class TransferService {
-  API_URL = 'http://crossapi.us-west-1.elasticbeanstalk.com/crossroads';
+  LOCAL_API_URL = 'http://localhost:8080/crossroads';
   baseUrl = environment.baseUrl;
 
   constructor(private httpClient: HttpClient) { }
 
+  public getEmployeeInfo(exceptIds: string = '', mode: string = 'loggedInUser', status: string = 'Everything'): Observable<any> {
+    const API_URL = this.LOCAL_API_URL + '/v1/employee';
+    const queryParams = {
+      exceptIds: exceptIds,
+      mode : mode,
+      status : status
+    };
+
+    return this.httpClient.get(API_URL, {params: queryParams})
+              .pipe(
+                map( response => {
+                  try {
+                    return response['_embedded']['employeeList'];
+                  } catch (e) {
+                    throwError(e);
+                  }
+                })
+              );
+  }
+
+  public getTransferTypes(codes?: string, status?: 'active' | 'inactive'): Observable<any[]> {
+    const apiUrl = this.LOCAL_API_URL + '/v1/transferType';
+    const queryParams = {
+      codes: codes,
+      status: status
+    };
+    return this.httpClient
+    .get(apiUrl, {params: queryParams})
+    .pipe(
+      map((response: any) => {
+        try {
+          return response._embedded.evidenceTransferTypeList;
+        } catch (e) {
+          throwError(e);
+        }
+      })
+    );
+  }
+
+  public getLabInfo(status: string = 'Active'): Observable<any> {
+    const apiUrl = this.LOCAL_API_URL + '/v1/location/AtLab';
+    const queryParams = {
+      status: status
+    };
+    return this.httpClient
+    .get(apiUrl, {params: queryParams})
+    .pipe(
+      map((response: any) => {
+        try {
+          return response._embedded.locationList;
+        } catch (e) {
+          throwError(e);
+        }
+      })
+    );
+  }
+
+  public getUnitInfo(locationId: string, status: string = 'Active'): Observable<any> {
+    const apiUrl = this.LOCAL_API_URL + '/v1/location/AtUnit';
+    const queryParams = {
+      locationId: locationId,
+      status: status
+    };
+    return this.httpClient
+    .get(apiUrl, {params: queryParams})
+    .pipe(
+      map((response: any) => {
+        try {
+          return response._embedded.organizationList;
+        } catch (e) {
+          throwError(e);
+        }
+      })
+    );
+  }
+
+  public getStorageAreas(atLabId: string, atUnitId: string, status: string = 'Active'): Observable<any> {
+    const apiUrl = this.LOCAL_API_URL + '/v1/custody/area';
+    const queryParams = {
+      atLabId: atLabId,
+      atUnitId: atUnitId,
+      status: status
+    };
+    return this.httpClient
+    .get(apiUrl, {params: queryParams})
+    .pipe(
+      map((response: any) => {
+        try {
+          return response._embedded.custodyAreaList;
+        } catch (e) {
+          throwError(e);
+        }
+      })
+    );
+  }
+
+  public getStorageLocations(storageAreaId: string, status: string = 'Active'): Observable<any> {
+    const apiUrl = this.LOCAL_API_URL + '/v1/custody/location';
+    const queryParams = {
+      custodyAreaId: storageAreaId,
+      status: status
+    };
+    return this.httpClient
+    .get(apiUrl, {params: queryParams})
+    .pipe(
+      map((response: any) => {
+        try {
+          return response._embedded.custodyLocationList;
+        } catch (e) {
+          throwError(e);
+        }
+      })
+    );
+  }
+
   public getEmployeeById(empid: string): Observable<any> {
-    const apiUrl = this.API_URL + '/v1/employee';
+    const apiUrl = this.LOCAL_API_URL + '/v1/employee';
 
     return this.httpClient
     .get(apiUrl,
@@ -31,8 +146,8 @@ export class TransferService {
     );
   }
 
-  public getTransferReasons(ids?: string[], status?: 'active' | 'inactive'): Observable<any[]> {
-    const apiUrl = this.API_URL + '/v1/transferReason';
+  public getTransferReasons(ids?: string[], status?: 'Active' | 'Inactive'): Observable<any[]> {
+    const apiUrl = this.LOCAL_API_URL + '/v1/transferReason';
 
     return this.httpClient
     .get(apiUrl,
@@ -44,52 +159,31 @@ export class TransferService {
       }
     )
     .pipe(
-      map((response: any) => response
-        && response._embedded
-        && response._embedded.evidenceTransferReasonList)
-    );
-  }
-
-  public getTransferReasonsAsOptions(ids?: string[], status?: 'active' | 'inactive'): Observable<any[]> {
-    return this.getTransferReasons(ids, status).pipe(
-      map(
-        (reasons: any[]) => reasons.map(
-          reason => ({ value: reason.transferReasonId, label: reason.transferReason })
-        )
-      )
-    );
-  }
-
-  public getTransferTypes(codes?: string, status?: 'active' | 'inactive'): Observable<any[]> {
-    const apiUrl = this.API_URL + '/v1/transferType';
-
-    return this.httpClient
-    .get(apiUrl,
-      {
-        params: {
-          codes: '',
-          status: status
-        }
-      }
-    )
-    .pipe(
       map((response: any) => {
         try {
-          return response._embedded.evidenceTransferTypeList;
+          return response._embedded.evidenceTransferReasonList;
         } catch (e) {
           throwError(e);
         }
-      })
-    );
+      }
+    ));
   }
 
-  public getTransferTypesAsOptions(codes?: string, status?: 'active' | 'inactive'): Observable<any[]> {
-    return this.getTransferTypes(codes, status).pipe(
-      map(
-        (types: any[]) => types.map(
-          ttype => ({ value: ttype.transferTypeCode, label: ttype.transferType })
-        )
-      )
-    );
+  public sendTransferInfo(body: any, batchID: string): Observable<any> {
+    const apiUrl = this.LOCAL_API_URL + '/v1/evidencetransfer/validate';
+    const queryParams = {
+      batchID: batchID
+    };
+    return this.httpClient
+    .post(apiUrl, body, {params: queryParams})
+    .pipe(
+      map((response: any) => {
+        try {
+          return response._embedded;
+        } catch (e) {
+          throwError(e);
+        }
+      }
+    ));
   }
 }

@@ -23,7 +23,6 @@ export class TokenInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.authService = this.injector.get(AuthService);
     const token: string = this.authService.getToken();
-
     if (token) {
       request = request.clone({
         setHeaders: {
@@ -31,7 +30,6 @@ export class TokenInterceptor implements HttpInterceptor {
         }
       });
     }
-
     return next.handle(request);
   }
 
