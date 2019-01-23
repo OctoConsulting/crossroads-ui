@@ -1,36 +1,45 @@
 
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 import { User } from '../models/user';
 
 @Injectable()
 export class AuthService {
-  private BASE_URL = 'http://localhost:1337';
+  private BASE_URL = environment.baseUrl;
 
   constructor(private http: HttpClient) {}
 
   getToken(): string {
-    return localStorage.getItem('token');
+    try {
+      return localStorage.getItem('token');
+    } catch {
+      return undefined;
+    }
   }
 
   logIn(email: string, password: string): Observable<any> {
-    if (email !== 'lynne.johnson@octoconsulting.com' || password !== '1234') {
-      const url = `${this.BASE_URL}/login`;
-      return this.http.post<User>(url, {email, password});
-    } else {
-      const user: User = {
-        id: '63718',
-        email: 'lynne.johnson@octoconsulting.com',
-        token: 'bGpvaG5zb24=:03fdc3cb-f20a-42e5-93eb-1da3670cbf54'
-      };
-      return of(user);
-    }
+    const url = `${this.BASE_URL}/v1/login`;
+    const token = this.encodeAuthToken(email, password);
+    return this.http.post<User>(
+      url,
+      {},
+      {
+        headers: {
+          Authorization: `Basic ${token}`,
+        }
+      }
+    );
   }
 
   getStatus(): Observable<User> {
     const url = `${this.BASE_URL}/status`;
     return this.http.get<User>(url);
+  }
+
+  encodeAuthToken(username: string, password: string): string {
+    return window.btoa(`${username}:${password}`);
   }
 }

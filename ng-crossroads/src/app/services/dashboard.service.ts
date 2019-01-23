@@ -5,38 +5,41 @@ import { environment } from '../../environments/environment';
 
 @Injectable()
 export class DashboardService {
-  constructor(private  httpClient:  HttpClient) {};
-  API_URL  =  'http://crossapi.us-west-1.elasticbeanstalk.com/crossroads';
-  
+  constructor(private httpClient: HttpClient) { };
+  API_URL = environment.baseUrl;
+
   baseUrl = environment.baseUrl;
-  getDashboardData(empid: string,days: string ,pageNum : string, limit : string ,orderBy:string,sortBy: string,searchString?: any){
-      let apiUrl = this.API_URL+"/v1/batch";
-      
-      return  this.httpClient.get(apiUrl,
-        {params: {
+  getDashboardData(empid: string, days: string, pageNum: string, limit: string, orderBy: string, sortBy: string, searchString?: any) {
+    const apiUrl = this.API_URL + '/v1/batch';
+
+    return this.httpClient.get(apiUrl,
+      {
+        params: {
           employeeId: empid,
-          days:days,
-          orderBy:orderBy,
+          days: days,
+          orderBy: orderBy,
           sortBy: sortBy,
           pageNum: pageNum,
           limit: limit
         }
       }
     ).pipe(map(data => {
-              return data;
+      return data;
     }));
   }
 
-  getEvidenceData(batchId: string){
-      let apiUrl = this.API_URL+"/v1/evidence";
-      
-      return  this.httpClient.get(apiUrl,
-        {params: {
-          batchId: batchId
+  getEvidenceData(batchId: string, hierarchy: boolean = false) {
+    const apiUrl = this.API_URL + '/v1/evidence';
+
+    return this.httpClient.get(apiUrl,
+      {
+        params: {
+          batchId: batchId,
+          hierarchy: hierarchy.toString()
         }
       }
     ).pipe(map(data => {
-              return data;
+      return data;
     }));
   }
 }
