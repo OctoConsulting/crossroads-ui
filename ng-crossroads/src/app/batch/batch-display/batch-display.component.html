@@ -8,7 +8,7 @@
   </div> -->
   <div class="example-table-container">
     <table mat-table [dataSource]="data" class="example-table"
-           matSort matSortActive="expires" matSortDisableClear matSortDirection="asc">
+           matSort (matSortChange)="sortData($event)" matSortActive="expires" matSortDisableClear matSortDirection="asc">
       <!-- Number Column -->
       <ng-container matColumnDef="batchId" [style.display]="'none'">
         <th mat-header-cell *matHeaderCellDef [style.display]="'none'">Batch ID</th>

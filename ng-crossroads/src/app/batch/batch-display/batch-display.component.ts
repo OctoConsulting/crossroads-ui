@@ -6,10 +6,6 @@ import { merge, Observable, of as observableOf, BehaviorSubject } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { FlatTreeControl } from '@angular/cdk/tree';
-import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
-import { MatTreeModule } from '@angular/material/tree';
-import { CollectionViewer, SelectionChange } from '@angular/cdk/collections';
 
 
 export interface BatchElement {
@@ -50,15 +46,16 @@ export class BatchDisplayComponent implements OnInit {
   resultsLength = 0;
   totalBatchCount = 0;
   selectedRowIndex: number = -1;
-  batchRowName: any;
   selectedBatch: BatchElement;
+  batchRowName: any;
+  currentPage: 0;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   displayedColumns: string[] = ['batchName', 'batchId', 'evidenceCount', 'expires'];
   displayedColumnsEvidence: string[] = ['evidence', 'level', 'evidenceSubmissionId', 'evidence1B', 'description', 'location', 'status'];
 
-  get displayEvidenceElements (): boolean {
+  get displayEvidenceElements(): boolean {
     return this.dataSourceEvidence && this.dataSourceEvidence.length > 0;
   }
 
@@ -85,6 +82,7 @@ export class BatchDisplayComponent implements OnInit {
   }
 
   showPageEvent(event: any) {
+    this.currentPage = event.pageIndex;
     this!.showDashboard(this.sort.active, this.sort.direction, event.pageIndex);
   }
 
@@ -202,6 +200,10 @@ export class BatchDisplayComponent implements OnInit {
 
   navigateToBatchTransfer(batch: BatchElement): void {
     this.router.navigate(['batches', batch.batchId, 'transfer']);
+  }
+
+  sortData(sort: any) {
+    this!.showDashboard(sort.active, sort.direction, 0);
   }
 
 }
