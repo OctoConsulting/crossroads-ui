@@ -82,11 +82,7 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
     );
   }
 
-  public ngOnDestroy () {
-    this.store$.unsubscribe();
-    this.reasons$.unsubscribe();
-    this.types$.unsubscribe();
-  }
+  public ngOnDestroy () {}
 
   public submit(): void {
     if (this.form.valid) {

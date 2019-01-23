@@ -38,7 +38,7 @@
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'highlight': selectedRowIndex == row.batchId}"
-      (click)="highlight(row)" (click)="getEvidence(row)"></tr>
+      (click)="onBatchRowClick(row)"></tr>
     </table>
   </div>
 
@@ -46,7 +46,8 @@
 </div>
 
 
-<div style="margin-top: 30px" *ngIf="dataSourceEvidence && dataSourceEvidence.length>0">
+<!-- Evidence Table -->
+<div style="margin-top: 30px" *ngIf="displayEvidenceElements">
   <div class="example-container"><h4>Evidence For Batch : {{batchRowName}}</h4>  </div>
 
   <div class="example-container mat-elevation-z8">
@@ -106,19 +107,13 @@
     </div>
   </div>
 </div>
-<!-- <mat-tree [dataSource]="dataSourceTree" [treeControl]="treeControl">
-  <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
-    <button mat-icon-button disabled></button>
-    {{node.item}}
-  </mat-tree-node>
-  <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
-    <button mat-icon-button
-            [attr.aria-label]="'toggle ' + node.filename" matTreeNodeToggle>
-      <mat-icon class="mat-icon-rtl-mirror">
-        {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
-      </mat-icon>
-    </button>
-    {{node.item}}
 
-  </mat-tree-node>
-</mat-tree> -->
+<button mat-raised-button
+  class="evidence transfer button"
+  color="primary"
+  (keydown)="navigateToBatchTransfer(selectedBatch)"
+  (click)="navigateToBatchTransfer(selectedBatch)"
+  role="link"
+  [disabled]="isTransferDisabled()">
+  Transfer Batch
+</button>
