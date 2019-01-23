@@ -22,7 +22,7 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
   // public fields: FormlyFieldConfig[] = transferFormFields;
   public batchId = '';
   public employee = {};
-  public employeeValidated = true;
+  public employeeValidated = false;
   public transferReasons = [];
   public types = [];
   public labs = [];
@@ -148,23 +148,26 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
       employeeUserName: form.get('byEmployee').value.userName,
       employeeValidated: this.employeeValidated,
       evidenceTransferTypeCode: form.get('transferType').value.transferTypeCode,
-      isReasonRequired: true,
+      isReasonRequired: form.get('transferType').value.isReasonRequired,
       locationID: form.get('atLab').value.locationId,
       organizationID: form.get('atUnit').value.organizationId,
-      requiredWitnessCount: this.requiredWitnessCount,
-      requiresLocation: this.locationRequired,
+      requiredWitnessCount: form.get('transferType').value.requiredWitnessCount,
+      requiresLocation: form.get('storageArea').value.requiresLocation,
       storageAreaID: form.get('storageArea').value.storageAreaId,
       storageLocationID: form.get('storageLocation').value.storageLocationId,
       transferReason: form.get('transferReason').value ? form.get('transferReason').value.transferReasonId : '',
+<<<<<<< Updated upstream
       transferType: form.get('transferType').value.transferType,
+=======
+>>>>>>> Stashed changes
       witness1ID: form.get('witnessOne').value.employeeID,
       witness1Pwd: form.get('witnessOnePassword').value,
       witness1UserName: form.get('witnessOne').value.userName,
-      witness1Validated: true,
+      witness1Validated: false,
       witness2ID: form.get('witnessTwo').value.employeeID,
       witness2Pwd: form.get('witnessTwoPassword').value,
       witness2UserName: form.get('witnessTwo').value.employeeID,
-      witness2Validated: true
+      witness2Validated: false
     };
     return body;
   }
@@ -243,8 +246,10 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
             .subscribe(
               response => {
                 this.storageAreas = response;
-                if (this.storageAreas) {
+                if (this.storageAreas && this.storageAreas.length > 0) {
                   this.form.get('storageArea').setValue(this.storageAreas[0]);
+                } else {
+                  this.form.get('storageArea').setValue(null);
                 }
               }
             );
@@ -259,6 +264,7 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
         this.transferService.getStorageLocations(newValue.storageAreaId, 'Active')
             .subscribe(
               response => {
+                console.log('here');
                 this.storageLocations = response;
                 if (this.storageLocations) {
                   this.form.get('storageLocation').setValue(this.storageLocations[0]);
@@ -266,6 +272,7 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
                 }
               });
       } else {
+        console.log('clear it');
         this.storageLocations = [];
         this.form.get('storageLocation').reset();
       }
@@ -303,20 +310,40 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
   private setErrorMessages(error: HttpErrorResponse): void {
     if (error instanceof HttpErrorResponse) {
       error.error.forEach( errorItem => {
+        let fieldName = '';
         switch (errorItem.fieldName) {
           case 'transferType':
-            this.form.get('transferType').setErrors({
-              customError: errorItem.errorMessages
-            });
+            fieldName = 'transferType';
             break;
+          case 'employeeValidated':
+            fieldName = 'employeePassword';
+            break;
+          case 'locationID':
+            fieldName = 'atLab';
+            break;
+          case 'organizationID':
+            fieldName = 'atUnit';
+            break;
+          case 'storageArea':
+          case 'transferIn':
           case 'transferInAndOutArea':
-            this.form.get('storageArea').setErrors({
-              customError: errorItem.errorMessages
-            });
+            fieldName = 'storageArea';
+            break;
+          case 'storageLocation':
+            fieldName = 'storageLocation';
+            break;
+          case 'Witness1Authorization':
+            fieldName = 'witnessOnePassword';
+            break;
+          case 'Witness2Authorization':
+            fieldName = 'witnessTwoPassword';
             break;
           default:
           break;
         }
+        this.form.get(fieldName).setErrors({
+          customError: errorItem.errorMessages
+        });
       });
     }
   }
