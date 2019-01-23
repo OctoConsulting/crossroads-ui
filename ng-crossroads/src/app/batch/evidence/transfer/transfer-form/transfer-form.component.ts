@@ -95,6 +95,7 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
         response => {
           //YAY TO DO
           console.log(response);
+          this.router.navigate(['/batches']);
         },
         error => {
           //Error handling
@@ -138,7 +139,7 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
 
   private constructAPICall(): any {
     const form = this.form;
-    console.log(form);
+    // console.log(form);
     const body = {
       batchID: this.batchId,
       comments: form.get('comments').value,
@@ -154,7 +155,7 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
       requiresLocation: this.locationRequired,
       storageAreaID: form.get('storageArea').value.storageAreaId,
       storageLocationID: form.get('storageLocation').value.storageLocationId,
-      transferReason: form.get('transferReason').value.transferReasonId,
+      transferReason: form.get('transferReason').value ? form.get('transferReason').value.transferReasonId : '',
       transferType: form.get('transferType').value.transferType,
       witness1ID: form.get('witnessOne').value.employeeID,
       witness1Pwd: form.get('witnessOnePassword').value,

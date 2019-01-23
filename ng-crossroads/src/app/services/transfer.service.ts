@@ -12,7 +12,7 @@ export class TransferService {
   constructor(private httpClient: HttpClient) { }
 
   public getEmployeeInfo(exceptIds: string = '', mode: string = 'loggedInUser', status: string = 'Everything'): Observable<any> {
-    const API_URL = this.LOCAL_API_URL + '/v1/employee';
+    const API_URL = this.baseUrl + '/v1/employee';
     const queryParams = {
       exceptIds: exceptIds,
       mode : mode,
@@ -32,7 +32,7 @@ export class TransferService {
   }
 
   public getTransferTypes(codes?: string, status?: 'active' | 'inactive'): Observable<any[]> {
-    const apiUrl = this.LOCAL_API_URL + '/v1/transferType';
+    const apiUrl = this.baseUrl + '/v1/transferType';
     const queryParams = {
       codes: codes,
       status: status
@@ -51,7 +51,7 @@ export class TransferService {
   }
 
   public getLabInfo(status: string = 'Active'): Observable<any> {
-    const apiUrl = this.LOCAL_API_URL + '/v1/location/AtLab';
+    const apiUrl = this.baseUrl + '/v1/location/AtLab';
     const queryParams = {
       status: status
     };
@@ -69,7 +69,7 @@ export class TransferService {
   }
 
   public getUnitInfo(locationId: string, status: string = 'Active'): Observable<any> {
-    const apiUrl = this.LOCAL_API_URL + '/v1/location/AtUnit';
+    const apiUrl = this.baseUrl + '/v1/location/AtUnit';
     const queryParams = {
       locationId: locationId,
       status: status
@@ -88,7 +88,7 @@ export class TransferService {
   }
 
   public getStorageAreas(atLabId: string, atUnitId: string, status: string = 'Active'): Observable<any> {
-    const apiUrl = this.LOCAL_API_URL + '/v1/custody/area';
+    const apiUrl = this.baseUrl + '/v1/custody/area';
     const queryParams = {
       atLabId: atLabId,
       atUnitId: atUnitId,
@@ -108,7 +108,7 @@ export class TransferService {
   }
 
   public getStorageLocations(storageAreaId: string, status: string = 'Active'): Observable<any> {
-    const apiUrl = this.LOCAL_API_URL + '/v1/custody/location';
+    const apiUrl = this.baseUrl + '/v1/custody/location';
     const queryParams = {
       custodyAreaId: storageAreaId,
       status: status
@@ -127,7 +127,7 @@ export class TransferService {
   }
 
   public getEmployeeById(empid: string): Observable<any> {
-    const apiUrl = this.LOCAL_API_URL + '/v1/employee';
+    const apiUrl = this.baseUrl + '/v1/employee';
 
     return this.httpClient
     .get(apiUrl,
@@ -147,7 +147,7 @@ export class TransferService {
   }
 
   public getTransferReasons(ids?: string[], status?: 'Active' | 'Inactive'): Observable<any[]> {
-    const apiUrl = this.LOCAL_API_URL + '/v1/transferReason';
+    const apiUrl = this.baseUrl + '/v1/transferReason';
 
     return this.httpClient
     .get(apiUrl,
@@ -170,7 +170,7 @@ export class TransferService {
   }
 
   public sendTransferInfo(body: any, batchID: string): Observable<any> {
-    const apiUrl = this.LOCAL_API_URL + '/v1/evidencetransfer/validate';
+    const apiUrl = this.baseUrl + '/v1/evidencetransfer/validate';
     const queryParams = {
       batchID: batchID
     };
