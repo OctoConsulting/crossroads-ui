@@ -156,10 +156,6 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
       storageAreaID: form.get('storageArea').value.storageAreaId,
       storageLocationID: form.get('storageLocation').value.storageLocationId,
       transferReason: form.get('transferReason').value ? form.get('transferReason').value.transferReasonId : '',
-<<<<<<< Updated upstream
-      transferType: form.get('transferType').value.transferType,
-=======
->>>>>>> Stashed changes
       witness1ID: form.get('witnessOne').value.employeeID,
       witness1Pwd: form.get('witnessOnePassword').value,
       witness1UserName: form.get('witnessOne').value.userName,
