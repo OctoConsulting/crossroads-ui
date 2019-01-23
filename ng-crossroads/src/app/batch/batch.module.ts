@@ -5,9 +5,15 @@ import { MatTableModule } from '@angular/material/table';
 import { BatchComponent } from './batch.component';
 import { BatchRoutingModule } from './batch-routing.module';
 import { BatchDisplayComponent } from './batch-display/batch-display.component';
-import { MatSortModule, MatPaginatorModule, MatProgressBarModule, MatProgressSpinnerModule } from '@angular/material';
+import {
+  MatSortModule,
+  MatPaginatorModule,
+  MatProgressBarModule,
+  MatProgressSpinnerModule,
+  MatButtonModule,
+  MatIconModule
+} from '@angular/material';
 import {MatTreeModule} from '@angular/material/tree';
-import {MatIconModule} from '@angular/material'
 
 
 @NgModule({
@@ -25,6 +31,7 @@ import {MatIconModule} from '@angular/material'
     MatProgressSpinnerModule,
     MatTreeModule,
     MatIconModule,
+    MatButtonModule
   ]
 })
 export class BatchModule { }
