@@ -5,6 +5,11 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { MatPaginatorModule} from '@angular/material/paginator';
+import { MatProgressBarModule} from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatTreeModule} from '@angular/material/tree';
+import { MatTableModule} from '@angular/material/table';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 import { appReducer } from './store/reducers/app.reducer';
@@ -44,6 +49,11 @@ import { authReducer } from './store/reducers/auth.reducer';
     MatToolbarModule,
     MatSidenavModule,
     MatIconModule,
+    MatPaginatorModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatTableModule,
+    MatTreeModule,
     HttpClientModule,
     MatListModule,
   ],

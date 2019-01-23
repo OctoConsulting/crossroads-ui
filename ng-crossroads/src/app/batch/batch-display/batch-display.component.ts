@@ -1,24 +1,37 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Injectable } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DashboardService } from '../../services/dashboard.service';
-import { MatPaginator, MatSort } from '@angular/material';
+import {merge, Observable, of as observableOf,BehaviorSubject} from 'rxjs';
+import {catchError, map, startWith, switchMap} from 'rxjs/operators';
+import {MatSort } from '@angular/material/sort';
+import {MatPaginator } from '@angular/material/paginator';
+import {FlatTreeControl} from '@angular/cdk/tree';
+import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
+import {MatTreeModule} from '@angular/material/tree';
+import {CollectionViewer, SelectionChange} from '@angular/cdk/collections';
+
 
 export interface BatchElement {
   batchId: any;
   batchName: any;
-  employeeId: any;
   evidenceCount: any;
   expires: any;
 }
 
+export interface BatchResults {
+  items: BatchElement[];
+  total_count: number;
+}
+
 export interface EvidenceElement {
+  level : any;
+  evidenceSubmissionId : any;
   evidence: any;
   evidence1B: any;
   description: any;
+  location: any;
   status: any;
-  evidenceSubmissionId: any;
-  batchId: any;
 }
 
 @Component({
@@ -28,65 +41,151 @@ export interface EvidenceElement {
 })
 export class BatchDisplayComponent implements OnInit {
 
-  dataSource: BatchElement[] = [];
+  constructor(private formBuilder: FormBuilder, private router: Router, private dashboardService: DashboardService) { 
+  }
+  
+  data: BatchElement[] = [];
   dataSourceEvidence: EvidenceElement[] = [];
+  isLoadingResults = true;
+  resultsLength = 0;
+  totalBatchCount = 0;
+  selectedRowIndex: number = -1;
+  batchRowName : any;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  displayedColumns: string[] = ['batchId', 'batchName', 'employeeId', 'evidenceCount', 'expires'];
-  displayedColumnsEvidence: string[] = ['batchId', 'evidence', 'evidence1B', 'description', 'status', 'evidenceSubmissionId'];
+  displayedColumns: string[] = [ 'batchName', 'batchId','evidenceCount', 'expires'];
+  displayedColumnsEvidence: string[] = ['evidence', 'level', 'evidenceSubmissionId', 'evidence1B', 'description', 'location' ,'status'];
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private dashboardService: DashboardService) { }
 
-  public data = '{"data":[  {  "data":{  "name":"Andrew","gender":"Male"}, "children":[{  "data":{   "name":"Andrewson", "gender":"Male"  },"children":[  {  "data":{  "name":"Eric", "gender":"Male"}}        ]}]}]}';
 
   ngOnInit() {
-    this.showDashboard('');
+  
+   if(this.sort) {
+    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
   }
 
-  showDashboard(searchString?: string) {
-    // console.log("cookie getall ::: " + JSON.stringify(this.cookieService.getAll()));
-    this.dashboardService.getDashboardData('63718', '2000', '1', '10', 'Name', 'ASC').subscribe((response) => {
-      console.log(response);
-      this.dataSource = this.getBatchData(response);
-      return response;
+    merge(this.sort.sortChange, this.paginator.page)
+      .pipe(
+        startWith({}),
+        switchMap(() => {
+          return this!.showDashboard(this.sort.active, this.sort.direction, this.paginator.pageIndex);
+        }),
+        map(result => {
+          this.resultsLength = result.total_count;
+          return result.items;
+        }),
+        catchError(() => {
+          return observableOf([]);
+        })
+      ).subscribe(data => this.data = data);
+  }
+
+  showPageEvent(event:any){
+    this!.showDashboard(this.sort.active, this.sort.direction, event.pageIndex);
+  }
+
+  showDashboard(sort: string, order: string, page: number,searchString?: string) : Observable<BatchResults>{
+    let pageString = page +1 + "";
+    let result;
+    this.dashboardService!.getDashboardData('63718', '90', pageString, '5', 'Name', order?order:'desc').subscribe((response) => {
+      result = this.getBatchData(response);
+      this.data = result.items;
+      this.resultsLength = result.total_count;
+     return result;
+     
     });
 
+    return result;
   }
 
   getBatchData(responseData: any) {
-    if (responseData) {
-      const results = responseData["batchList"];
-      const resultArr: BatchElement[] = [];
-      for (const result of results) {
+
+      let results = responseData["batchList"];
+      let batchResult = {
+        items  : [],
+        total_count : 0
+      };
+      let resultArr: BatchElement[] = [];
+      for (let result of results) {
         resultArr.push({
-          batchId: result["batchId"], batchName: result["batchName"], employeeId: result["employeeId"],
+          batchId: result["batchId"], batchName: result["batchName"], 
           evidenceCount: result["evidenceCount"], expires: result["expires"]
         });
       }
-      return resultArr;
-    }
+
+      batchResult.items = resultArr;
+      batchResult.total_count = responseData["totalCounts"];
+      return batchResult;
   }
 
   getEvidence(row) {
     this.dashboardService.getEvidenceData(row["batchId"]).subscribe((response) => {
-      this.dataSourceEvidence = this.getEvidenceResponseData(response);
+      this.dataSourceEvidence = this.getEvidenceResponseData(response,0);
       return response;
     });
   }
 
-  getEvidenceResponseData(responseData: any) {
-    const resultsEmbedded = responseData["_embedded"];
+  getEvidenceResponseData(responseData: any, level: any) {
+    let resultsEmbedded = responseData["_embedded"];
     if (resultsEmbedded) {
-      const results = resultsEmbedded["evidenceList"];
-      const resultArr: EvidenceElement[] = [];
-      for (const result of results) {
+      let results = resultsEmbedded["evidenceList"];
+      debugger;
+      let resultArr: EvidenceElement[] = [];
+      for (let result of results) {
         resultArr.push({
-          batchId: result["batchId"], evidence: result["evidence"], evidence1B: result["evidence1B"],
-          description: result["description"], status: result["status"],
-          evidenceSubmissionId: result["evidenceSubmissionId"]
+          level : level+1,
+          evidenceSubmissionId : result["evidenceSubmissionId"],
+          evidence: result["evidence"], evidence1B: result["evidence1B"],
+          description: result["description"],location: result["location"], status: result["status"]
         });
       }
       return resultArr;
     }
   }
+
+  getChildEvidence(row) {
+    this.dashboardService.getEvidenceHierarchyData(row["evidenceSubmissionId"]).subscribe((response) => {
+      let responseEvidenceData : EvidenceElement[] = [];
+      responseEvidenceData = this.getEvidenceResponseData(response,row["level"]);
+      let previousData = [...this.dataSourceEvidence];
+      this.dataSourceEvidence = [];
+      for(let item of previousData)  {
+        this.dataSourceEvidence.push(item);
+        if(item.evidenceSubmissionId == row["evidenceSubmissionId"]){
+          if(responseEvidenceData && responseEvidenceData.length>0) {
+            for (let result of responseEvidenceData) {
+              debugger
+              if(!previousData.some((item) => item["evidenceSubmissionId"] == result["evidenceSubmissionId"]))
+              this.dataSourceEvidence.push(result);
+            }
+          }
+        }
+      }
+       
+      this.dataSourceEvidence = [...this.dataSourceEvidence];
+      console.log(response);
+      return response;
+    });
+  }
+
+  highlight(row){
+      this.selectedRowIndex = row.batchId;
+      this.batchRowName = row.batchName;
+  }
+
+  addPadding(padding:any){
+      if(!padding){
+        padding =0;
+      }else {
+        padding = padding-1;
+      }
+      
+        let styles = {
+          'margin-left': padding*20 + 'px'
+        };
+        return styles;
+    
+  }
+
 }
