@@ -137,7 +137,7 @@
         </mat-form-field>
       </div>
     </div>
-    <div class="half-block-wrapper" *ngIf="requiredWitnessCount > 0">
+    <div class="half-block-wrapper">
       <div class="half-block">
         <h6>Witness 1</h6>
         <mat-form-field>
@@ -160,8 +160,8 @@
           </mat-error>
         </mat-form-field>
 
-        <h6 *ngIf="requiredWitnessCount > 1">Witness 2</h6>
-        <mat-form-field *ngIf="requiredWitnessCount > 1">
+        <h6>Witness 2</h6>
+        <mat-form-field>
           <input  matInput
             type="text"
             placeholder="Start typing"
@@ -193,8 +193,8 @@
           </mat-error>
         </mat-form-field>
 
-        <h6 *ngIf="requiredWitnessCount > 1 && form.get('witnessTwo').value">Witness 2 Password</h6>
-        <mat-form-field *ngIf="requiredWitnessCount > 1 && form.get('witnessTwo').value">
+        <h6 *ngIf="form.get('witnessTwo').value">Witness 2 Password</h6>
+        <mat-form-field *ngIf="form.get('witnessTwo').value">
           <input
             matInput
             type="password"
@@ -208,7 +208,7 @@
 
     <div class="app flex">
       <span>
-        <button class="bottom-button" mat-raised-button color='warn' [routerLink]="['/batches']">Cancel</button>
+        <button class="bottom-button" mat-raised-button color='warn' (click)="onCancel()">Cancel</button>
       </span>
       <span>
         <button class="bottom-button" mat-raised-button color="primary" type="submit"

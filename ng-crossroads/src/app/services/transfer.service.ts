@@ -170,7 +170,7 @@ export class TransferService {
   }
 
   public sendTransferInfo(body: any, batchID: string): Observable<any> {
-    const apiUrl = this.baseUrl + '/v1/evidencetransfer/validate';
+    const apiUrl = this.baseUrl + '/v1/evidencetransfer/';
     const queryParams = {
       batchID: batchID
     };
