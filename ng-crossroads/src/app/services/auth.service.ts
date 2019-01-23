@@ -1,14 +1,14 @@
 
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 import { User } from '../models/user';
 
 @Injectable()
 export class AuthService {
-  private BASE_URL = 'http://crossservice.us-west-1.elasticbeanstalk.com/crossroads/v1/login';
+  private BASE_URL = environment.baseUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -21,7 +21,7 @@ export class AuthService {
   }
 
   logIn(email: string, password: string): Observable<any> {
-    const url = `${this.BASE_URL}`;
+    const url = `${this.BASE_URL}/v1/login`;
     const token = this.encodeAuthToken(email, password);
     return this.http.post<User>(
       url,

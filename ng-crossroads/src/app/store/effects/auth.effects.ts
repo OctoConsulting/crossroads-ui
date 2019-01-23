@@ -33,10 +33,12 @@ export class AuthEffects {
           .pipe(
             // Temporary Fix Until Content-type is fixed on API
             catchError((response) => {
+              console.log(response);
               return of(response);
             }),
             map((user) => {
               const text = user.error.text;
+              console.log(text);
               if (text) {
                 return new LogInSuccess({token: text, email: payload.email, id: ''});
               } else {

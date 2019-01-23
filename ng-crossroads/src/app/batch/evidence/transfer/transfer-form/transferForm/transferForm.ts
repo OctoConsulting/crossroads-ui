@@ -7,6 +7,12 @@ export interface TransferForm {
   empPassword?: any;
   lab?: any;
   unit?: any;
+  storageArea?: any;
+  storageLocation?: any;
+  witnessOne?: any;
+  witnessOnePassword?: any;
+  witnessTwo?: any;
+  witnessTwoPassword?: any;
 }
 
 export const transferFormFields: FormlyFieldConfig[] = [

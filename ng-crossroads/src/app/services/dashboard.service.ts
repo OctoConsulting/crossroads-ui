@@ -6,7 +6,7 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class DashboardService {
   constructor(private httpClient: HttpClient) { };
-  API_URL = 'http://crossapi.us-west-1.elasticbeanstalk.com/crossroads';
+  API_URL = environment.baseUrl;
 
   baseUrl = environment.baseUrl;
   getDashboardData(empid: string, days: string, pageNum: string, limit: string, orderBy: string, sortBy: string, searchString?: any) {
@@ -28,13 +28,14 @@ export class DashboardService {
     }));
   }
 
-  getEvidenceData(batchId: string) {
+  getEvidenceData(batchId: string, hierarchy: boolean = false) {
     const apiUrl = this.API_URL + '/v1/evidence';
 
     return this.httpClient.get(apiUrl,
       {
         params: {
-          batchId: batchId
+          batchId: batchId,
+          hierarchy: hierarchy.toString()
         }
       }
     ).pipe(map(data => {

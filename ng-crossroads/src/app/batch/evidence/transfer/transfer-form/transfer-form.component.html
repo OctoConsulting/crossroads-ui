@@ -1,4 +1,4 @@
-<form [formGroup]="form" (ngSubmit)="submit(model)">
+<!-- <form [formGroup]="form" (ngSubmit)="submit(model)">
   <formly-form [form]="form" [fields]="fields" [model]="model">
     <div class="app flex">
       <span>
@@ -9,4 +9,211 @@
       </span>
     </div>
   </formly-form>
-</form>
+</form> -->
+
+<div class="transfer-form">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <hr />
+    <div class="half-block-wrapper">
+      <div class="half-block">
+        <h6>Transfer Type</h6>
+        <mat-form-field>
+          <mat-select
+            formControlName="transferType" [disabled]="true">
+            <mat-option>---Select---</mat-option>
+            <mat-option
+              *ngFor="let type of types"
+              [value]="type">
+              {{type.transferType}}
+            </mat-option>
+          </mat-select>
+          <mat-error
+              *ngIf="isThereError('transferType','required')">Required
+          </mat-error>
+          <mat-error *ngIf="!isThereError('transferType', 'required') && isThereError('transferType','customError')">
+            {{getErrorMessage('transferType')}}
+          </mat-error>
+        </mat-form-field>
+
+        <h6>By Employee</h6>
+        <mat-form-field>
+          <input matInput placeholder="{{getEmployeeName()}}" readonly/>
+        </mat-form-field>
+
+        <h6>At Lab</h6>
+        <mat-form-field>
+          <mat-select formControlName="atLab">
+            <mat-option>---Select---</mat-option>
+            <mat-option
+              *ngFor="let lab of labs"
+              [value]="lab">{{lab.locationName}}</mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="isThereError('atLab','required')">Required
+          </mat-error>
+          <mat-error *ngIf="!isThereError('atLab', 'required') && isThereError('atLab','customError')">
+            {{getErrorMessage('atLab')}}
+          </mat-error>
+        </mat-form-field>
+
+        <h6>At Unit</h6>
+        <mat-form-field>
+          <mat-select formControlName="atUnit" 
+          [disabled]="!form.get('atLab').value">
+            <mat-option>--Select--</mat-option>
+            <mat-option *ngFor="let unit of units"
+              [value]="unit">{{unit.organizationName}}</mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="isThereError('atUnit','required')">Required
+          </mat-error>
+          <mat-error *ngIf="!isThereError('atUnit', 'required') && isThereError('atUnit','customError')">
+            {{getErrorMessage('atUnit')}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="half-block">
+        <h6>Transfer Reason (Optional)</h6>
+        <mat-form-field>
+          <mat-select formControlName="transferReason">
+            <mat-option>--None--</mat-option>
+            <mat-option *ngFor="let reason of transferReasons" [value]="reason">{{reason.transferReason}}</mat-option>
+          </mat-select>
+          <mat-error>Needs Attention</mat-error>
+        </mat-form-field>
+
+        <h6>Employee Password</h6>
+        <mat-form-field>
+          <input matInput 
+                type="password"
+                formControlName="employeePassword" />
+          <mat-error
+                *ngIf="isThereError('employeePassword','required')">Required
+          </mat-error>
+          <mat-error *ngIf="!isThereError('employeePassword', 'required') && isThereError('employeePassword','customError')">
+            {{getErrorMessage('employeePassword')}}
+          </mat-error>
+        </mat-form-field>
+
+        <h6>Comments (Optional)</h6>
+        <mat-form-field>
+          <textarea matInput formControlName="comments"> </textarea>
+        </mat-form-field>
+      </div>
+    </div>
+    <hr />
+    <div class="half-block-wrapper">
+      <div class="half-block">
+        <h6>Storage Area</h6>
+        <mat-form-field>
+          <mat-select
+            formControlName="storageArea"
+            [disabled]="!form.get('atLab').valid || !form.get('atUnit').valid">
+            <mat-option *ngFor="let area of storageAreas" [value]="area">{{area.storageAreadescription}}</mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="isThereError('storageArea','required')">Required
+          </mat-error>
+          <mat-error *ngIf="!isThereError('storageArea', 'required') && isThereError('storageArea','customError')">
+            {{getErrorMessage('storageArea')}}
+          </mat-error>
+        </mat-form-field>
+
+        <h6>Storage Location</h6>
+        <mat-form-field>
+          <mat-select
+            formControlName="storageLocation"
+            [disabled]="!form.get('storageArea').valid">
+            <mat-option>--None--</mat-option>
+            <mat-option *ngFor="let location of storageLocations" [value]="location">{{location.storageLocationDescription}}</mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="isThereError('storageLocation','required')">A location is required for the storage area selected.
+          </mat-error>
+          <mat-error *ngIf="!isThereError('storageLocation', 'required') && isThereError('storageLocation','customError')">
+            {{getErrorMessage('storageLocation')}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="half-block-wrapper" *ngIf="requiredWitnessCount > 0">
+      <div class="half-block">
+        <h6>Witness 1</h6>
+        <mat-form-field>
+          <input  matInput
+                  type="text"
+                  placeholder="Start typing"
+                  formControlName="witnessOne"
+                  [matAutocomplete]="autoWitnessOne"/>
+          <mat-autocomplete #autoWitnessOne="matAutocomplete" [displayWith]="displayName">
+            <mat-option *ngFor="let witness of witnessListFilterOptions.witnessOneFilterOptions | async" [value]="witness">
+              {{witness.displayName}}
+            </mat-option>
+          </mat-autocomplete>
+          <!-- <mat-select formControlName="witnessOne">
+            <mat-option>---None---</mat-option>
+            <mat-option *ngFor="let witness of witnessListOne" [value]="witness">{{witness.displayName}}</mat-option>
+          </mat-select> -->
+          <mat-error
+            *ngIf="isThereError('witnessOne','required')">Required
+          </mat-error>
+        </mat-form-field>
+
+        <h6 *ngIf="requiredWitnessCount > 1">Witness 2</h6>
+        <mat-form-field *ngIf="requiredWitnessCount > 1">
+          <input  matInput
+            type="text"
+            placeholder="Start typing"
+            formControlName="witnessTwo"
+            [matAutocomplete]="autoWitnessTwo"/>
+          <mat-autocomplete #autoWitnessTwo="matAutocomplete" [displayWith]="displayName">
+            <mat-option *ngFor="let witness of witnessListFilterOptions.witnessTwoFilterOptions | async" [value]="witness">
+              {{witness.displayName}}
+            </mat-option>
+          </mat-autocomplete>
+          <!-- <mat-select formControlName="witnessTwo">
+            <mat-option>--None--</mat-option>
+            <mat-option *ngFor="let witness of witnessListTwo" [value]="witness">{{witness.displayName}}</mat-option>
+          </mat-select> -->
+          <mat-error
+            *ngIf="isThereError('witnessTwo','required')">Required
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="half-block">
+        <h6 *ngIf="form.get('witnessOne').value">Witness 1 Password</h6>
+        <mat-form-field *ngIf="form.get('witnessOne').value">
+          <input
+            matInput
+            type="password"
+            formControlName="witnessOnePassword" />
+          <mat-error
+            *ngIf="isThereError('witnessOnePassword','required')">Required
+          </mat-error>
+        </mat-form-field>
+
+        <h6 *ngIf="requiredWitnessCount > 1 && form.get('witnessTwo').value">Witness 2 Password</h6>
+        <mat-form-field *ngIf="requiredWitnessCount > 1 && form.get('witnessTwo').value">
+          <input
+            matInput
+            type="password"
+            formControlName="witnessTwoPassword" />
+          <mat-error
+            *ngIf="isThereError('witnessTwoPassword','required')">Required
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="app flex">
+      <span>
+        <button class="bottom-button" mat-raised-button color='warn' [routerLink]="['/batches']">Cancel</button>
+      </span>
+      <span>
+        <button class="bottom-button" mat-raised-button color="primary" type="submit"
+          >Continue Transfer</button>
+      </span>
+    </div>
+  </form>
+</div>

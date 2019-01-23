@@ -6,7 +6,7 @@ import {
   HttpRequest,
   HttpErrorResponse
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
@@ -23,15 +23,13 @@ export class TokenInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.authService = this.injector.get(AuthService);
     const token: string = this.authService.getToken();
-
     if (token) {
       request = request.clone({
         setHeaders: {
-          'Cookie': `${token}`,
+          'x-auth-token': `${token}`,
         }
       });
     }
-
     return next.handle(request);
   }
 
@@ -50,7 +48,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             localStorage.removeItem('userId');
             this.router.navigateByUrl('/login');
           }
-          return Observable.throw(response);
+          return throwError(response);
         })
       );
   }
