@@ -13,7 +13,7 @@ import { Observable } from 'rxjs';
 export class EvidenceTableComponent implements OnInit {
 
   public evidence: Observable<EvidenceElement[]>;
-  public evidenceColumns: string[] = ['batchId', 'evidence', 'evidence1B', 'description', 'status', 'evidenceSubmissionId'];
+  public evidenceColumns: string[] = [ 'evidence', 'evidence1B', 'description', 'status', 'evidenceSubmissionId'];
   public batchId: number;
 
   constructor(public dashboardService: DashboardService,
@@ -47,14 +47,7 @@ export class EvidenceTableComponent implements OnInit {
       const results = resultsEmbedded['evidenceList'];
       const resultArr: EvidenceElement[] = [];
       for (const result of results) {
-        resultArr.push({
-          batchId: result['batchId'],
-          evidence: result['evidence'],
-          evidence1B: result['evidence1B'],
-          description: result['description'],
-          status: result['status'],
-          evidenceSubmissionId: result['evidenceSubmissionId']
-        });
+       
       }
       return resultArr;
     }
