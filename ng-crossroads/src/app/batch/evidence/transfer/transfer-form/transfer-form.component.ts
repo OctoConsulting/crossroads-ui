@@ -151,11 +151,11 @@ export class TransferFormComponent implements AfterViewInit, OnInit {
       storageAreaID: form.get('storageArea').value.storageAreaId,
       storageLocationID: form.get('storageLocation').value.storageLocationId,
       transferReason: form.get('transferReason').value ? form.get('transferReason').value.transferReasonId : '',
-      witness1ID: form.get('witnessOne').value.employeeID,
+      witness1ID: form.get('witnessOne').value ? form.get('witnessOne').value.employeeID : '',
       witness1Pwd: form.get('witnessOnePassword').value,
       witness1UserName: form.get('witnessOne').value.userName,
       witness1Validated: false,
-      witness2ID: form.get('witnessTwo').value.employeeID,
+      witness2ID: form.get('witnessTwo').value ? form.get('witnessTwo').value.employeeID : '',
       witness2Pwd: form.get('witnessTwoPassword').value,
       witness2UserName: form.get('witnessTwo').value.employeeID,
       witness2Validated: false
