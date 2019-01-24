@@ -6,7 +6,6 @@ export const loginForm: FormlyFieldConfig[] = [
     type: 'input',
     templateOptions: {
       label: 'Email Address',
-      placeholder: 'lynne.johnson@octoconsulting.com'
     }
   },
   {
@@ -14,7 +13,6 @@ export const loginForm: FormlyFieldConfig[] = [
     type: 'input',
     templateOptions: {
       label: 'Password',
-      placeholder: 'PW is 1234'
     }
   }
 ];
