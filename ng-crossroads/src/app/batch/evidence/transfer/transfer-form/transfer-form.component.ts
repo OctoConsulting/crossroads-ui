@@ -15,7 +15,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: './transfer-form.component.html',
   styleUrls: ['./transfer-form.component.scss']
 })
-export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
+export class TransferFormComponent implements AfterViewInit, OnInit {
 
   public form: FormGroup;
   // public form = new FormGroup({employee: new FormControl({value: '', disabled: true})});
@@ -46,7 +46,8 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
     private store: Store<AuthState>,
     private transferService: TransferService,
     private fb: FormBuilder,
-    private router: Router) {}
+    private router: Router,
+    private route: ActivatedRoute) {}
 
   public ngOnInit () {
     const URLSegments = this.router.url.split('/');
@@ -61,15 +62,13 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
         this.form.get('byEmployee').setValue(responses[0][0]);
         this.types = responses[1];
         this.requiredWitnessCount = this.types[0].requiredWitnessCount;
-        this.requiredWitnessCount = 2;
-        if (this.requiredWitnessCount > 0) {
-          this.initWitnessFormDropdown('', 'witnessOne', 'witnessOneFilterOptions');
-          this.form.get('witnessOnePassword').setValidators([Validators.required]);
-        }
-        if (this.requiredWitnessCount > 1) {
-          this.form.get('witnessTwo').setValidators([Validators.required]);
-          this.form.get('witnessTwoPassword').setValidators([Validators.required]);
-        }
+        // this.requiredWitnessCount = 2;
+        this.initWitnessFormDropdown('', 'witnessOne', 'witnessOneFilterOptions');
+        // this.form.get('witnessOnePassword').setValidators([Validators.required]);
+        // if (this.requiredWitnessCount > 1) {
+        //   this.form.get('witnessTwo').setValidators([Validators.required]);
+        //   // this.form.get('witnessTwoPassword').setValidators([Validators.required]);
+        // }
         this.form.get('transferType').setValue(this.types[0]);
         this.labs = responses[2];
         const selectedLab = this.labs.find( lab => lab.isDefault);
@@ -82,7 +81,6 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
     );
   }
 
-  public ngOnDestroy () {}
 
   public submit(): void {
     if (this.form.valid) {
@@ -95,6 +93,7 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
         },
         error => {
           //Error handling
+          // console.log('here error');
           console.log(error);
           this.setErrorMessages(error);
         }
@@ -107,7 +106,7 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   private initWitnessFormDropdown(exceptIds: string, formName: string, filterOptionList: string): void {
-    this.form.get(formName).setValidators([Validators.required]);
+    // this.form.get(formName).setValidators([Validators.required]);
     this.getWitnesses(exceptIds).subscribe(
       response => {
         if (formName === 'witnessOne') {
@@ -152,13 +151,13 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
       storageAreaID: form.get('storageArea').value.storageAreaId,
       storageLocationID: form.get('storageLocation').value.storageLocationId,
       transferReason: form.get('transferReason').value ? form.get('transferReason').value.transferReasonId : '',
-      witness1ID: form.get('witnessOne').value.employeeID,
+      witness1ID: form.get('witnessOne').value ? form.get('witnessOne').value.employeeID : '',
       witness1Pwd: form.get('witnessOnePassword').value,
-      witness1UserName: form.get('witnessOne').value.userName,
+      witness1UserName: form.get('witnessOne').value ? form.get('witnessOne').value.userName : '',
       witness1Validated: false,
-      witness2ID: form.get('witnessTwo').value.employeeID,
+      witness2ID: form.get('witnessTwo').value ? form.get('witnessTwo').value.employeeID : '',
       witness2Pwd: form.get('witnessTwoPassword').value,
-      witness2UserName: form.get('witnessTwo').value.employeeID,
+      witness2UserName: form.get('witnessTwo').value ? form.get('witnessTwo').value.userName : '',
       witness2Validated: false
     };
     return body;
@@ -256,7 +255,7 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
         this.transferService.getStorageLocations(newValue.storageAreaId, 'Active')
             .subscribe(
               response => {
-                console.log('here');
+                // console.log('here');
                 this.storageLocations = response;
                 if (this.storageLocations) {
                   this.form.get('storageLocation').setValue(this.storageLocations[0]);
@@ -300,13 +299,15 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   private setErrorMessages(error: HttpErrorResponse): void {
-    if (error instanceof HttpErrorResponse) {
+    if (error instanceof HttpErrorResponse && error.error) {
+      console.log('here');
       error.error.forEach( errorItem => {
         let fieldName = '';
         switch (errorItem.fieldName) {
           case 'transferType':
             fieldName = 'transferType';
             break;
+          case 'EmployeeAuthorization':
           case 'employeeValidated':
             fieldName = 'employeePassword';
             break;
@@ -338,5 +339,9 @@ export class TransferFormComponent implements AfterViewInit, OnInit, OnDestroy {
         });
       });
     }
+  }
+
+  public onCancel(): void {
+    this.router.navigate(['/batches']);
   }
 }
