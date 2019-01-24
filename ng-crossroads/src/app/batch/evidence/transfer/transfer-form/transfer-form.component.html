@@ -121,7 +121,7 @@
           </mat-error>
         </mat-form-field>
 
-        <h6>Storage Location</h6>
+        <h6>Storage Location {{form.get('storageArea').value && !form.get('storageArea').value.requiresLocation ? '(Optional)' : ''}}</h6>
         <mat-form-field>
           <mat-select
             formControlName="storageLocation"
