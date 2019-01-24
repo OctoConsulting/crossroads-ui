@@ -1,14 +1,15 @@
 <h2>Batch</h2>
 
-
 <div class="example-container mat-elevation-z8">
   <!-- <div class="example-loading-shade"
     *ngIf="isLoadingResults">
   
   </div> -->
+  <mat-progress-bar mode="indeterminate" *ngIf="loadingBatch"></mat-progress-bar>
   <div class="example-table-container">
     <table mat-table [dataSource]="data" class="example-table"
            matSort (matSortChange)="sortData($event)" matSortActive="expires" matSortDisableClear matSortDirection="asc">
+           
       <!-- Number Column -->
       <ng-container matColumnDef="batchId" [style.display]="'none'">
         <th mat-header-cell *matHeaderCellDef [style.display]="'none'">Batch ID</th>
@@ -51,17 +52,33 @@
   <div class="example-container"><h4>Evidence For Batch : {{batchRowName}}</h4>  </div>
 
   <div class="example-container mat-elevation-z8">
-
+      <mat-progress-bar mode="indeterminate" *ngIf="loadingEvidence"></mat-progress-bar>
     <div class="example-table-container">
       <mat-table [dataSource]="dataSourceEvidence" class="example-table">
 
-         
+
             <!-- matSort matSortActive="created" matSortDisableClear matSortDirection="asc"> -->
         <!-- Title Column -->
         
         <ng-container matColumnDef="evidence">
           <mat-header-cell  *matHeaderCellDef>Evidence</mat-header-cell>
-          <mat-cell *matCellDef="let row" ><span [ngStyle]="addPadding(row.level)">{{row.evidence}}</span></mat-cell>
+          
+          <mat-cell *matCellDef="let row" >
+            <span [ngStyle]="addPadding(row.level)">
+             
+                <span *ngIf="row['hasChildren']">
+                  <span *ngIf="!row['expanded']">
+                    <mat-icon (click)="getChildEvidence(row)">chevron_right</mat-icon>
+                  </span>
+                  <span *ngIf="row['expanded']">
+                      <mat-icon (click)="removeChildEvidence(row)">expand_more</mat-icon>
+                  </span>
+              </span>
+              <span *ngIf="!row['hasChildren']" class="fix-width"></span>
+            
+            {{row.evidence}}
+            </span>
+          </mat-cell>
         </ng-container>
         <ng-container matColumnDef="level" >
           <mat-header-cell  *matHeaderCellDef [style.display]="'none'">level</mat-header-cell>
@@ -99,10 +116,21 @@
             </mat-header-cell>
             <mat-cell *matCellDef="let row" [style.display]="'none'">{{row.evidenceSubmissionId}}</mat-cell>
           </ng-container>
-
+          <ng-container matColumnDef="hasChildren">
+            <mat-header-cell  *matHeaderCellDef disableClear [style.display]="'none'">
+              hasChildren
+            </mat-header-cell >
+            <mat-cell *matCellDef="let row" [style.display]="'none'" >{{row.hasChildren}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="expanded">
+            <mat-header-cell  *matHeaderCellDef disableClear [style.display]="'none'">
+              expanded
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row" [style.display]="'none'">{{row.expanded}}</mat-cell>
+          </ng-container>
         
         <mat-header-row *matHeaderRowDef="displayedColumnsEvidence; sticky: true"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumnsEvidence;" (click)="getChildEvidence(row)"></mat-row>
+        <mat-row *matRowDef="let row; columns: displayedColumnsEvidence;" ></mat-row>
       </mat-table>
     </div>
   </div>
