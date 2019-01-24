@@ -95,13 +95,11 @@ export class TransferFormComponent implements AfterViewInit, OnInit {
           //YAY TO DO
           console.log(response);
           const queryParams = {
-            successInfo: {
-              batchName: this.route.queryParams['name'],
-              storageArea: this.form.get('storageArea').value.storageAreaDescription,
-              storageLocation: this.form.get('storageLocation').value.storageLocationDescription
-            }
+            storageArea: this.form.get('storageArea').value.storageAreadescription,
+            storageLocation: this.form.get('storageLocation').value.storageLocationDescription
           };
-          this.router.navigate(['/batches'], {queryParams: queryParams});
+          console.log(queryParams);
+          this.router.navigate(['/batches'], {queryParams: queryParams, queryParamsHandling: 'merge'});
         },
         error => {
           //Error handling
@@ -163,7 +161,7 @@ export class TransferFormComponent implements AfterViewInit, OnInit {
       requiredWitnessCount: form.get('transferType').value.requiredWitnessCount,
       requiresLocation: form.get('storageArea').value.requiresLocation,
       storageAreaID: form.get('storageArea').value.storageAreaId,
-      storageLocationID: form.get('storageLocation').value ? form.get('storageLocation').value.storageLocationId : '',
+      storageLocationID: form.get('storageLocation').value ? form.get('storageLocation').value.storageLocationCode : '',
       transferReason: form.get('transferReason').value ? form.get('transferReason').value.transferReasonId : '',
       witness1ID: form.get('witnessOne').value ? form.get('witnessOne').value.employeeID : '',
       witness1Pwd: form.get('witnessOnePassword').value ? form.get('witnessOnePassword').value : '',
