@@ -23,14 +23,15 @@ export class AuthService {
   logIn(email: string, password: string): Observable<any> {
     const url = `${this.BASE_URL}/v1/login`;
     const token = this.encodeAuthToken(email, password);
-    return this.http.post<any>(
+    return this.http.post(
       url,
       {},
       {
         headers: {
           Authorization: `Basic ${token}`,
-        }
-      }
+        },
+        responseType: 'text'
+     },
     );
   }
 
