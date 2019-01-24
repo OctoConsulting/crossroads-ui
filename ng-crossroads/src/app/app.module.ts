@@ -28,7 +28,7 @@ import { DashboardService } from './services/dashboard.service';
 import { AuthGuardService as AuthGuard } from './services/auth-guard.service';
 import { TokenInterceptor, ErrorInterceptor } from './services/token.interceptor';
 import { authReducer } from './store/reducers/auth.reducer';
-
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -41,6 +41,7 @@ import { authReducer } from './store/reducers/auth.reducer';
     FormsModule,
     ReactiveFormsModule,
     FormlyModule.forRoot(),
+    ToastrModule.forRoot(),
     FormlyMaterialModule,
     FormlyBootstrapModule,
     StoreModule.forRoot({ app: appReducer, auth: authReducer }),

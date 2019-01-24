@@ -6,7 +6,8 @@ import { FormlyMaterialModule } from '@ngx-formly/material';
 import {  MatFormFieldModule,
           MatSelectModule,
           MatInputModule,
-          MatButtonModule
+          MatButtonModule,
+          MatProgressBarModule
         } from '@angular/material';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { TransferComponent } from './transfer.component';
@@ -26,7 +27,8 @@ import { TransferService } from 'src/app/services/transfer.service';
     MatSelectModule,
     MatInputModule,
     MatButtonModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatProgressBarModule
   ],
   declarations: [
     TransferComponent,

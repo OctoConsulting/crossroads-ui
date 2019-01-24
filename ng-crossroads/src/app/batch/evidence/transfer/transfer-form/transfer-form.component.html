@@ -10,7 +10,7 @@
     </div>
   </formly-form>
 </form> -->
-
+<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
 <div class="transfer-form">
   <form [formGroup]="form" (ngSubmit)="submit()">
     <hr />
@@ -109,6 +109,7 @@
         <mat-form-field>
           <mat-select
             formControlName="storageArea"
+            placeholder="Select a Storage Area"
             [disabled]="!form.get('atLab').valid || !form.get('atUnit').valid">
             <mat-option *ngFor="let area of storageAreas" [value]="area">{{area.storageAreadescription}}</mat-option>
           </mat-select>
@@ -217,3 +218,4 @@
     </div>
   </form>
 </div>
+<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
