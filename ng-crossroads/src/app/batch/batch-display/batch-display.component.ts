@@ -23,6 +23,8 @@ export interface BatchResults {
 export interface EvidenceElement {
   level: any;
   evidenceSubmissionId: any;
+  hasChildren : any;
+  expanded : any;
   evidence: any;
   evidence1B: any;
   description: any;
@@ -42,11 +44,14 @@ export class BatchDisplayComponent implements OnInit {
             private route: ActivatedRoute,
             private dashboardService: DashboardService,
             private toastr: ToastrService) {
+
   }
 
   data: BatchElement[] = [];
   dataSourceEvidence: EvidenceElement[] = [];
   isLoadingResults = true;
+  loadingBatch = false;
+  loadingEvidence = true;
   resultsLength = 0;
   totalBatchCount = 0;
   selectedRowIndex: number = -1;
@@ -57,7 +62,7 @@ export class BatchDisplayComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   displayedColumns: string[] = ['batchName', 'batchId', 'evidenceCount', 'expires'];
-  displayedColumnsEvidence: string[] = ['evidence', 'level', 'evidenceSubmissionId', 'evidence1B', 'description', 'location', 'status'];
+  displayedColumnsEvidence: string[] = ['evidence', 'level', 'evidenceSubmissionId', 'evidence1B', 'description', 'location', 'status','hasChildren','expanded'];
 
   get displayEvidenceElements(): boolean {
     return this.dataSourceEvidence && this.dataSourceEvidence.length > 0;
@@ -97,10 +102,12 @@ export class BatchDisplayComponent implements OnInit {
   showDashboard(sort: string, order: string, page: number, searchString?: string): Observable<BatchResults> {
     let pageString = page + 1 + "";
     let result;
+    this.loadingBatch = true;
     this.dashboardService!.getDashboardData('63718', '90', pageString, '5', 'Name', order ? order : 'desc').subscribe((response) => {
       result = this.getBatchData(response);
       this.data = result.items;
       this.resultsLength = result.total_count;
+      this.loadingBatch = false;
       return result;
 
     });
@@ -129,8 +136,10 @@ export class BatchDisplayComponent implements OnInit {
   }
 
   getEvidence(row) {
+    this.loadingEvidence = true;
     this.dashboardService.getEvidenceData(row["batchId"]).subscribe((response) => {
       this.dataSourceEvidence = this.getEvidenceResponseData(response, 0);
+      this.loadingEvidence = false;
       return response;
     });
   }
@@ -145,7 +154,9 @@ export class BatchDisplayComponent implements OnInit {
           level: level + 1,
           evidenceSubmissionId: result["evidenceSubmissionId"],
           evidence: result["evidence"], evidence1B: result["evidence1B"],
-          description: result["description"], location: result["location"], status: result["status"]
+          description: result["description"], location: result["area"]?result["area"]+":"+result["location"]:result["location"], status: result["status"],
+          hasChildren: result["hasChildren"]>0?true:false,
+          expanded : false
         });
       }
       return resultArr;
@@ -153,6 +164,7 @@ export class BatchDisplayComponent implements OnInit {
   }
 
   getChildEvidence(row) {
+    this.loadingEvidence = true;
     this.dashboardService.getEvidenceHierarchyData(row["evidenceSubmissionId"]).subscribe((response) => {
       let responseEvidenceData: EvidenceElement[] = [];
       responseEvidenceData = this.getEvidenceResponseData(response, row["level"]);
@@ -161,6 +173,7 @@ export class BatchDisplayComponent implements OnInit {
       for (let item of previousData) {
         this.dataSourceEvidence.push(item);
         if (item.evidenceSubmissionId == row["evidenceSubmissionId"]) {
+            item.expanded = true
           if (responseEvidenceData && responseEvidenceData.length > 0) {
             for (let result of responseEvidenceData) {
               if (!previousData.some((item) => item["evidenceSubmissionId"] == result["evidenceSubmissionId"]))
@@ -171,7 +184,43 @@ export class BatchDisplayComponent implements OnInit {
       }
 
       this.dataSourceEvidence = [...this.dataSourceEvidence];
-      console.log(response);
+      this.loadingEvidence = false;
+      return response;
+    });
+  }
+
+  removeChildEvidence(row) {
+    this.loadingEvidence = true;
+    this.dashboardService.getEvidenceHierarchyData(row["evidenceSubmissionId"]).subscribe((response) => {
+      debugger
+      let responseEvidenceData: EvidenceElement[] = [];
+      responseEvidenceData = this.getEvidenceResponseData(response, row["level"]);
+      let previousData = [...this.dataSourceEvidence];
+      this.dataSourceEvidence = [];
+      let isRemoveChild:boolean = false;
+      for (let item of previousData) {
+        if(isRemoveChild){
+          if(item.level>row["level"]) {
+            previousData = previousData.filter(data => data["evidenceSubmissionId"] !== item["evidenceSubmissionId"]);
+          } else {
+            isRemoveChild = false;
+          }
+        }
+        if (item.evidenceSubmissionId == row["evidenceSubmissionId"]) {
+          item.expanded = false;
+          if (responseEvidenceData && responseEvidenceData.length > 0) {
+            isRemoveChild = true;
+            for (let result of responseEvidenceData) {
+              if (previousData.some((item) => item["evidenceSubmissionId"] == result["evidenceSubmissionId"]))
+                debugger
+                previousData = previousData.filter(item => item["evidenceSubmissionId"] !== result["evidenceSubmissionId"]);
+            }
+          }
+        }
+      }
+
+      this.dataSourceEvidence = [...previousData];
+      this.loadingEvidence = false;
       return response;
     });
   }

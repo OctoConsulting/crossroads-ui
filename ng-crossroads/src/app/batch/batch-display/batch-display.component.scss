@@ -53,3 +53,12 @@
 .evidence.transfer.button {
   margin-top: 2em;
 }
+
+mat-icon:hover {
+  cursor: pointer;
+}
+
+.fix-width {
+  width: 22px; 
+  display: inline-block;
+}
