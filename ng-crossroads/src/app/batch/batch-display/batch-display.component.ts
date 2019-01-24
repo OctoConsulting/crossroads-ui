@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild, Injectable } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { DashboardService } from '../../services/dashboard.service';
 import { merge, Observable, of as observableOf, BehaviorSubject } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-
+import { ToastrService } from 'ngx-toastr';
 
 export interface BatchElement {
   batchId: any;
@@ -37,7 +37,11 @@ export interface EvidenceElement {
 })
 export class BatchDisplayComponent implements OnInit {
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private dashboardService: DashboardService) {
+  constructor(private formBuilder: FormBuilder,
+            private router: Router,
+            private route: ActivatedRoute,
+            private dashboardService: DashboardService,
+            private toastr: ToastrService) {
   }
 
   data: BatchElement[] = [];
@@ -60,6 +64,10 @@ export class BatchDisplayComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.route.snapshot.queryParams);
+    if (this.route.snapshot.queryParams['name']) {
+      this.displaySuccessBanner();
+    }
 
     if (this.sort) {
       this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
@@ -199,11 +207,20 @@ export class BatchDisplayComponent implements OnInit {
   }
 
   navigateToBatchTransfer(batch: BatchElement): void {
-    this.router.navigate(['batches', batch.batchId, 'transfer']);
+    this.router.navigate(['batches', batch.batchId, 'transfer'], {queryParams: {name: batch.batchName}});
   }
 
   sortData(sort: any) {
     this!.showDashboard(sort.active, sort.direction, 0);
+  }
+
+  displaySuccessBanner(): void {
+    const successInfo = this.route.snapshot.queryParams;
+    console.log(successInfo);
+    this.toastr.success(`You have successfully transferred ${successInfo['name']} to ${successInfo['storageArea']}, at ${successInfo['storageLocation']}`, 'Success!', {
+      closeButton: true,
+      disableTimeOut: true
+    });
   }
 
 }
