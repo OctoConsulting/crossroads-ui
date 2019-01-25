@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig, FormlyField } from '@ngx-formly/core';
@@ -10,6 +10,7 @@ import { switchMap, startWith, map } from 'rxjs/operators';
 import { Subscription, forkJoin, Observable } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
+import { MatError } from '@angular/material';
 
 @Component({
   selector: 'app-transfer-form',
@@ -17,6 +18,9 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./transfer-form.component.scss']
 })
 export class TransferFormComponent implements AfterViewInit, OnInit {
+
+  @ViewChild('topScroll') topScroll;
+  @ViewChild('bottomScroll') bottomScroll;
 
   public form: FormGroup;
   // public form = new FormGroup({employee: new FormControl({value: '', disabled: true})});
@@ -80,7 +84,7 @@ export class TransferFormComponent implements AfterViewInit, OnInit {
         this.loading = false;
       },
       error => {
-        // TODO
+        this.router.navigate(['/batches'], {queryParams: {}});
       }
     );
   }
@@ -326,30 +330,38 @@ export class TransferFormComponent implements AfterViewInit, OnInit {
           switch (errorItem.fieldName) {
             case 'transferType':
               fieldName = 'transferType';
+              this.scroller('topScroll');
               break;
             case 'EmployeeAuthorization':
             case 'employeeValidated':
               fieldName = 'employeePassword';
+              this.scroller('topScroll');
               break;
             case 'locationID':
               fieldName = 'atLab';
+              this.scroller('topScroll');
               break;
             case 'organizationID':
               fieldName = 'atUnit';
+              this.scroller('topScroll');
               break;
             case 'storageArea':
             case 'transferIn':
             case 'transferInAndOutArea':
               fieldName = 'storageArea';
+              this.scroller('bottomScroll');
               break;
             case 'storageLocation':
               fieldName = 'storageLocation';
+              this.scroller('bottomScroll');
               break;
             case 'Witness1Authorization':
               fieldName = 'witnessOnePassword';
+              this.scroller('bottomScroll');
               break;
             case 'Witness2Authorization':
               fieldName = 'witnessTwoPassword';
+              this.scroller('bottomScroll');
               break;
             default:
             break;
@@ -362,6 +374,10 @@ export class TransferFormComponent implements AfterViewInit, OnInit {
         this.toastr.error('Something is wrong. Please try again later', 'Error!');
       }
     }
+  }
+
+  private scroller(arg: string): void {
+    this[arg].nativeElement.scrollIntoView({behavior: 'smooth', block: 'start', alignTo: 'true'});
   }
 
   public onCancel(): void {

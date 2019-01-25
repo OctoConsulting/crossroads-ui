@@ -1,17 +1,5 @@
-<!-- <form [formGroup]="form" (ngSubmit)="submit(model)">
-  <formly-form [form]="form" [fields]="fields" [model]="model">
-    <div class="app flex">
-      <span>
-        <a class="btn btn-secondary" [routerLink]="['/batches']">Cancel</a>
-      </span>
-      <span>
-        <a class="btn btn-primary" [routerLink]="['confirm', '1']">Continue Transfer</a>
-      </span>
-    </div>
-  </formly-form>
-</form> -->
 <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
-<div class="transfer-form">
+<div class="transfer-form" #topScroll>
   <form [formGroup]="form" (ngSubmit)="submit()">
     <hr />
     <div class="half-block-wrapper">
@@ -207,7 +195,7 @@
       </div>
     </div>
 
-    <div class="app flex">
+    <div class="app flex" #bottomScroll>
       <span>
         <button class="bottom-button" mat-raised-button color='warn' (click)="onCancel()">Cancel</button>
       </span>

@@ -272,7 +272,7 @@ export class BatchDisplayComponent implements OnInit {
         closeButton: true,
         disableTimeOut: true,
         easing: 'ease-in'
-      }).onTap.subscribe( action => {
+      }).onHidden.subscribe( action => {
         this.router.navigate(['/batches'], {queryParams: {}});
       });
     });
