@@ -69,13 +69,7 @@ export class TransferFormComponent implements AfterViewInit, OnInit {
         this.form.get('byEmployee').setValue(responses[0][0]);
         this.types = responses[1];
         this.requiredWitnessCount = this.types[0].requiredWitnessCount;
-        // this.requiredWitnessCount = 2;
         this.initWitnessFormDropdown('', 'witnessOne', 'witnessOneFilterOptions');
-        // this.form.get('witnessOnePassword').setValidators([Validators.required]);
-        // if (this.requiredWitnessCount > 1) {
-        //   this.form.get('witnessTwo').setValidators([Validators.required]);
-        //   // this.form.get('witnessTwoPassword').setValidators([Validators.required]);
-        // }
         this.form.get('transferType').setValue(this.types[0]);
         this.labs = responses[2];
         const selectedLab = this.labs.find( lab => lab.isDefault);
@@ -110,6 +104,7 @@ export class TransferFormComponent implements AfterViewInit, OnInit {
         }
       );
     } else {
+      console.log(this.form);
       this.loading = false;
     }
   }
@@ -119,7 +114,7 @@ export class TransferFormComponent implements AfterViewInit, OnInit {
   }
 
   private initWitnessFormDropdown(exceptIds: string, formName: string, filterOptionList: string): void {
-    // this.form.get(formName).setValidators([Validators.required]);
+    this.loading = true;
     this.getWitnesses(exceptIds).subscribe(
       response => {
         if (formName === 'witnessOne') {
@@ -133,6 +128,9 @@ export class TransferFormComponent implements AfterViewInit, OnInit {
           map(value => typeof value === 'string' ? value : value.displayName),
           map(name => name ? this.witnessNameFilter(filterOptionList, name) : formName === 'witnessOne' ? this.witnessListOne.slice() : this.witnessListTwo.slice())
         );
+        this.loading = false;
+      },
+      error => {
         this.loading = false;
       }
     );
@@ -285,7 +283,6 @@ export class TransferFormComponent implements AfterViewInit, OnInit {
                 this.loading = false;
               });
       } else {
-        console.log('clear it');
         this.storageLocations = [];
         this.form.get('storageLocation').reset();
         this.loading = false;
@@ -293,14 +290,28 @@ export class TransferFormComponent implements AfterViewInit, OnInit {
     });
 
     this.form.get('witnessOne').valueChanges.subscribe( newValue => {
-      this.loading = true;
       const witnessTwo = this.form.get('witnessTwo');
       if (witnessTwo.value && witnessTwo.value.displayName === newValue.displayName) {
         witnessTwo.reset();
       }
       if (newValue && newValue.employeeID) {
         this.initWitnessFormDropdown(newValue.employeeID, 'witnessTwo', 'witnessTwoFilterOptions');
+        console.log(this.form.get('witnessOnePassword'));
+        this.form.get('witnessOnePassword').setValidators([Validators.required]);
+      } else {
+        this.form.get('witnessOnePassword').setValidators([Validators.nullValidator]);
+        console.log(this.form.get('witnessOnePassword'));
       }
+      this.form.get('witnessOnePassword').setErrors(null);
+    });
+
+    this.form.get('witnessTwo').valueChanges.subscribe( newValue => {
+      if (newValue && newValue.employeeID) {
+        this.form.get('witnessTwoPassword').setValidators([Validators.required]);
+      } else {
+        this.form.get('witnessTwoPassword').setValidators([Validators.nullValidator]);
+      }
+      this.form.get('witnessTwoPassword').setErrors(null);
     });
   }
 

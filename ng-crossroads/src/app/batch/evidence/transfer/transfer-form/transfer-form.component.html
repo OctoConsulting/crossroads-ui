@@ -161,10 +161,6 @@
               {{witness.displayName}}
             </mat-option>
           </mat-autocomplete>
-          <!-- <mat-select formControlName="witnessTwo">
-            <mat-option>--None--</mat-option>
-            <mat-option *ngFor="let witness of witnessListTwo" [value]="witness">{{witness.displayName}}</mat-option>
-          </mat-select> -->
           <mat-error
             *ngIf="isThereError('witnessTwo','required')">Required
           </mat-error>
