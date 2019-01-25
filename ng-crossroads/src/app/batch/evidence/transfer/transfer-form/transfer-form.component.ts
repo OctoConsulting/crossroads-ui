@@ -92,23 +92,21 @@ export class TransferFormComponent implements AfterViewInit, OnInit {
       const postBody = this.constructAPICall();
       this.transferService.sendTransferInfo(postBody, this.batchId).subscribe(
         response => {
-          //YAY TO DO
           console.log(response);
           const queryParams = {
-            storageArea: this.form.get('storageArea').value.storageAreadescription,
-            storageLocation: this.form.get('storageLocation').value.storageLocationDescription
+            storageArea: this.form.get('storageArea').value.storageAreadescription
           };
           console.log(queryParams);
           this.router.navigate(['/batches'], {queryParams: queryParams, queryParamsHandling: 'merge'});
         },
         error => {
-          //Error handling
-          // console.log('here error');
           console.log(error);
           this.setErrorMessages(error);
           this.loading = false;
         }
       );
+    } else {
+      this.loading = false;
     }
   }
 

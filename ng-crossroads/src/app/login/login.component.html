@@ -1,7 +1,10 @@
 <div class="card login form">
+  <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
   <div class="card-body">
-    <h1 >Sign In</h1>
-    <p class="alert alert-danger" role="alert" *ngIf="errorMessage | async"> {{ errorMessage | async }}</p>
+    <h1>Sign In</h1>
+    <p class="alert alert-danger" role="alert" *ngIf="(errorMessage | async)">
+      {{ errorMessage | async }}
+    </p>
     <form [formGroup]="form" (ngSubmit)="submit(user)">
       <formly-form [form]="form" [fields]="fields" [model]="user">
         <div class="app flex">
@@ -11,4 +14,3 @@
     </form>
   </div>
 </div>
-

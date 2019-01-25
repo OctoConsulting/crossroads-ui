@@ -20,15 +20,20 @@ export class LoginComponent implements OnInit {
   public fields: FormlyFieldConfig[] = loginForm;
   public user = new User();
   public errorMessage: Observable<string>;
+  public loading = false;
 
   constructor(private store: Store<AuthState>) {
-    this.errorMessage = this.store.pipe(select('auth'), mapDistinct(auth => auth.errorMessage));
+    this.errorMessage = this.store.pipe(select('auth'), mapDistinct(auth => {
+      this.loading = false;
+      return auth.errorMessage;
+    }));
   }
 
   ngOnInit() {
   }
 
   public submit (user: User): void {
+    this.loading = true;
     this.store.dispatch(new LogIn(user));
   }
 
