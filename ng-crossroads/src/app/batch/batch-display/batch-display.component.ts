@@ -192,7 +192,6 @@ export class BatchDisplayComponent implements OnInit {
   removeChildEvidence(row) {
     this.loadingEvidence = true;
     this.dashboardService.getEvidenceHierarchyData(row["evidenceSubmissionId"]).subscribe((response) => {
-      debugger
       let responseEvidenceData: EvidenceElement[] = [];
       responseEvidenceData = this.getEvidenceResponseData(response, row["level"]);
       let previousData = [...this.dataSourceEvidence];
@@ -212,7 +211,6 @@ export class BatchDisplayComponent implements OnInit {
             isRemoveChild = true;
             for (let result of responseEvidenceData) {
               if (previousData.some((item) => item["evidenceSubmissionId"] == result["evidenceSubmissionId"]))
-                debugger
                 previousData = previousData.filter(item => item["evidenceSubmissionId"] !== result["evidenceSubmissionId"]);
             }
           }
