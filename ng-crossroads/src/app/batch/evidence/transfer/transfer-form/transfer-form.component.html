@@ -19,7 +19,7 @@
         <h6>Transfer Type</h6>
         <mat-form-field>
           <mat-select
-            formControlName="transferType" [disabled]="true">
+            formControlName="transferType" [disabled]="true || loading">
             <mat-option>---Select---</mat-option>
             <mat-option
               *ngFor="let type of types"
@@ -42,7 +42,7 @@
 
         <h6>At Lab</h6>
         <mat-form-field>
-          <mat-select formControlName="atLab">
+          <mat-select formControlName="atLab" [disabled]="loading">
             <mat-option>---Select---</mat-option>
             <mat-option
               *ngFor="let lab of labs"
@@ -59,7 +59,7 @@
         <h6>At Unit</h6>
         <mat-form-field>
           <mat-select formControlName="atUnit" 
-          [disabled]="!form.get('atLab').value">
+          [disabled]="!form.get('atLab').value || loading">
             <mat-option>--Select--</mat-option>
             <mat-option *ngFor="let unit of units"
               [value]="unit">{{unit.organizationName}}</mat-option>
@@ -76,7 +76,7 @@
       <div class="half-block">
         <h6>Transfer Reason (Optional)</h6>
         <mat-form-field>
-          <mat-select formControlName="transferReason">
+          <mat-select formControlName="transferReason" [disabled]="loading">
             <mat-option>--None--</mat-option>
             <mat-option *ngFor="let reason of transferReasons" [value]="reason">{{reason.transferReason}}</mat-option>
           </mat-select>
@@ -110,7 +110,7 @@
           <mat-select
             formControlName="storageArea"
             placeholder="Select a Storage Area"
-            [disabled]="!form.get('atLab').valid || !form.get('atUnit').valid">
+            [disabled]="!form.get('atLab').valid || !form.get('atUnit').valid || loading">
             <mat-option *ngFor="let area of storageAreas" [value]="area">{{area.storageAreadescription}}</mat-option>
           </mat-select>
           <mat-error
@@ -125,7 +125,7 @@
         <mat-form-field>
           <mat-select
             formControlName="storageLocation"
-            [disabled]="!form.get('storageArea').valid">
+            [disabled]="!form.get('storageArea').valid || loading">
             <mat-option>--None--</mat-option>
             <mat-option *ngFor="let location of storageLocations" [value]="location">{{location.storageLocationDescription}}</mat-option>
           </mat-select>

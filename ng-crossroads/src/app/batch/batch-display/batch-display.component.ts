@@ -69,7 +69,7 @@ export class BatchDisplayComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.route.snapshot.queryParams);
+    // console.log(this.route.snapshot.queryParams);
     if (this.route.snapshot.queryParams['name']) {
       this.displaySuccessBanner();
     }
@@ -265,10 +265,16 @@ export class BatchDisplayComponent implements OnInit {
 
   displaySuccessBanner(): void {
     const successInfo = this.route.snapshot.queryParams;
-    console.log(successInfo);
-    this.toastr.success(`You have successfully transferred ${successInfo['name']} to ${successInfo['storageArea']}, at ${successInfo['storageLocation']}`, 'Success!', {
-      closeButton: true,
-      disableTimeOut: true
+    // console.log(successInfo);
+    setTimeout(() => {
+      this.toastr
+        .success(`Batch ${successInfo['name']} was successfully transferred to ${successInfo['storageArea']}`, 'Success!', {
+        closeButton: true,
+        disableTimeOut: true,
+        easing: 'ease-in'
+      }).onTap.subscribe( action => {
+        this.router.navigate(['/batches'], {queryParams: {}});
+      });
     });
   }
 
