@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig, FormlyField } from '@ngx-formly/core';
@@ -10,6 +10,7 @@ import { switchMap, startWith, map } from 'rxjs/operators';
 import { Subscription, forkJoin, Observable } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
+import { MatError } from '@angular/material';
 
 @Component({
   selector: 'app-transfer-form',
@@ -17,6 +18,9 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./transfer-form.component.scss']
 })
 export class TransferFormComponent implements AfterViewInit, OnInit {
+
+  @ViewChild('topScroll') topScroll;
+  @ViewChild('bottomScroll') bottomScroll;
 
   public form: FormGroup;
   // public form = new FormGroup({employee: new FormControl({value: '', disabled: true})});
@@ -65,13 +69,7 @@ export class TransferFormComponent implements AfterViewInit, OnInit {
         this.form.get('byEmployee').setValue(responses[0][0]);
         this.types = responses[1];
         this.requiredWitnessCount = this.types[0].requiredWitnessCount;
-        // this.requiredWitnessCount = 2;
         this.initWitnessFormDropdown('', 'witnessOne', 'witnessOneFilterOptions');
-        // this.form.get('witnessOnePassword').setValidators([Validators.required]);
-        // if (this.requiredWitnessCount > 1) {
-        //   this.form.get('witnessTwo').setValidators([Validators.required]);
-        //   // this.form.get('witnessTwoPassword').setValidators([Validators.required]);
-        // }
         this.form.get('transferType').setValue(this.types[0]);
         this.labs = responses[2];
         const selectedLab = this.labs.find( lab => lab.isDefault);
@@ -80,7 +78,7 @@ export class TransferFormComponent implements AfterViewInit, OnInit {
         this.loading = false;
       },
       error => {
-        // TODO
+        this.router.navigate(['/batches'], {queryParams: {}});
       }
     );
   }
@@ -106,6 +104,7 @@ export class TransferFormComponent implements AfterViewInit, OnInit {
         }
       );
     } else {
+      console.log(this.form);
       this.loading = false;
     }
   }
@@ -115,7 +114,7 @@ export class TransferFormComponent implements AfterViewInit, OnInit {
   }
 
   private initWitnessFormDropdown(exceptIds: string, formName: string, filterOptionList: string): void {
-    // this.form.get(formName).setValidators([Validators.required]);
+    this.loading = true;
     this.getWitnesses(exceptIds).subscribe(
       response => {
         if (formName === 'witnessOne') {
@@ -129,6 +128,9 @@ export class TransferFormComponent implements AfterViewInit, OnInit {
           map(value => typeof value === 'string' ? value : value.displayName),
           map(name => name ? this.witnessNameFilter(filterOptionList, name) : formName === 'witnessOne' ? this.witnessListOne.slice() : this.witnessListTwo.slice())
         );
+        this.loading = false;
+      },
+      error => {
         this.loading = false;
       }
     );
@@ -281,7 +283,6 @@ export class TransferFormComponent implements AfterViewInit, OnInit {
                 this.loading = false;
               });
       } else {
-        console.log('clear it');
         this.storageLocations = [];
         this.form.get('storageLocation').reset();
         this.loading = false;
@@ -289,14 +290,28 @@ export class TransferFormComponent implements AfterViewInit, OnInit {
     });
 
     this.form.get('witnessOne').valueChanges.subscribe( newValue => {
-      this.loading = true;
       const witnessTwo = this.form.get('witnessTwo');
       if (witnessTwo.value && witnessTwo.value.displayName === newValue.displayName) {
         witnessTwo.reset();
       }
       if (newValue && newValue.employeeID) {
         this.initWitnessFormDropdown(newValue.employeeID, 'witnessTwo', 'witnessTwoFilterOptions');
+        console.log(this.form.get('witnessOnePassword'));
+        this.form.get('witnessOnePassword').setValidators([Validators.required]);
+      } else {
+        this.form.get('witnessOnePassword').setValidators([Validators.nullValidator]);
+        console.log(this.form.get('witnessOnePassword'));
       }
+      this.form.get('witnessOnePassword').setErrors(null);
+    });
+
+    this.form.get('witnessTwo').valueChanges.subscribe( newValue => {
+      if (newValue && newValue.employeeID) {
+        this.form.get('witnessTwoPassword').setValidators([Validators.required]);
+      } else {
+        this.form.get('witnessTwoPassword').setValidators([Validators.nullValidator]);
+      }
+      this.form.get('witnessTwoPassword').setErrors(null);
     });
   }
 
@@ -326,30 +341,38 @@ export class TransferFormComponent implements AfterViewInit, OnInit {
           switch (errorItem.fieldName) {
             case 'transferType':
               fieldName = 'transferType';
+              this.scroller('topScroll');
               break;
             case 'EmployeeAuthorization':
             case 'employeeValidated':
               fieldName = 'employeePassword';
+              this.scroller('topScroll');
               break;
             case 'locationID':
               fieldName = 'atLab';
+              this.scroller('topScroll');
               break;
             case 'organizationID':
               fieldName = 'atUnit';
+              this.scroller('topScroll');
               break;
             case 'storageArea':
             case 'transferIn':
             case 'transferInAndOutArea':
               fieldName = 'storageArea';
+              this.scroller('bottomScroll');
               break;
             case 'storageLocation':
               fieldName = 'storageLocation';
+              this.scroller('bottomScroll');
               break;
             case 'Witness1Authorization':
               fieldName = 'witnessOnePassword';
+              this.scroller('bottomScroll');
               break;
             case 'Witness2Authorization':
               fieldName = 'witnessTwoPassword';
+              this.scroller('bottomScroll');
               break;
             default:
             break;
@@ -362,6 +385,10 @@ export class TransferFormComponent implements AfterViewInit, OnInit {
         this.toastr.error('Something is wrong. Please try again later', 'Error!');
       }
     }
+  }
+
+  private scroller(arg: string): void {
+    this[arg].nativeElement.scrollIntoView({behavior: 'smooth', block: 'start', alignTo: 'true'});
   }
 
   public onCancel(): void {
