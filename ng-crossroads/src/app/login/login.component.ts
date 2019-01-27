@@ -18,7 +18,10 @@ export class LoginComponent implements OnInit {
 
   public form = new FormGroup({});
   public fields: FormlyFieldConfig[] = loginForm;
-  public user = new User();
+  public user: User = {
+    email: undefined,
+    password: undefined
+  };
   public errorMessage: Observable<string>;
   public loading = false;
 

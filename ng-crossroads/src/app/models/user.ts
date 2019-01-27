@@ -1,6 +1,7 @@
-export class User {
-  public id?: any;
-  public email?: string;
-  public password?: string;
-  public token?: string;
+export interface User {
+  id?: any;
+  email?: string;
+  password?: string;
+  token?: string;
+  displayName?: string;
 }

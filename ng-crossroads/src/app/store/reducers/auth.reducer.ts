@@ -28,7 +28,7 @@ export function authReducer(state = initialState, action: All): AuthState {
         user: {
           token: action.payload.token,
           email: action.payload.email,
-          id: action.payload.id
+          displayName: action.payload.username
         },
         errorMessage: null,
         token: action.payload.token

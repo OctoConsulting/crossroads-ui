@@ -29,8 +29,7 @@ export class AuthService {
       {
         headers: {
           Authorization: `Basic ${token}`,
-        },
-        responseType: 'text'
+        }
      },
     );
   }
