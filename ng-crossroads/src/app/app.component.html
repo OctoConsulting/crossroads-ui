@@ -1,7 +1,4 @@
 <mat-toolbar [color]="color | async">
-  <button (click)="toggleSidenav()">
-    <mat-icon [svgIcon]="navIcon | async"></mat-icon>
-  </button>
   {{ title | async }}
 </mat-toolbar>
 
@@ -11,8 +8,7 @@
       <a mat-list-item
         *ngFor="let link of links | async"
         [routerLink]="link?.path"
-        (click)="closeSidenav()">{{ link?.title }}</a>
-      <button mat-list-item (click)="logout()">Log out</button>
+        (click)="logout(link)">{{ link?.title }}</a>
     </mat-list>
   </mat-sidenav>
   <mat-sidenav-content class="app content" style="height: 1000px">
