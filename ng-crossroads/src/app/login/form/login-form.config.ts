@@ -13,6 +13,7 @@ export const loginForm: FormlyFieldConfig[] = [
     type: 'input',
     templateOptions: {
       label: 'Password',
+      type: 'password'
     }
   }
 ];

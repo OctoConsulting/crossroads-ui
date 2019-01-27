@@ -9,12 +9,14 @@ export interface AuthState {
   user: User | null;
   // error message
   errorMessage: string | null;
+  token?: string;
 }
 
 export const initialState: AuthState = {
   isAuthenticated: false,
   user: null,
-  errorMessage: null
+  errorMessage: null,
+  token: null
 };
 
 export function authReducer(state = initialState, action: All): AuthState {
@@ -28,7 +30,8 @@ export function authReducer(state = initialState, action: All): AuthState {
           email: action.payload.email,
           id: action.payload.id
         },
-        errorMessage: null
+        errorMessage: null,
+        token: action.payload.token
       };
     }
     case AuthActionTypes.LOGIN_FAILURE: {
@@ -49,7 +52,8 @@ export function authReducer(state = initialState, action: All): AuthState {
         user: {
           token: token,
           id: userId
-        }
+        },
+        token
       };
     }
     default: {
