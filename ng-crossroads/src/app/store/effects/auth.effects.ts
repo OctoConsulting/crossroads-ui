@@ -32,8 +32,8 @@ export class AuthEffects {
       switchMap(payload => {
         return this.authService.logIn(payload.email, payload.password)
           .pipe(
-            map((token) => {
-              return new LogInSuccess({token: token, email: payload.email, id: ''});
+            map((response) => {
+              return new LogInSuccess({token: response.sessionId, email: payload.email, displayName: response.username });
             }),
             catchError((error) => {
               return of(new LogInFailure({ error: error }));
