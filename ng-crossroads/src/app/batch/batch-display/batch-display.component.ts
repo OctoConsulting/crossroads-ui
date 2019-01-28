@@ -69,7 +69,6 @@ export class BatchDisplayComponent implements OnInit {
   }
 
   ngOnInit() {
-    // console.log(this.route.snapshot.queryParams);
     if (this.route.snapshot.queryParams['name']) {
       this.displaySuccessBanner();
     }
@@ -191,36 +190,25 @@ export class BatchDisplayComponent implements OnInit {
 
   removeChildEvidence(row) {
     this.loadingEvidence = true;
-    this.dashboardService.getEvidenceHierarchyData(row["evidenceSubmissionId"]).subscribe((response) => {
-      let responseEvidenceData: EvidenceElement[] = [];
-      responseEvidenceData = this.getEvidenceResponseData(response, row["level"]);
-      let previousData = [...this.dataSourceEvidence];
-      this.dataSourceEvidence = [];
-      let isRemoveChild:boolean = false;
-      for (let item of previousData) {
-        if(isRemoveChild){
-          if(item.level>row["level"]) {
-            previousData = previousData.filter(data => data["evidenceSubmissionId"] !== item["evidenceSubmissionId"]);
-          } else {
-            isRemoveChild = false;
-          }
-        }
-        if (item.evidenceSubmissionId == row["evidenceSubmissionId"]) {
-          item.expanded = false;
-          if (responseEvidenceData && responseEvidenceData.length > 0) {
-            isRemoveChild = true;
-            for (let result of responseEvidenceData) {
-              if (previousData.some((item) => item["evidenceSubmissionId"] == result["evidenceSubmissionId"]))
-                previousData = previousData.filter(item => item["evidenceSubmissionId"] !== result["evidenceSubmissionId"]);
-            }
-          }
+    let previousData = [...this.dataSourceEvidence];
+    this.dataSourceEvidence = [];
+    let isRemoveChild:boolean = false;
+    for (let item of previousData) {
+      if(isRemoveChild){
+        if(item.level>row["level"]) {
+          previousData = previousData.filter(data => data["evidenceSubmissionId"] !== item["evidenceSubmissionId"]);
+        } else {
+          isRemoveChild = false;
         }
       }
-
-      this.dataSourceEvidence = [...previousData];
-      this.loadingEvidence = false;
-      return response;
-    });
+      if (item.evidenceSubmissionId == row["evidenceSubmissionId"]) {
+        item.expanded = false;
+        isRemoveChild = true;
+      }
+    }
+    this.dataSourceEvidence = [...previousData];
+    this.loadingEvidence = false;
+    return this.dataSourceEvidence;
   }
 
   highlight(row) {
@@ -263,7 +251,6 @@ export class BatchDisplayComponent implements OnInit {
 
   displaySuccessBanner(): void {
     const successInfo = this.route.snapshot.queryParams;
-    // console.log(successInfo);
     setTimeout(() => {
       this.toastr
         .success(`Batch ${successInfo['name']} was successfully transferred to ${successInfo['storageArea']}`, 'Success!', {
