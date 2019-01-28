@@ -28,7 +28,7 @@ export function authReducer(state = initialState, action: All): AuthState {
         user: {
           token: action.payload.token,
           email: action.payload.email,
-          displayName: action.payload.username
+          displayName: action.payload.displayName
         },
         errorMessage: null,
         token: action.payload.token
@@ -45,13 +45,13 @@ export function authReducer(state = initialState, action: All): AuthState {
     }
     case AuthActionTypes.GET_STATUS: {
       const token = localStorage.getItem('token');
-      const userId = localStorage.getItem('userId');
+      const displayName = localStorage.getItem('displayName');
       return {
         errorMessage: null,
         isAuthenticated: !!token,
         user: {
           token: token,
-          id: userId
+          displayName: displayName
         },
         token
       };

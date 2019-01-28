@@ -14,7 +14,7 @@ import { mapDistinct } from '../utilities/mapDistinct';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
   public form = new FormGroup({});
   public fields: FormlyFieldConfig[] = loginForm;
@@ -30,9 +30,6 @@ export class LoginComponent implements OnInit {
       this.loading = false;
       return auth.errorMessage;
     }));
-  }
-
-  ngOnInit() {
   }
 
   public submit (user: User): void {

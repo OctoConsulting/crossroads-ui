@@ -1,5 +1,10 @@
-<mat-toolbar [color]="color | async">
-  {{ title | async }}
+<mat-toolbar class="app flex header" [color]="color | async">
+  <span class="title">
+    {{ title | async }}
+  </span>
+  <span class="displayName">
+    {{ displayName | async }}
+  </span>
 </mat-toolbar>
 
 <mat-sidenav-container [hasBackdrop]="hasBackdrop | async">

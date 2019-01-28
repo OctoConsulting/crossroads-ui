@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Observable, of, observable, throwError } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map, switchMap, catchError, tap } from 'rxjs/operators';
 
 import { AuthService } from '../../services/auth.service';
@@ -12,8 +12,6 @@ import {
   LogInSuccess,
   LogInFailure,
 } from '../actions/auth.actions';
-import { HttpErrorResponse } from '@angular/common/http';
-
 
 @Injectable()
 export class AuthEffects {
@@ -47,7 +45,7 @@ export class AuthEffects {
     ofType(AuthActionTypes.LOGIN_SUCCESS),
     tap((user) => {
       localStorage.setItem('token', user.payload.token);
-      localStorage.setItem('userId', user.payload.id || '');
+      localStorage.setItem('displayName', user.payload.displayName || '');
       this.router.navigateByUrl('/batches');
     })
   );
@@ -57,7 +55,7 @@ export class AuthEffects {
     ofType(AuthActionTypes.LOGIN_FAILURE),
     tap((user) => {
       localStorage.removeItem('token');
-      localStorage.removeItem('userId');
+      localStorage.removeItem('displayName');
     })
   );
 
@@ -66,7 +64,7 @@ export class AuthEffects {
     ofType(AuthActionTypes.LOGOUT),
     tap((user) => {
       localStorage.removeItem('token');
-      localStorage.removeItem('userId');
+      localStorage.removeItem('displayName');
       this.router.navigateByUrl('/');
     })
   );
