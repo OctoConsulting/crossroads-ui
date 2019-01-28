@@ -1,8 +1,16 @@
-
-.app.logo {
-  font-size: 2rem;
-}
-
 .nav.list {
   list-style: none;
+}
+
+.displayName {
+  float: right;
+}
+
+.title, 
+.displayName {
+  display: inline-block;
+}
+
+.displayName {
+  margin-left: auto;
 }

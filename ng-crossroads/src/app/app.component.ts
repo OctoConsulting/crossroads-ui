@@ -1,15 +1,15 @@
-import { Component, ViewChild, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { MatIconRegistry } from '@angular/material/icon';
-import { DomSanitizer } from '@angular/platform-browser';
+import { Component, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Store, select } from '@ngrx/store';
 import { ToggleSidenav, CloseSidenav } from './store/actions/app.actions';
 import { AppModelType, NavLink } from './models/app-model';
 import { Observable } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { mapDistinct } from './utilities/mapDistinct';
 import { AuthState } from './store/reducers/auth.reducer';
 import { GetStatus, LogOut } from './store/actions/auth.actions';
 import { showAuthenticatedLinks } from './store/selectors/selectors';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -26,11 +26,13 @@ export class AppComponent implements AfterViewInit {
   public navIcon: Observable<string>;
   public sidenavMode: Observable<string>;
   public sidenavOpened: Observable<boolean>;
+  public displayName: Observable<string>;
 
   @ViewChild(MatSidenav) public sidenav: MatSidenav;
 
   constructor (
-    public store: Store<{app: AppModelType, auth: AuthState}>,
+    private router: Router,
+    private store: Store<{app: AppModelType, auth: AuthState}>,
     private cdr: ChangeDetectorRef) {
     /**
      * Check if user has valid token
@@ -42,6 +44,13 @@ export class AppComponent implements AfterViewInit {
     this.model = store.pipe(select('app'));
     this.auth = store.pipe(select('auth'));
     this.links = store.pipe(select(showAuthenticatedLinks));
+    this.auth.pipe(
+      mapDistinct<boolean>(model => model.token),
+      first()
+    )
+    .subscribe(
+      token => !!token ? this.router.navigate(['/batches']) : null
+    );
     /**
      * Map model to template properties
      */
@@ -72,6 +81,7 @@ export class AppComponent implements AfterViewInit {
     this.hasBackdrop = this.model.pipe(mapDistinct<boolean>(model => model.hasBackdrop));
     this.sidenavMode = this.model.pipe(mapDistinct<string>(model => model.sidenavMode));
     this.sidenavOpened = this.model.pipe(mapDistinct<boolean>(model => model.sidenavOpened));
+    this.displayName = this.auth.pipe(mapDistinct<string>(model => model.user && model.user.displayName));
   }
 
   private _setupSidenavSubscriptions () {
