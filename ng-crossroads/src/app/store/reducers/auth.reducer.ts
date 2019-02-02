@@ -35,9 +35,21 @@ export function authReducer(state = initialState, action: All): AuthState {
       };
     }
     case AuthActionTypes.LOGIN_FAILURE: {
+      let message;
+
+      try {
+        if (action.payload.error.status === 403) {
+          message = 'No permission';
+        } else {
+          message = 'Incorrect email and/or password';
+        }
+      } catch {
+        message = 'An error occurred';
+      }
+
       return {
         ...initialState,
-        errorMessage: 'Incorrect email and/or password.'
+        errorMessage: message
       };
     }
     case AuthActionTypes.LOGOUT: {
