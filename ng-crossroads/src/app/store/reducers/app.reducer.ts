@@ -9,6 +9,12 @@ export function appReducer(state: AppModelType = appModel, action: AppActionsUni
         state,
         {sidenavOpened: !state.sidenavOpened}
       );
+    case AppActionTypes.OpenSidenav:
+        return Object.assign(
+          {},
+          state,
+          { sidenavOpened: true }
+        );
     case AppActionTypes.CloseSidenav:
       return Object.assign(
         {},

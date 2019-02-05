@@ -57,6 +57,7 @@ export class AppComponent implements AfterViewInit {
     this._mapProperties();
   }
 
+
   public ngAfterViewInit () {
     this._setupSidenavSubscriptions();
   }
@@ -81,7 +82,7 @@ export class AppComponent implements AfterViewInit {
     this.hasBackdrop = this.model.pipe(mapDistinct<boolean>(model => model.hasBackdrop));
     this.sidenavMode = this.model.pipe(mapDistinct<string>(model => model.sidenavMode));
     this.sidenavOpened = this.model.pipe(mapDistinct<boolean>(model => model.sidenavOpened));
-    this.displayName = this.auth.pipe(mapDistinct<string>(model => model.user && model.user.displayName));
+    this.displayName = this.auth.pipe(mapDistinct<string>(model =>  model.user && model.user.displayName));
   }
 
   private _setupSidenavSubscriptions () {

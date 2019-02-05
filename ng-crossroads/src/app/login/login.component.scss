@@ -1,5 +1,43 @@
-.login.form {
+.login-form {
   width: 100%;
+
+  .header {
+    margin: 20px auto;
+    font-size: 20px;
+  }
+
+  .half-block-wrapper {
+    margin: 15px 15% 0;
+    display: inline-flex;
+    width: 100%;
+  }
+
+  .half-block {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    margin: 0 10px;
+  }
+
+  .button-block {
+    margin: 15px 15% 0;
+    width: 100%;
+  }
+
+  .signin-button {
+    margin: 0 10px;
+    width: 200px;
+    height: 39px;
+    background-color: #444444;
+    color: #FFFFFF;
+    border-radius: 2px;
+  }
+
+  .login-alert {
+    width: 30%;
+    text-align: center;
+    margin: 10px auto;
+  }
 }
 
 @media (min-width: 500px) {

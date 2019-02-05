@@ -1,14 +1,15 @@
-<mat-toolbar class="app flex header" [color]="color | async">
+<mat-toolbar class="app flex header custom-color">
   <span class="title">
     {{ title | async }}
   </span>
   <span class="displayName">
     {{ displayName | async }}
+    <i *ngIf="displayName | async" class="far fa-user"></i>
   </span>
 </mat-toolbar>
 
 <mat-sidenav-container [hasBackdrop]="hasBackdrop | async">
-  <mat-sidenav #sidenav class="app aside" [mode]="sidenavMode | async" style="height: 1000px">
+  <mat-sidenav #sidenav class="app aside sidenav-custom" [mode]="sidenavMode | async" style="height: 1000px">
     <mat-list>
       <a mat-list-item
         *ngFor="let link of links | async"

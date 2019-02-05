@@ -1,4 +1,4 @@
-<div class="card login form">
+<!-- <div class="card login form">
   <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
   <div class="card-body">
     <h1>Sign In</h1>
@@ -13,4 +13,31 @@
       </formly-form>
     </form>
   </div>
-</div>
+</div> -->
+
+<form [formGroup]="form" (ngSubmit)="submit(user)">
+    <div class="login-form">
+        <p class="header">Sign In</p>
+        <hr *ngIf="!loading"/>
+        <mat-progress-bar class="custom-progress" mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+        <div class="half-block-wrapper">
+          <div class="half-block">
+            <h6>User Name</h6>
+            <mat-form-field> <input matInput formControlName="userName"/> </mat-form-field>
+          </div>
+          <div class="half-block">
+            <h6>Password</h6>
+            <mat-form-field> <input matInput type="password" formControlName="password"/> </mat-form-field>
+          </div>
+        </div>
+        <div class="button-block">
+            <button class="signin-button" mat-raised-button type="submit">
+              Sign In
+            </button>
+        </div>
+        <p class="alert alert-danger login-alert" role="alert" *ngIf="(errorMessage | async)">
+            {{ errorMessage | async }}
+        </p>
+      </div>
+</form>
+
