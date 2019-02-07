@@ -1,7 +1,9 @@
-<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
 <div class="transfer-form" #topScroll>
   <form [formGroup]="form" (ngSubmit)="submit()">
-    <hr />
+    <hr *ngIf="!loading"/>
+    <mat-progress-bar 
+      class="custom-progress"
+      mode="indeterminate" *ngIf="loading"></mat-progress-bar>
     <div class="half-block-wrapper">
       <div class="half-block">
         <h6>Transfer Type</h6>
@@ -43,22 +45,6 @@
             {{getErrorMessage('atLab')}}
           </mat-error>
         </mat-form-field>
-
-        <h6>At Unit</h6>
-        <mat-form-field>
-          <mat-select formControlName="atUnit" 
-          [disabled]="!form.get('atLab').value || loading">
-            <mat-option>--Select--</mat-option>
-            <mat-option *ngFor="let unit of units"
-              [value]="unit">{{unit.organizationName}}</mat-option>
-          </mat-select>
-          <mat-error
-            *ngIf="isThereError('atUnit','required')">Required
-          </mat-error>
-          <mat-error *ngIf="!isThereError('atUnit', 'required') && isThereError('atUnit','customError')">
-            {{getErrorMessage('atUnit')}}
-          </mat-error>
-        </mat-form-field>
       </div>
 
       <div class="half-block">
@@ -84,13 +70,35 @@
           </mat-error>
         </mat-form-field>
 
-        <h6>Comments (Optional)</h6>
+        <h6>At Unit</h6>
         <mat-form-field>
-          <textarea matInput formControlName="comments"> </textarea>
+          <mat-select formControlName="atUnit" 
+          [disabled]="!form.get('atLab').value || loading">
+            <mat-option>--Select--</mat-option>
+            <mat-option *ngFor="let unit of units"
+              [value]="unit">{{unit.organizationName}}</mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="isThereError('atUnit','required')">Required
+          </mat-error>
+          <mat-error *ngIf="!isThereError('atUnit', 'required') && isThereError('atUnit','customError')">
+            {{getErrorMessage('atUnit')}}
+          </mat-error>
         </mat-form-field>
       </div>
     </div>
-    <hr />
+
+    <div>
+        <h6>Comments (Optional)</h6>
+        <mat-form-field id="commentFormField">
+          <textarea matInput formControlName="comments"> </textarea>
+        </mat-form-field>
+    </div>
+
+    <p class="header">New Location</p>
+    <hr *ngIf="!loading"/>
+    <mat-progress-bar class="custom-progress" mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+
     <div class="half-block-wrapper">
       <div class="half-block">
         <h6>Storage Area</h6>
@@ -108,7 +116,8 @@
             {{getErrorMessage('storageArea')}}
           </mat-error>
         </mat-form-field>
-
+      </div>
+      <div class="half-block">
         <h6>Storage Location {{form.get('storageArea').value && !form.get('storageArea').value.requiresLocation ? '(Optional)' : ''}}</h6>
         <mat-form-field>
           <mat-select
@@ -193,13 +202,12 @@
 
     <div class="app flex" #bottomScroll>
       <span>
-        <button class="bottom-button" mat-raised-button color='warn' (click)="onCancel()">Cancel</button>
+        <button class="bottom-button" mat-raised-button (click)="onCancel()">Cancel</button>
       </span>
       <span>
-        <button class="bottom-button" mat-raised-button color="primary" type="submit"
+        <button class="bottom-button submit-button" mat-raised-button type="submit"
           >Continue Transfer</button>
       </span>
     </div>
   </form>
 </div>
-<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>

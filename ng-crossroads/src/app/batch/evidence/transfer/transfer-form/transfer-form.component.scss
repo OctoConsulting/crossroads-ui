@@ -1,20 +1,43 @@
 .transfer-form {
-    .half-block-wrapper {
-        display: inline-flex;
-        width: 100%;
-    }
-    .half-block {
-        width: 30%;
-        display: flex;
-        flex-direction: column;
-        margin: 0 10px;
-    }
+  .header {
+    margin: 20px auto;
+    font-size: 20px;
+  }
+  .half-block-wrapper {
+    display: inline-flex;
+    width: 100%;
+  }
+  .half-block {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    margin: 0 10px;
+  }
 
-    .bottom-button {
-        margin: 10px 5px;
-    }
+  #commentFormField {
+      width: 63%;
+  }
+  .bottom-button {
+    margin: 20px 5px;
+    width: 200px;
+    height: 39px;
+    border-radius: 2px;
+  }
 
-    h6 {
-        margin-top: 10px;
+  .submit-button {
+    background-color: #444444;
+    color: #ffffff;
+  }
+
+  h6 {
+    margin-top: 10px;
+  }
+}
+
+@media only screen and (min-width: 1800px) {
+    .transfer-form {
+        #commentFormField {
+            width: 62%;
+        }
     }
 }

@@ -11,6 +11,24 @@
   display: inline-block;
 }
 
+.title {
+  font-size: 24px;
+}
+
 .displayName {
+  font-size: 14px;
   margin-left: auto;
 }
+
+.custom-color {
+  background-color: #222222;
+  color: #FFFFFF;
+}
+
+.mat-drawer {
+  background-color: #444444 !important;
+  .mat-list-item {
+    color: #FFFFFF !important;
+  }
+}
+

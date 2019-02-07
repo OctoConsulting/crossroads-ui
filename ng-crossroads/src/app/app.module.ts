@@ -1,12 +1,18 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {  MatFormFieldModule,
+  MatSelectModule,
+  MatInputModule,
+  MatButtonModule,
+  MatProgressBarModule
+} from '@angular/material';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatPaginatorModule} from '@angular/material/paginator';
-import { MatProgressBarModule} from '@angular/material/progress-bar';
+
 import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { MatTreeModule} from '@angular/material/tree';
 import { MatTableModule} from '@angular/material/table';
@@ -53,6 +59,10 @@ import { ToastrModule } from 'ngx-toastr';
     MatPaginatorModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatButtonModule,
     MatTableModule,
     MatTreeModule,
     HttpClientModule,
