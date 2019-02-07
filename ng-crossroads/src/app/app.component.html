@@ -3,7 +3,7 @@
     {{ title | async }}
   </span>
   <span class="displayName">
-    {{ displayName | async }}
+    <span class="nameString">{{ displayName | async }}</span>
     <i *ngIf="displayName | async" class="far fa-user"></i>
   </span>
 </mat-toolbar>

@@ -2,10 +2,6 @@
   list-style: none;
 }
 
-.displayName {
-  float: right;
-}
-
 .title, 
 .displayName {
   display: inline-block;
@@ -16,8 +12,14 @@
 }
 
 .displayName {
+  float:right;
   font-size: 14px;
   margin-left: auto;
+  margin-right: 30.87px;
+}
+
+.nameString {
+  margin-right: 8px;
 }
 
 .custom-color {
@@ -30,5 +32,9 @@
   .mat-list-item {
     color: #FFFFFF !important;
   }
+}
+
+.mat-list-item {
+  font-size: 20px;
 }
 
