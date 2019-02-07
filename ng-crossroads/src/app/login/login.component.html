@@ -20,6 +20,9 @@
         <p class="header">Sign In</p>
         <hr *ngIf="!loading"/>
         <mat-progress-bar class="custom-progress" mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+        <p class="alert alert-danger login-alert" role="alert" *ngIf="(errorMessage | async)">
+          {{ errorMessage | async }}
+        </p>
         <div class="half-block-wrapper">
           <div class="half-block">
             <h6>User Name</h6>
@@ -35,9 +38,6 @@
               Sign In
             </button>
         </div>
-        <p class="alert alert-danger login-alert" role="alert" *ngIf="(errorMessage | async)">
-            {{ errorMessage | async }}
-        </p>
       </div>
 </form>
 
