@@ -76,6 +76,14 @@ export class AppComponent implements AfterViewInit {
     }
   }
 
+  public formatName(arg: string): string {
+    if (arg && arg.length > 0) {
+      const arr = arg.split(',');
+      return arr[1].trim() + ' ' + arr[0].trim();
+    }
+    return '';
+  }
+
   private _mapProperties () {
     this.color = this.model.pipe(mapDistinct<string>(model => model.color));
     this.title = this.model.pipe(mapDistinct<string>(model => model.title));
