@@ -17,7 +17,7 @@
       (matSortChange)="sortData($event)"
       matSortActive="expires"
       matSortDisableClear
-      matSortDirection="asc"
+      matSortDirection="desc"
     >
       <!-- Number Column -->
       <ng-container matColumnDef="batchId" [style.display]="'none'">
@@ -150,6 +150,10 @@
           <mat-cell *matCellDef="let row" [style.display]="'none'">{{
             row.evidenceSubmissionId
           }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="custodyStorageAreaId" >
+          <mat-header-cell  *matHeaderCellDef [style.display]="'none'">custodyStorageAreaId</mat-header-cell>
+          <mat-cell *matCellDef="let row" [style.display]="'none'">{{row.custodyStorageAreaId}}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="hasChildren">
           <mat-header-cell class="header"

@@ -24,6 +24,7 @@ export interface EvidenceElement {
   level: any;
   evidenceSubmissionId: any;
   hasChildren : any;
+  custodyStorageAreaId : any;
   expanded : any;
   evidence: any;
   evidence1B: any;
@@ -58,11 +59,13 @@ export class BatchDisplayComponent implements OnInit {
   selectedBatch: BatchElement;
   batchRowName: any;
   currentPage: 0;
+  canTransfer: boolean = false;
+  custodyAreaId: any;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   displayedColumns: string[] = ['batchName', 'batchId', 'evidenceCount', 'expires'];
-  displayedColumnsEvidence: string[] = ['evidence', 'level', 'evidenceSubmissionId', 'evidence1B', 'description', 'location', 'status','hasChildren','expanded'];
+  displayedColumnsEvidence: string[] = ['evidence', 'level', 'evidenceSubmissionId', 'evidence1B', 'description', 'location', 'status','hasChildren','expanded', 'custodyStorageAreaId'];
 
   get displayEvidenceElements(): boolean {
     return this.dataSourceEvidence && this.dataSourceEvidence.length > 0;
@@ -75,6 +78,7 @@ export class BatchDisplayComponent implements OnInit {
 
     if (this.sort) {
       this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+      this.sort.direction = 'desc';
     }
 
     merge(this.sort.sortChange, this.paginator.page)
@@ -102,7 +106,7 @@ export class BatchDisplayComponent implements OnInit {
     let pageString = page + 1 + "";
     let result;
     this.loadingBatch = true;
-    this.dashboardService!.getDashboardData('63718', '90', pageString, '5', 'Name', order ? order : 'desc').subscribe((response) => {
+    this.dashboardService!.getDashboardData('', '90', pageString, '5', 'Name', order ? order : 'desc').subscribe((response) => {
       result = this.getBatchData(response);
       this.data = result.items;
       this.resultsLength = result.total_count;
@@ -113,6 +117,18 @@ export class BatchDisplayComponent implements OnInit {
 
     return result;
   }
+
+  validateTransferOut() {
+    
+    this.dashboardService.getValidateTransferOut(this.custodyAreaId).subscribe((response) => {
+      
+      return response;
+
+    });
+
+
+  }
+  
 
   getBatchData(responseData: any) {
 
@@ -145,16 +161,19 @@ export class BatchDisplayComponent implements OnInit {
 
   getEvidenceResponseData(responseData: any, level: any) {
     let resultsEmbedded = responseData["_embedded"];
+    let resultsLinks = responseData["_links"];
+    this.canTransfer = (resultsLinks && resultsLinks["TRANSFER"])?true:false;
     if (resultsEmbedded) {
       let results = resultsEmbedded["evidenceList"];
       let resultArr: EvidenceElement[] = [];
       for (let result of results) {
+        this.custodyAreaId = result["custodyStorageAreaId"];
         resultArr.push({
           level: level + 1,
           evidenceSubmissionId: result["evidenceSubmissionId"],
           evidence: result["evidence"], evidence1B: result["evidence1B"],
-          description: result["description"], location: result["area"]?result["area"]+":"+result["location"]:result["location"], status: result["status"],
-          hasChildren: result["hasChildren"]>0?true:false,
+          description: result["description"], location: result["location"]?result["area"]+":"+result["location"]:result["area"], status: result["status"],
+          hasChildren: result["hasChildren"]>0?true:false,custodyStorageAreaId: result["custodyStorageAreaId"],
           expanded : false
         });
       }
@@ -238,11 +257,16 @@ export class BatchDisplayComponent implements OnInit {
   }
 
   isTransferDisabled(): boolean {
-    return !this.selectedBatch;
+    return !this.selectedBatch && !this.canTransfer;
   }
 
   navigateToBatchTransfer(batch: BatchElement): void {
-    this.router.navigate(['batches', batch.batchId, 'transfer'], {queryParams: {name: batch.batchName}});
+    this.dashboardService.getValidateTransferOut(this.custodyAreaId).subscribe((response) => {
+      this.router.navigate(['batches', batch.batchId, 'transfer'], {queryParams: {name: batch.batchName}});
+   }, 
+   error => {
+     this.toastr.error(error.error.errorMessages);
+   } )
   }
 
   sortData(sort: any) {
