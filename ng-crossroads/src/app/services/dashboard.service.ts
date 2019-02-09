@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { map,catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
+import { Observable,throwError } from 'rxjs';
 
 @Injectable()
 export class DashboardService {
@@ -55,4 +56,26 @@ export class DashboardService {
               return data;
     }));
   }
+
+  getValidateTransferOut(custodyAreaId: any): Observable<any> {
+    
+    let apiUrl = this.API_URL+"/v1/evidencetransfer/validateTransOut";
+    
+    return  this.httpClient.post(apiUrl,{},
+      {
+        params: {
+          custodyAreaId: custodyAreaId
+      }
+    }
+  ).pipe(map(data => {
+    return true;
+  }),catchError(this.handleError));
+}
+
+private handleError(error: HttpErrorResponse) {
+ 
+  return throwError(
+    error);
+};
+  
 }
