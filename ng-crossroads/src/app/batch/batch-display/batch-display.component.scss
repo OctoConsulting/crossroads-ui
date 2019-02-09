@@ -59,6 +59,13 @@ table {
   border-radius: 2px;
 }
 
+.evidence.transfer.button[disabled] {
+  background-color: #fafafa !important;
+  border-color: #444444  !important;
+  border : 1px solid;
+  color: #444444 !important;
+}
+
 mat-icon:hover {
   cursor: pointer;
 }
